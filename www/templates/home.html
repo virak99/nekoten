@@ -12,9 +12,9 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content on-scroll-complete="onComplete()">
-    <input id="data" type="hidden">
-    <input id="start" type="hidden" value="0">
-    <input id="all" type="hidden" value="0">
+        <input id="data" type="hidden">
+        <input id="start" type="hidden" value="0">
+        <input id="all" type="hidden" value="0">
     
         <div class="home">
             <div class="home-slider owl-carousel owl-theme">
@@ -29,7 +29,7 @@
             <script> 
             $('.home-slider').owlCarousel({
                 loop:true,
-                margin:10,
+                margin:10,                
                 autoplay:true,
                 autoplayTimeout:5000,
                 autoplayHoverPause:true,
@@ -57,6 +57,8 @@
 </ion-view>
 
 <script>    
+    
+    //window.location.href="#tab/product2/";
     
     var size = $(window).width();        
     $.post('http://www.nekoten.khmerqq.com/app/new_arrival.php',{size:size},function(data){
@@ -109,11 +111,10 @@
         var cate = JSON.parse(data);
         for (var i = 0; i < cate.length; i++){
             var c = cate[i];            
-            $('#cate').append('<li><div><span class="fa '+c['fa']+'"></span></div><div k="'+c['name_kh']+'">'+c['name_en']+'</div></li>');
-            
+            $('#cate').append('<li><div><span class="fa '+c['fa']+'"></span></div><div k="'+c['name_kh']+'">'+c['name_en']+'</div></li>');            
         }
         $('#cate').owlCarousel({
-                margin:10,
+                margin:10,                
                 responsive:{
                     0:{
                         items:5

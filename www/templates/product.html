@@ -32,24 +32,25 @@
 </div>
 <!-- /Question Modal -->
 
-<ion-view hide-nav-bar="true">
-    <ion-content>
-        <div class="back" ng-click="myGoBack()" onclick="$('#ad_image').html('');$('#product_body').hide()">
-            <span class="ion-ios-arrow-left"></span>
-            <span class="ion-ios-cart-outline"></span>
-        </div>
+<div class="back" ng-click="myGoBack()" onclick="$('#ad_image').html(''); $('#product_body').hide(); $('#ad_images').hide(); $('.tab-nav').show();">
+    <span class="ion-ios-arrow-left"></span>
+    <span class="ion-ios-cart-outline"></span>
+</div>
         
-        <div id="ad_images">
+<ion-view hide-nav-bar="true">
+    <ion-content class="no-tabs">        
+        <div id="ad_images" style="display:none">
+            <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
+            <div class="helper" onclick="removeFullScreen()"></div>
             <div class="home-slider owl-carousel owl-theme" id="ad_image">
-                
+
             </div>
             <div class="wishlist-btn">
                 <span class="fa fa-heart"></span>    
             </div>
         </div>
         
-        <div id="product_body" style="display:none">
-        
+        <div id="product_body">        
             <input id="ad_id" type="text" style="display:none">
             <div class="w" id="title"></div>
             <div class="pp">
@@ -141,7 +142,25 @@
     </ion-content>
 </ion-view>
 <script>
+    $('.tab-nav').hide();
     la();
+    
+    
+    function viewFullScreen(){
+        $('#ad_images').addClass('img-full-screen');                     
+        $('.img-full-screen').height($(window).height());
+        //$('.owl-carousel .owl-stage-outer').css('overflow', 'initial');
+        $('.scroll').addClass('no-scroll');
+        $('.owl-dots').hide();
+        $('.back').hide();
+    }
+    function removeFullScreen(){
+        $('#ad_images').removeClass('img-full-screen');                     
+        $('.back').show();
+        
+        $('.scroll').removeClass('no-scroll');
+        $('.owl-dots').show();
+    }
     
     $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
         var arr = JSON.parse(data);

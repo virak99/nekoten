@@ -75,6 +75,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('tab.shipping_address', {
+      url: '/shipping_address',
+      views: {
+        'account': {
+          templateUrl: 'templates/shipping_address.html',    
+          controller: 'NavCtrl'
+        }
+      }
+    })
+   
     .state('tab.review_order', {
     url: '/review_order/',
     views: {
@@ -94,6 +104,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('tab.all_categories', {
+    url: '/all_categories/',
+    views: {
+      'search': {
+        templateUrl: 'templates/all_categories.html',
+          controller: 'NavCtrl'
+      }
+    }
+  })
     .state('tab.search_res', {
       url: '/search_res',
       views: {
@@ -113,7 +132,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    
+    .state('tab.product2', {
+      url: '/product2/',
+      views: {
+        'home': {
+          templateUrl: 'templates/product2.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
   .state('tab.account', {
     url: '/account',
     views: {

@@ -1,0 +1,243 @@
+<!-- Shipping Info Modal -->
+<div id="delivery_option_product" class="modal">
+    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
+    <div class="back" onclick="closeModal('delivery_option_product')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    
+    <ion-content class="sm-modal-body">
+        <ul id="choose_location_ul">
+            
+        </ul>
+    </ion-content>    
+</div>
+<!-- /Shipping Info Modal -->
+
+<!-- Question Modal -->
+<div id="question_modal" class="modal">
+    <div class="header-title"><span k="សំនួរ">Question</span> (<span id="n_question"></span>)</div>
+    <div class="back" onclick="closeModal('question_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    
+    <ion-content class="sm-modal-body qs">
+        <div id="question">
+            
+        </div>
+    </ion-content>    
+    <div class="question-footer">
+        <input placeholder="Ask about the product" k="សួរអំពីផលិតផល">
+        <button k="សួរ">Ask</button>
+    </div>
+</div>
+<!-- /Question Modal -->
+
+<div class="back" ng-click="myGoBack()" onclick="$('#ad_image').html(''); $('#product_body').hide(); $('#ad_images').hide(); $('.tab-nav').show();">
+    <span class="ion-ios-arrow-left"></span>
+    <span class="ion-ios-cart-outline"></span>
+</div>
+        
+<ion-view hide-nav-bar="true">
+    <ion-content class="no-tabs">        
+        <div id="ad_images" style="display:none">
+            <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
+            <div class="helper" onclick="removeFullScreen()"></div>
+            <div class="home-slider owl-carousel owl-theme" id="ad_image">
+            
+                <img src="img/1.jpg" onclick="viewFullScreen()">
+                <img src="img/1.jpg" onclick="viewFullScreen()">
+            </div>
+            <script>
+                $('#ad_image').owlCarousel({
+                    responsive:{
+                        0:{
+                            items:1
+                        }
+                    }
+                });
+                
+                function viewFullScreen(){
+                    $('#ad_images').addClass('img-full-screen');                     
+                    $('.img-full-screen').height($(window).height());
+                    $('.owl-carousel .owl-stage-outer').css('overflow', 'initial');
+                    $('.scroll').addClass('no-scroll');
+                    $('.owl-dots').hide();
+                    $('.back').hide();
+                }
+                function removeFullScreen(){
+                    $('#ad_images').removeClass('img-full-screen');                     
+                    $('.back').show();
+                    $('.scroll').removeClass('no-scroll');
+                    $('.owl-dots').show();
+                }
+            </script>
+            <div class="wishlist-btn">
+                <span class="fa fa-heart"></span>    
+            </div>
+        </div>
+        
+        <div id="product_body" style="display:none">
+        
+            <input id="ad_id" type="text" style="display:none">
+            <div class="w" id="title"></div>
+            <div class="pp">
+                
+                <span id="price"></span>
+                <span id="normal_price"></span>
+                <span id="discount"></span>
+                <span id="quantity"></span>
+            </div>
+            <div class="ii">
+                <div class="a">
+                    <div class="b" id="rate"></div>
+                    <div class="c" id="review"></div>
+                </div>
+                <div class="a">
+                    <div class="b" id="n_order"></div>
+                    <div class="c" k="កម្មង់">Order</div>
+                </div>
+                <div class="a">
+                    <div class="b" id="view"></div>
+                    <div class="c" k="មើល">View</div>
+                </div>
+            </div>
+            <div class="hr"></div>
+            
+            <div class="et" id="product_delivery_to">
+            <div class="a item item-complex" onclick="openModal('delivery_option_product')">
+                <a class="item-content">
+                    <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
+                    <div class="c">
+                        <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>                        
+                        <span id="delivery_fee">$0</span>    
+                    </div>
+                    <div class="c">
+                        <span k="ទទួលទំនិញ">Receive Product</span>
+                        <span id="delivery_day">Today</span>
+                        <span id="delivery_time">08:00 - 09:00</span>    
+                    </div>
+                    <div class="fa fa-angle-right"></div>                    
+                </a>
+            </div>
+        </div>
+        <script>
+        
+        if (localStorage.getItem('language') == 'en'){            
+            $('#product_delivery_to #delivery_to').text(localStorage.getItem('delivery_to').split(',')[0]);
+        } else {
+            $('#product_delivery_to #delivery_to').text(localStorage.getItem('delivery_to').split(',')[1]);
+        } 
+        
+        </script>
+        
+        
+        <div class="hr"></div>
+        <div class="at">
+            <div class="a">
+                <div class="b" k="បរិមាណ">Quantity</div>
+                <div class="c">
+                    <span class="d fa fa-minus" onclick="qtyMinus()"></span>
+                    <input class="e" id="qty" type="text" value="1">
+                    <span class="f fa fa-plus" onclick="qtyPlus()"></span>
+                </div>
+            </div>
+        </div>
+        <div class="bt">
+            <span class="h" onclick="loadQuestionList('modal'); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
+            <span class="i" k="ដាក់ចូលកន្ត្រក" onclick="addToCart()">Add to Cart</span>
+        </div>
+        <div class="hr"></div>
+        <div class="pd">
+            <div class="a" k="ការពិពណ៌នាអំពីផលិតផល">Product Description</div>
+            <div class="b" id="desc"></div>
+        </div>
+        <div class="hr"></div>
+        <div class="qs" id="question_panel" onclick="loadQuestionList(); openModal('question_modal')">
+            <div class="a" k="សំនួរ និង ចម្លើយ">Question (<span id="n_question">0</span>)</div>
+            <div id="question">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="ra">
+            <div class="a" k="ផលិតផលស្រដៀងគ្នា">Related Products</div>
+            <div class="b">
+            
+            </div>
+        </div>
+        
+    </ion-content>
+</ion-view>
+<script>
+    la();
+    $('.tab-nav').hide();    
+    
+    
+    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
+        var arr = JSON.parse(data);
+        for (var i = 0; i < arr.length; i++){
+            var a = arr[i];
+            var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
+                str += '<a class="item-content">';
+                str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
+                str += '<span class="price-li">$ '+a['price']+' </span>';
+            str += '</a></li>';
+            $('#choose_location_ul').append(str); 
+        }
+        load('delivery_to');
+        la();
+    });
+    
+    
+    
+    function selectLocationProduct(name_en, name_kh){
+        closeSmallModal('delivery_option_product');
+        if (localStorage.getItem('language') == 'en'){
+            $('#product_body #product_delivery_to').text(name_en);    
+        } else {
+            $('#product_body #product_delivery_to').text(name_kh);    
+        }
+    }
+    
+    function addToCart(){
+        
+        var ad_id = $('#product_body #ad_id').val();
+        var qty = parseInt($('.at #qty').val(), 10);
+        var opt = 0;
+
+        var a = localStorage.getItem('shopping_cart');
+
+        if (a == '' || a == null){
+            var b = ','+ad_id+':'+opt+':'+qty;
+        } else {
+            var b = '';
+            var added = 0;
+            var c = a.split(',');
+            for (var i = 1; i < c.length; i++){
+                if (c[i].split(':')[0] == ad_id && c[i].split(':')[1] == opt){
+                    b += ','+ad_id+':'+opt+':'+(parseInt(c[i].split(':')[2], 10)+qty);
+                    added = 1;
+                } else {
+                    b += ','+c[i];
+                }
+            }
+            if (!added) b = ','+ad_id+':'+opt+':'+qty+b;
+        }
+        localStorage.setItem('shopping_cart', b);
+        loadCart('page');
+        loadCart('review');
+        alert('Added to Cart!');
+        
+    }
+        
+    function qtyPlus(){
+        if ($('#qty').val() < 10) {
+            $('#qty').val(parseInt($('#qty').val(), 10)+1);
+        }
+    }
+    function qtyMinus(){
+        if ($('#qty').val() > 1) {
+            $('#qty').val(parseInt($('#qty').val(), 10)-1);
+        }
+    }
+</script>

@@ -1,0 +1,40 @@
+<div class"app-header">
+    <div class="header-title" k="ប្រភេទទាំងអស់">All Categories</div>
+    <div class="back" ng-click="myGoBack()">
+        <span class="ion-ios-arrow-left"></span>
+    </div>
+</div>
+<ion-view hide-nav-bar="true" class="header-view">
+    <ion-content>
+        <ul class="zz">
+        <script>/*
+            <li class="item item-complex">
+                <a href="#tab/search_res" class="item-content">
+                    <span class="fa fa-list"></span>
+                    <span k="abc">Phone</span>
+                    <span class="fa fa-angle-right"></span>
+                </a>
+            </li>
+            */
+            </script>
+        </ul>
+    </ion-content>
+</ion-view>
+<script>
+    $.post('http://www.nekoten.khmerqq.com/app/category.php',{},function(data){
+        var cate = JSON.parse(data);
+        for (var i = 0; i < cate.length; i++){
+            var c = cate[i];     
+            var str = '<li class="item item-complex">';
+                str += '<a href="#tab/search_res" class="item-content">';
+                    str += '<span class="fa '+c['fa']+'"></span> ';
+                    str += '<span k="'+c['name_kh']+'">'+c['name_en']+'</span>';
+                    str += '<span class="fa fa-angle-right"></span>';
+                str += '</a>';
+            str += '</li>';
+            $('.zz').append(str);
+        }        
+        la();        
+    });
+    
+</script>

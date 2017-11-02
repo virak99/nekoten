@@ -5,50 +5,40 @@
     </div>
 </div>
 
-    <!-- Choose Location Small Modal -->
-    <div class="sm-modal" id="choose_location">
-        <div class="shadow"></div>
-        <div class="header-title" k="ជ្រើសរើសខេត្តក្រុង">Choose City / Province</div>
-        <div class="back" onclick="closeSmallModal('choose_location')">
-            <span class="close ion-ios-close-empty"></span>
-        </div>                        
-        <ion-content class="sm-modal-body">
-            <ul id="choose_location_ul_2">
+<div class="sm-modal" id="choose_location_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសខេត្តក្រុង">Choose City / Province</div>
+    <div class="back" onclick="closeSmallModal('choose_location_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body">
+        <ul id="choose_location_ul_2">
+            
+        </ul>
+    </ion-content>
+</div>    
+
+<div class="sm-modal" id="choose_day_time_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសថ្ងៃនិងម៉ោង">Choose Date and Time</div>
+    <div class="back" onclick="closeSmallModal('choose_day_time_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body" style="padding:20px 10px">
+        <div class="yo">
+            <ul id="choose_day_ul" class="a">
                 
             </ul>
-            </ion-content>
-    </div>
-    <!-- /Choose Location Modal -->
-    
-   
-    
-    <!-- Choose Date and Time Small Modal -->
-    <div class="sm-modal" id="choose_day_time">
-        <div class="shadow"></div>
-        <div class="header-title" k="ជ្រើសរើសថ្ងៃនិងម៉ោង">Choose Date and Time</div>
-        <div class="back" onclick="closeSmallModal('choose_day_time')">
-            <span class="close ion-ios-close-empty"></span>
-        </div>                        
-        <ion-content class="sm-modal-body" style="padding:20px 10px">
-            <div class="yo">
-                <ul id="choose_day_ul" class="a">
-                    
-                </ul>
-                <ul id="choose_time_ul" class="b">
-                   
-                </ul>
-            </div>
-            <button class="c" k="យល់ព្រម" onclick="setScheduleDate()">Okay</button>
-           
-        </ion-content>
-    </div>
-    <!-- /Choose Date and Time Small Modal -->
-    
-    
-    
-    
-   
-<!-- Payment Method Modal -->
+            <ul id="choose_time_ul" class="b">
+               
+            </ul>
+        </div>
+        <button class="c" k="យល់ព្រម" onclick="setScheduleDate()">Okay</button>       
+    </ion-content>
+</div>    
+
+
+
 <div id="payment_method_modal" class="modal">
     <div class="header-title" k="របៀបបង់បា្រក់">Payment Method</div>
     <div class="back" onclick="closeModal('payment_method_modal')">
@@ -78,11 +68,11 @@
         
     </div>
 </div>
-<!-- /Delivery Time Modal -->
 
 
-    
-<!-- Delivery Modal Modal -->
+
+
+
 <div id="delivery_time_modal" class="modal">
     <div class="header-title" k="ម៉ោងដឹកជញ្ជូន">Delivery Time</div>
     <div class="back" onclick="closeModal('delivery_time_modal')">
@@ -98,7 +88,7 @@
                     <span id="express_delivery_time">10:00 - 11:00</div>
             </a>
         </div>
-        <div class="a item item-complex"onclick="openSmallModal('choose_day_time')">
+        <div class="a item item-complex"onclick="openSmallModal('choose_day_time_modal')">
             <a class="item-content">
                 <div class="b" id="schedule_delivery_type" k="ដឹកជញ្ជូនក្នុងពេលកំណត់">Schedule Delivery</div>
                 <div class="c">
@@ -108,14 +98,11 @@
         </div>
     </div>
 </div>
-<!-- /Delivery Time Modal -->
 
 
-    
-<!-- Shipping Info Modal -->
-<div id="shipping_info" class="modal">
+<div id="shipping_info_modal" class="modal">
     <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
-    <div class="back" onclick="closeModal('shipping_info')">
+    <div class="back" onclick="closeModal('shipping_info_modal')">
         <span class="close ion-ios-close-empty"></span>
     </div>
     <div class="lg">
@@ -135,50 +122,70 @@
                 </div>
                 <div class="d">
                     <div class="e"><span class="ion-ios-location-outline"></span></div>
-                    <div class="f"><span id="location" class="f2" onclick="openSmallModal('choose_location')">Phnom Penh</span></div>
+                    <div class="f"><span id="location" class="f2" onclick="openSmallModal('choose_location_modal')">Phnom Penh</span></div>
                     <div class="f1"><span class="fa fa-angle-right"></span></div>                                                    
                 </div>
-                <div class="my-tab">
-                    <div class="a selected" id="tab-address" onclick="selectTab('tab-address')">
-                        <span>ADDRESS</span>
+                <div id="phnom_penh_tab">
+                    <div class="my-tab">
+                        <div class="a selected" id="tab-address" onclick="selectTab('tab-address')">
+                            <span k="អាស័យដ្ឋាន">ADDRESS</span>
+                        </div>
+                        <div class="a" id="tab-gps" onclick="selectTab('tab-gps'); getLocation()">
+                            <span>GPS</span>
+                        </div>
                     </div>
-                    <div class="a" id="tab-gps" onclick="selectTab('tab-gps'); getLocation()">
-                        <span>GPS</span>
+                    <div class="my-tab-content">
+                        <div class="a" id="tab-address">
+                            <div class="d">                    
+                                <div class="f">
+                                    <input id="address" k="អាស័យដ្ឋាន (ឧ: ផ្ទះលេខ 41 ផ្លូវ 126)" placeholder="Address (ex: No. 41, St. 126)">
+                                    <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                                </div>
+                            </div>
+                            <div class="d">   
+                                <div class="f"><input id="near_by" k="នៅជិត (ឧ: នៅជិតផ្សារធំថ្មី)" placeholder="Nearby (ex: Near Phsar Thom Thmey)">
+                                    <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="a hide" id="tab-gps">
+                            <div class="getting-gps" k="កំពុងទាញយកទីតាំងបច្ចុប្បន្នរបស់អ្នក ...">Getting your Current Location ...</div>
+                            <iframe id="gps-map-frame" style="width:100%;height:250px" frameborder="0">                                
+                            </iframe>                                                    
+                            <input id="coordinate" type="hidden">
+                        </div>
                     </div>
                 </div>
-                <div class="my-tab-content">
-                    <div class="a" id="tab-address">
-                        <div class="d">                    
-                            <div class="f">
-                                <input id="address" k="អាស័យដ្ឋាន (ឧ: ផ្ទះលេខ 41 ផ្លូវ 126)" placeholder="Address (ex: No. 41, St. 126)">
-                                <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                            </div>
-                        </div>
-                        <div class="d">   
-                            <div class="f"><input id="near_by" k="នៅជិត (ឧ: នៅជិតផ្សារធំថ្មី)" placeholder="Nearby (ex: Near Phsar Thom Thmey)">
-                                <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                            </div>
-                        </div>
-                        
+                
+                <div id="province_tab" style="display:none">
+                    <div class="d">
+                        <span class="dd" k="យើងខ្ញុំនឹងផ្ញើរទំនិញទៅតាមឡានក្រុង រឺឡានឈ្នួលទៅកានើខេត្តរបស់លោកអ្នក">We will send product via bus or rent car to your province.</span>
                     </div>
-                    <div class="a hide" id="tab-gps">
-                        <iframe allow="geolocation" id="gps-map-frame" style="width:100%;height:250px" frameborder="0"
-                            src="">
-                        </iframe>
-                        <input id="coordinate" type="hidden">
+                    <div class="d">                    
+                        <div class="f">
+                            <input id="bus_name" k="ឈ្មោះឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Name of Bus, Rent Car (Optional)">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">                    
+                        <div class="f">
+                            <input id="bus_name" k="លេខទូរស័ព្ទឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Phone Number of Bus, Rent Car (Optional)">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
                     </div>
                 </div>
+     
                 <div class="g">
                     <button type="submit" onclick="postAddress()" k="ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ">Deliver to this Address</button>               
                 </div>
             </form>
             
         </div>            
-    </div>      
+    </div>  
 </div>
-<!-- /Shipping Info Modal -->
 
-<!-- ******************************************************************** -->
+<script>/*****************************************************************/</script>
 
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content id="order">
@@ -189,7 +196,7 @@
             <div id="shipping_addr" class="item item-complex">
                 
             </div>
-            <div class="b item item-complex" id="add_address" onclick="openModal('shipping_info')">
+            <div class="b item item-complex" id="add_address" onclick="openModal('shipping_info_modal')">
                 <a class="item-content">
                     <span class="c" k="បន្ថែមអាស័យដ្ឋាន">Add an address</span>
                 </a>
@@ -285,8 +292,20 @@
 </ion-view>
 <script>
     la();  
-    loadCart('review');
-
+    loadCart('review');    
+    switchTab();
+    
+    
+    function switchTab(){
+        if (localStorage.getItem('delivery_to') != 'Phnom Penh,ភ្នំពេញ'){
+            $('#shipping_info_form #phnom_penh_tab').hide();
+            $('#shipping_info_form #province_tab').show();            
+        } else {
+            $('#shipping_info_form #phnom_penh_tab').show();
+            $('#shipping_info_form #province_tab').hide();            
+        }
+    }
+    
     function selectTab(tab){
         $('.my-tab-content .a').hide();
         $('.my-tab-content #'+tab).show();
@@ -304,125 +323,8 @@
         };
         navigator.geolocation.getCurrentPosition(onSuccess);
     }
-
-    function postAddress(){
-        var user_id = localStorage.getItem('user_id');
-        var name = $('#shipping_info_form #name').val();
-        var phone_number = $('#shipping_info_form #phone_number').val();
-        var location = $('#shipping_info_form #location').text();
-        var address = $('#shipping_info_form #address').val();
-        var near_by = $('#shipping_info_form #near_by').val();
-        
-        var addr_selected = $('.my-tab #tab-address').hasClass('selected');
-       
-        if (addr_selected) {
-            var coordinate = '';
-        } else {
-            var coordinate = $('#shipping_info_form #coordinate').val();
-        }
-        
-        $.post('http://www.nekoten.khmerqq.com/app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
-        address:address, near_by:near_by, coordinate:coordinate},
-        function(data){
-            if (data == 'success'){
-                var str = '<a class="item-content"><b>'+name+'</b><br>';
-                str += address+'<br>';
-                str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a><div class="fa fa-angle-right"></div>';
-                $('.eq #shipping_addr').html(str);
-                $('#add_address').hide();
-                closeModal('shipping_info');
-            }
-        });
-        
-        
-    }
-    /*
-    var name = '1';
-    var house = '2';
-    var street = '3';
-    var sangkat = '4';
-    var khan = '5';
-    var phone_number = '6';
     
-    
-    var str = '<a class="item-content"><b>'+name+'</b><br>';
-                str += house+' '+street+'<br>';
-                str += sangkat+' '+khan+'<br>';
-                str += location+'<br>';
-                str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a>';
-                $('.eq #shipping_addr').html(str);
-                closeModal('shipping_info');
-        */
-    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
-        var arr = JSON.parse(data);
-        for (var i = 0; i < arr.length; i++){
-            var a = arr[i];
-            var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
-                str += '<a class="item-content">';
-                str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
-                str += '<span class="price-li">$ '+a['price']+' </span>';
-            str += '</a></li>';
-            $('#choose_location_ul_2').append(str); 
-        }
-        load('delivery_to');
-        la();
-    });
-    
-    /*
-    $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:localStorage.getItem('user_id')}, function(data){
-        var a = JSON.parse(data)[0];
-        if (a['result'] == 'success'){
-            
-            $('.eq #add_address').hide();
-            var str = '<a class="item-content"><b>'+a['name']+'</b><br>';
-            str += a['address']+'<br>';
-            str += a['location']+'<br>';
-            str += '<span class="ion-ios-telephone-outline"> '+a['phone_number']+'</span></a>';
-            $('.eq #shipping_addr').html(str);
-        }
-       
-    });
-    */
-    
-    
-    
-    $('#shipping_info_form input').on('keyup click', function(){
-        if ($(this).val() != '') {
-            $(this).siblings('.input-close').show();
-        }
-    });
-    $('#shipping_info_form input').on('blur', function(){
-            $(this).siblings('.input-close').hide();
-    });
-    $('#shipping_info_form .input-close').on('click', function(){
-        $(this).hide();
-        $(this).siblings('input').val('');
-    });
-    
-    
-    function selectLocation(name_en, name_kh){
-        closeSmallModal('choose_location');
-        if (localStorage.getItem('language') == 'en'){
-            $('#shipping_info_form #location').text(name_en);
-        } else {
-            $('#shipping_info_form #location').text(name_kh);
-        }        
-    }
-   
-    function selectDeliveryType(type){
-        closeModal('delivery_time_modal');
-        $('#order #delivery_type').text($('#delivery_time_modal #'+type+'_delivery_type').text());
-        $('#order #delivery_time').text($('#delivery_time_modal #'+type+'_delivery_time').text());
-        $('#order #delivery_day').text($('#delivery_time_modal #'+type+'_delivery_day').text());
-    }
-    
-    function selectPaymentMethod(type){
-        closeModal('payment_method_modal');
-        $('#order #payment_method').html($('#payment_method_modal #'+type).html());
-    }
-        
-    var lang = localStorage.getItem('language');
-    $.post('http://www.nekoten.khmerqq.com/module/date_select.php',{lang:lang}, function(data){
+    $.post('http://www.nekoten.khmerqq.com/module/date_select.php',{lang:lang}, function(data){        
         a = JSON.parse(data);
         for (var i = 0; i < a.length; i++){
             var str = '<li value="'+a[i]['val']+'"';
@@ -449,18 +351,128 @@
         
     });
     
-   function selectDayTime(type, val){
+    
+    
+    $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:localStorage.getItem('user_id')}, function(data){
+        var a = JSON.parse(data)[0];
+        if (a['result'] == 'success'){
+            $('.eq #add_address').hide();
+            var str = '<a class="item-content"><b>'+a['name']+'</b><br>';
+            str += a['address']+'<br>';
+            str += a['location']+'<br>';
+            str += 'Near by: '+a['near_by']+'<br>';
+            str += 'Tel: '+a['phone_number']+'</span>';
+            str += '<span class="fa fa-angle-right"></span></a>';
+            $('.eq #shipping_addr').html(str);
+        }
+       
+    });
+    
+    function selectLocation(name_en, name_kh){
+        closeSmallModal('choose_location_modal');
+        updateDeliveryTo(name_en, name_kh);
+    }
+    
+    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
+        var arr = JSON.parse(data);
+        for (var i = 0; i < arr.length; i++){
+            var a = arr[i];
+            var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
+                str += '<a class="item-content">';
+                str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
+                str += '<span class="price-li">$ '+a['price']+' </span>';
+            str += '</a></li>';
+            $('#choose_location_ul_2').append(str); 
+        }
+        load('delivery_to');
+        la();
+    });
+    
+    
+    
+   
+    function selectDeliveryType(type){
+        closeModal('delivery_time_modal');
+        $('#order #delivery_type').text($('#delivery_time_modal #'+type+'_delivery_type').text());
+        $('#order #delivery_time').text($('#delivery_time_modal #'+type+'_delivery_time').text());
+        $('#order #delivery_day').text($('#delivery_time_modal #'+type+'_delivery_day').text());
+    }
+    
+    function selectPaymentMethod(type){
+        closeModal('payment_method_modal');
+        $('#order #payment_method').html($('#payment_method_modal #'+type).html());
+    }
+            
+    function selectDayTime(type, val){
        $('#choose_'+type+'_ul li').removeClass('selected');
        $('#choose_'+type+'_ul li[value="'+val+'"]').addClass('selected');
-   }
+    }
    
-
     function setScheduleDate(){
         closeModal('delivery_time_modal');
         closeSmallModal('choose_day_time');
         $('.et #delivery_day').text($('.yo #choose_day_ul [class="selected"]').text());
         $('.et #delivery_time').text($('.yo #choose_time_ul [class="selected"]').text());
     }
+    
+    function postAddress(){
+        var user_id = localStorage.getItem('user_id');
+        var name = $('#shipping_info_form #name').val();
+        var phone_number = $('#shipping_info_form #phone_number').val();
+        var location = $('#shipping_info_form #location').text();
+        var address = $('#shipping_info_form #address').val();
+        var near_by = $('#shipping_info_form #near_by').val();
+        
+        var addr_selected = $('.my-tab #tab-address').hasClass('selected');
+       
+        if (addr_selected) {
+            var coordinate = '';
+        } else {
+            var coordinate = $('#shipping_info_form #coordinate').val();
+        }
+        
+        $.post('http://www.nekoten.khmerqq.com/app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
+            address:address, near_by:near_by, coordinate:coordinate},
+            function(data){
+                if (data == 'success'){
+                    var str = '<a class="item-content"><b>'+name+'</b><br>';
+                    str += address+'<br>'+location+'<br>'+near_by+'<br>';
+                    str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a><div class="fa fa-angle-right"></div>';
+                    $('.eq #shipping_addr').html(str);
+                    $('#add_address').hide();
+                    closeModal('shipping_info_modal');
+                }
+            });                
+        }
+    /*
+    var name = '1';
+    var house = '2';
+    var street = '3';
+    var sangkat = '4';
+    var khan = '5';
+    var phone_number = '6';
+    
+    
+    var str = '<a class="item-content"><b>'+name+'</b><br>';
+                str += house+' '+street+'<br>';
+                str += sangkat+' '+khan+'<br>';
+                str += location+'<br>';
+                str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a>';
+                $('.eq #shipping_addr').html(str);
+                closeModal('shipping_info');
+    */
+    $('#shipping_info_form input').on('keyup click', function(){
+        if ($(this).val() != '') {
+            $(this).siblings('.input-close').show();
+        }
+    });
+    $('#shipping_info_form input').on('blur', function(){
+            $(this).siblings('.input-close').hide();
+    });
+    $('#shipping_info_form .input-close').on('click', function(){
+        $(this).hide();
+        $(this).siblings('input').val('');
+    });
 
    
 </script>

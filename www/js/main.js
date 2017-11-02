@@ -12,6 +12,7 @@ setDefault('delivery_fee', '0');
 setDefault('language', 'en');
 setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
 
+var lang = localStorage.getItem('language');
 
 
 
@@ -36,11 +37,13 @@ function closeSmallModal(page){
 }
 
 function openModal(page){
+    
     $('#'+page).height($(window).height());        
     $('#'+page).css('transform', 'translateY(0)');
     $('.header-view').hide();        
     $('.tab-nav').hide();        
-    //StatusBar.hide();
+    //StatusBar.hide(); 
+    
 }
 function closeModal(page){        
     $('#'+page).css('transform', 'translateY(100%)');    
@@ -50,15 +53,28 @@ function closeModal(page){
 
 
 function openSmallModal(page){
+    
     $('#'+page).height($(window).height());
     $('#'+page).css('transform', 'translateY(0)');    
     $('.header-view').hide();        
     $('.tab-nav').hide();        
     //StatusBar.hide();
+    
+}
+
+function updateDeliveryTo(name_en, name_kh){
+    localStorage.setItem('delivery_to', name_en+','+name_kh);
+    if (lang == 'en'){
+        $('#shipping_info_form #location').text(name_en);
+        $('.mr #delivery_to').text(name_en);
+    } else {
+        $('#shipping_info_form #location').text(name_kh);
+        $('.mr #delivery_to').text(name_kh);
+    }      
 }
 
 function loadProduct(ad_id){  
-
+    
     $.post('http://www.nekoten.khmerqq.com/app/product.php',{ad_id:ad_id},function(data){
         var ad = JSON.parse(data)[0];
         $('#title').html(ad['title']);
@@ -71,7 +87,7 @@ function loadProduct(ad_id){
         for (var i = 0; i < img.length; i++){
             var img_url = 'http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/'+img[i];
             
-            $('#ad_image').append('<img src="'+img_url+'">');
+            $('#ad_image').append('<img src="'+img_url+'" onclick="viewFullScreen()">');
         }
         $('#ad_image').owlCarousel({
             responsive:{
@@ -104,6 +120,7 @@ function loadProduct(ad_id){
         $('.ii #n_order').html(ad['n_order']);
         $('.pd #desc').html(ad['description']);
         $('#product_body').show();
+        $('#ad_images').show();
     });
     $.post('http://www.nekoten.khmerqq.com/app/location.php',{},function(data){
         var arr = JSON.parse(data);
@@ -181,14 +198,22 @@ function cancelClick(){
    $('.search-form').html('');
    $('.search-form').height('0');
 }
-
-function search(keyword){
+function addSearchHistory(keyword){
+    var a = localStorage.getItem('search_history');
+    if (!a.includes(','+keyword)){
+        a = ','+keyword + a;
+    }
+    localStorage.setItem('search_history', a);
+    loadSearchHistory();
+}
+/*
+function search(keyword){    
     $('#search_res_item').html('');
     cancelClick();
     searchProduct(keyword); 
     window.location.href = '#tab/search_res';
 }
-
+*/
 
 
 function searchKeyword(tab){
@@ -218,8 +243,9 @@ function searchKeyword(tab){
 function submitSearchForm(tab){
     var keyword = $('#'+tab).val();
     searchProduct(keyword);;
-     cancelClick(); 
-     window.location.href = '#tab/search_res';
+    cancelClick(); 
+    window.location.href = '#tab/search_res';
+    addSearchHistory(keyword);
 }
 
 function searchProduct(keyword) {
