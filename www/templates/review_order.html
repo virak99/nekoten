@@ -291,8 +291,7 @@
     
 </ion-view>
 <script>
-    la();  
-    loadCart('review');    
+    la();         
     switchTab();
     
     
@@ -410,7 +409,7 @@
    
     function setScheduleDate(){
         closeModal('delivery_time_modal');
-        closeSmallModal('choose_day_time');
+        closeSmallModal('choose_day_time_modal');
         $('.et #delivery_day').text($('.yo #choose_day_ul [class="selected"]').text());
         $('.et #delivery_time').text($('.yo #choose_time_ul [class="selected"]').text());
     }

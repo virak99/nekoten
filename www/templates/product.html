@@ -1,6 +1,6 @@
 <!-- Shipping Info Modal -->
 <div id="delivery_option_product" class="modal">
-    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
+    <div class="header-title" k="ដឹកទៅកាន់">Delivery To</div>
     <div class="back" onclick="closeModal('delivery_option_product')">
         <span class="close ion-ios-close-empty"></span>
     </div>
@@ -34,7 +34,8 @@
 
 <div class="back" ng-click="myGoBack()" onclick="$('#ad_image').html(''); $('#product_body').hide(); $('#ad_images').hide(); $('.tab-nav').show();">
     <span class="ion-ios-arrow-left"></span>
-    <span class="ion-ios-cart-outline"></span>
+    <span ontap="window.location.href='#tab/cart'" class="ion-ios-cart-outline"></span>
+    <span ontap="window.location.href='#tab/cart'" class="noti-label cart_count"></span>
 </div>
         
 <ion-view hide-nav-bar="true">
@@ -45,9 +46,10 @@
             <div class="home-slider owl-carousel owl-theme" id="ad_image">
 
             </div>
-            <div class="wishlist-btn">
+            <div class="wishlist-btn" ontap="wishlist()">
                 <span class="fa fa-heart"></span>    
             </div>
+            
         </div>
         
         <div id="product_body">        
@@ -81,27 +83,19 @@
                 <a class="item-content">
                     <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
                     <div class="c">
-                        <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>                        
-                        <span id="delivery_fee">$0</span>    
+                        <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
+                        <strong id="delivery_fee">Free</strong>    
                     </div>
                     <div class="c">
                         <span k="ទទួលទំនិញ">Receive Product</span>
-                        <span id="delivery_day">Today</span>
-                        <span id="delivery_time">08:00 - 09:00</span>    
+                        <strong id="delivery_day">Today</strong>
+                        <strong id="delivery_time">08:00 - 09:00</strong>    
                     </div>
                     <div class="fa fa-angle-right"></div>                    
                 </a>
             </div>
         </div>
-        <script>
         
-        if (localStorage.getItem('language') == 'en'){            
-            $('#product_delivery_to #delivery_to').text(localStorage.getItem('delivery_to').split(',')[0]);
-        } else {
-            $('#product_delivery_to #delivery_to').text(localStorage.getItem('delivery_to').split(',')[1]);
-        } 
-        
-        </script>
         
         
         <div class="hr"></div>
@@ -110,14 +104,14 @@
                 <div class="b" k="បរិមាណ">Quantity</div>
                 <div class="c">
                     <span class="d fa fa-minus" onclick="qtyMinus()"></span>
-                    <input class="e" id="qty" type="text" value="1">
+                    <input class="e" id="qty" type="number" value="1">
                     <span class="f fa fa-plus" onclick="qtyPlus()"></span>
                 </div>
             </div>
         </div>
         <div class="bt">
-            <span class="h" onclick="loadQuestionList('modal'); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
-            <span class="i" k="ដាក់ចូលកន្ត្រក" onclick="addToCart()">Add to Cart</span>
+            <span class="h" ontap="loadQuestionList('modal'); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
+            <span class="i" k="ដាក់ចូលកន្ត្រក" ontap="addToCart();">Add to Cart</span>
         </div>
         <div class="hr"></div>
         <div class="pd">
@@ -125,10 +119,25 @@
             <div class="b" id="desc"></div>
         </div>
         <div class="hr"></div>
-        <div class="qs" id="question_panel" onclick="loadQuestionList(); openModal('question_modal')">
+        <div class="qs" id="question_panel" onclick="loadQuestionList('modal'); openModal('question_modal')">
             <div class="a" k="សំនួរ និង ចម្លើយ">Question (<span id="n_question">0</span>)</div>
             <div id="question">
             
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="rb">
+            <div class="a">
+                <span class="aa" k="ដាក់លក់ដោយ">Seller Info</span>
+                <span class="ab" k="ចូលមើលហាង">Go to Store</span>
+            </div>
+            <div class="b">
+                <div class="c">
+                    <img src="img/nekoten.png" />
+                </div>
+                <div class="d">
+                    Neleka Shop
+                </div>
             </div>
         </div>
         <div class="hr"></div>
@@ -145,17 +154,129 @@
     $('.tab-nav').hide();
     la();
     
+    var ad_id = $('#product_body #ad_id').val();
     
-    function viewFullScreen(){
+    function wishlist(){
+        var ad_id = $('#product_body #ad_id').val();
+        $.post('http://nekoten.khmerqq.com/ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+            if (data.includes('existed')){
+                $('.wishlist-btn').removeClass('added');                
+            } else if (data.includes('success')){
+                $('.wishlist-btn').addClass('added');                
+            }
+            
+        });   
+    }
+    
+    /* Load Delivery To */        
+    if (lang == 'en'){            
+        $('#product_delivery_to #delivery_to').text(localStorage.getItem('delivery_to').split(',')[0]);
+    } else {
+        $('#product_delivery_to #delivery_to').text(localStorage.getItem('delivery_to').split(',')[1]);
+    } 
+    var fee = localStorage.getItem('delivery_fee');
+    if (fee == '0') fee = 'Free'; else fee = '$ '+fee;
+    $('#product_delivery_to #delivery_fee').text(fee);
+        
+        
+    
+    function hammerIt(elm) {    
+        hammertime = new Hammer(elm, {});
+        hammertime.get('pinch').set({
+            enable: true
+        });
+        var posX = 0,
+            posY = 0,
+            scale = 1,
+            last_scale = 1,
+            last_posX = 0,
+            last_posY = 0,
+            max_pos_x = 0,
+            max_pos_y = 0,
+            transform = "",
+            el = elm;
+    
+        //hammertime.on('doubletap pan pinch panend pinchend', function(ev) {        
+        	hammertime.on('doubletap pinch', function(ev) {    	
+            if (ev.type == "doubletap") {
+                transform =
+                    "translate3d(0, 0, 0) " +
+                    "scale3d(2, 2, 1) ";
+                scale = 2;
+                last_scale = 2;
+                try {
+                    if (window.getComputedStyle(el, null).getPropertyValue('-webkit-transform').toString() != "matrix(1, 0, 0, 1, 0, 0)") {
+                        transform =
+                            "translate3d(0, 0, 0) " +
+                            "scale3d(1, 1, 1) ";
+                        scale = 1;
+                        last_scale = 1;
+                    }
+                } catch (err) {}
+                el.style.webkitTransform = transform;
+                transform = "";
+            }
+    
+            //pan    
+            if (scale != 1) {
+                posX = last_posX + ev.deltaX;
+                posY = last_posY + ev.deltaY;
+                max_pos_x = Math.ceil((scale - 1) * el.clientWidth / 2);
+                max_pos_y = Math.ceil((scale - 1) * el.clientHeight / 2);
+                if (posX > max_pos_x) {
+                    posX = max_pos_x;
+                }
+                if (posX < -max_pos_x) {
+                    posX = -max_pos_x;
+                }
+                if (posY > max_pos_y) {
+                    posY = max_pos_y;
+                }
+                if (posY < -max_pos_y) {
+                    posY = -max_pos_y;
+                }
+            }
+    
+    
+            //pinch
+            if (ev.type == "pinch") {
+                scale = Math.max(.999, Math.min(last_scale * (ev.scale), 4));
+            }
+            if(ev.type == "pinchend"){last_scale = scale;}
+    
+            //panend
+            if(ev.type == "panend"){
+                last_posX = posX < max_pos_x ? posX : max_pos_x;
+                last_posY = posY < max_pos_y ? posY : max_pos_y;
+            }
+    
+            if (scale != 1) {
+                transform =
+                    "translate3d(" + posX + "px," + posY + "px, 0) " +
+                    "scale3d(" + scale + ", " + scale + ", 1)";
+            }
+    
+            if (transform) {
+                el.style.webkitTransform = transform;
+            }
+        });
+    }
+    
+    
+    function viewFullScreen(photo_num){
         $('#ad_images').addClass('img-full-screen');                     
-        $('.img-full-screen').height($(window).height());
-        //$('.owl-carousel .owl-stage-outer').css('overflow', 'initial');
+        $('.img-full-screen').height($(window).height());        
+        $('.owl-carousel .owl-stage-outer').css('overflow', 'initial');
+        for (var i = 1; i <= photo_num ; i++){
+        	hammerIt(document.getElementById("ad-img-"+i));
+    	}
         $('.scroll').addClass('no-scroll');
         $('.owl-dots').hide();
         $('.back').hide();
     }
     function removeFullScreen(){
-        $('#ad_images').removeClass('img-full-screen');                     
+        $('#ad_images').removeClass('img-full-screen');   
+        $('#ad_images').height('auto');
         $('.back').show();
         
         $('.scroll').removeClass('no-scroll');
@@ -166,7 +287,7 @@
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];
-            var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
+            var str = '<li class="item item-complex" onclick="closeModal(\'delivery_option_product\'); updateDeliveryTo(\''+a['name_en']+'\',\''+a['name_kh']+'\',\''+a['price']+'\')">';
                 str += '<a class="item-content">';
                 str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
                 str += '<span class="price-li">$ '+a['price']+' </span>';
@@ -179,14 +300,6 @@
     
     
     
-    function selectLocationProduct(name_en, name_kh){
-        closeSmallModal('delivery_option_product');
-        if (localStorage.getItem('language') == 'en'){
-            $('#product_body #product_delivery_to').text(name_en);    
-        } else {
-            $('#product_body #product_delivery_to').text(name_kh);    
-        }
-    }
     
     function addToCart(){
         
@@ -213,10 +326,8 @@
             if (!added) b = ','+ad_id+':'+opt+':'+qty+b;
         }
         localStorage.setItem('shopping_cart', b);
-        loadCart('page');
-        loadCart('review');
-        alert('Added to Cart!');
-        
+        loadCart();        
+        $('#added_to_cart_alert').css('display', 'flex');        
     }
         
     function qtyPlus(){

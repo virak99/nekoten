@@ -6,9 +6,14 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
+        <div class="wrap2" id="contact_us">
         
+        </div>
     </ion-content>
 </ion-view>
 <script>
     la();
+    $.post('http://nekoten.khmerqq.com/app/get_info.php',{name:'contact_us'}, function(data){
+        $('#contact_us').text(data);
+    });
 </script>

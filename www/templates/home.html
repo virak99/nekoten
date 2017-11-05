@@ -56,9 +56,11 @@
     </ion-content>
 </ion-view>
 
+
 <script>    
     
-    //window.location.href="#tab/product2/";
+    window.location.href="#tab/product2/";
+   
     
     var size = $(window).width();        
     $.post('http://www.nekoten.khmerqq.com/app/new_arrival.php',{size:size},function(data){
@@ -90,8 +92,8 @@
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="a">';
-                        str += '<span>'+ad['price']+'</span>';
-                        str += '<span>'+ad['n_order']+' <span k="កម្មង់">order</span></span>';
+                        str += '<span class="aa">'+ad['price']+'</span>';
+                        str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
                     str += '</div>';
                 str += '</ion-item>';
                 

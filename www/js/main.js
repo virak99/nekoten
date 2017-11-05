@@ -11,8 +11,19 @@ function setDefault(name, value){
 setDefault('delivery_fee', '0');
 setDefault('language', 'en');
 setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
+setDefault('delivery_fee', '0');
+setDefault('user_id', 'not_login');
 
 var lang = localStorage.getItem('language');
+var user_id = localStorage.getItem('user_id');
+
+
+
+
+/* Fix ontap */
+$(document).on('tap', '[ontap]', function(){
+     new Function($(this).attr('ontap'))();
+});
 
 
 
@@ -62,32 +73,102 @@ function openSmallModal(page){
     
 }
 
-function updateDeliveryTo(name_en, name_kh){
+function loadCart(){        
+    var shopping_cart = localStorage.getItem('shopping_cart');
+    if (!shopping_cart){
+        $('#no_item_in_cart').show();        
+        $('.cart-footer').hide();        
+        
+    } else {        
+        
+        $('#no_item_in_cart').hide();            
+        $('.cart-footer').show();        
+        var cart = localStorage.getItem('shopping_cart').split(',');
+        var size_l = '120';       
+        var subtotal = 0;
+        var cart_count = 0;
+        var delivery_fee = localStorage.getItem('delivery_fee');
+        $('.delivery_fee').text('$ '+delivery_fee);
+        $('#cart-cart').html('');
+        $('#cart-review').html('');
+            
+        for (var j = 1; j < cart.length; j++){
+            var ad_id = cart[j].split(':')[0];
+            var opt = cart[j].split(':')[1];
+            var qty = cart[j].split(':')[2];                
+            cart_count += parseInt(qty);
+            
+            $.post('http://www.nekoten.khmerqq.com/app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
+                
+                var ad = JSON.parse(data)[0];        
+                subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
+                var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
+                    str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
+                        str += '<img src="http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
+                    str += '</div>';
+                    str += '<div class="b">';
+                        str += '<div class="c">'+ad['title']+'</div>';
+                        str += '<div class="cc"><span class="ion-checkmark-round"></span><span k=" មានក្នុងស្តុក"> In Stock</span></div>';
+                        str += '<div class="e">';
+                            str += '<div class="dd">'+ad['price']+'</div>';
+                            str += '<div class="h">';
+                                str += '<span class="jj" onclick="qtyMinus(\''+ad['ad_id']+'\')"><span class="j ion-ios-minus-empty"></span></span>';
+                                str += '<span id="qty">'+ad['qty']+'</span>';
+                                str += '<span class="jj" onclick="qtyPlus(\''+ad['ad_id']+'\')"><span class="j ion-ios-plus-empty"></span></span>';
+                            str += '</div>';
+                            str += '<div class="i"><span class="delete ion-ios-trash-outline" onclick="deleteCart(\''+ad['ad_id']+'\')"></span></div>';
+                        str += '</div>';
+                    str += '</div>';
+                str += '</li>';
+                $('#cart-cart').append(str);                            
+                $('#cart-review').append(str);                            
+                
+                $('.subtotal').text('$ '+subtotal.toFixed(2));
+                $('.total').text('$ '+(parseFloat(subtotal)+parseFloat(delivery_fee)).toFixed(2));
+            });                 
+        }
+        $('.cart_count').text(cart_count);
+        $('.badge').text(cart_count);
+        
+    }
+}
+
+function updateDeliveryTo(name_en, name_kh, fee){
+    
     localStorage.setItem('delivery_to', name_en+','+name_kh);
-    if (lang == 'en'){
-        $('#shipping_info_form #location').text(name_en);
-        $('.mr #delivery_to').text(name_en);
+    localStorage.setItem('delivery_fee', fee);
+    if (fee == 0) fee = 'Free'; else fee = '$ '+fee;
+    if (lang == 'en'){        
+        $('#shipping_info_form #location').text(name_en); // Shipping Info Page
+        $('.mr #delivery_to').text(name_en); // More Page
+        $('#product_delivery_to #delivery_to').text(name_en); // Product Page
+        $('#product_delivery_to #delivery_fee').text(fee); // Product Page
     } else {
         $('#shipping_info_form #location').text(name_kh);
         $('.mr #delivery_to').text(name_kh);
-    }      
+        $('#product_delivery_to #delivery_to').text(name_kh); // Product Page
+        $('#product_delivery_to #delivery_fee').text(fee); // Product Page
+    }  
 }
 
 function loadProduct(ad_id){  
     
-    $.post('http://www.nekoten.khmerqq.com/app/product.php',{ad_id:ad_id},function(data){
+    $.post('http://www.nekoten.khmerqq.com/app/product.php',{ad_id:ad_id, lang:lang},function(data){
+        
         var ad = JSON.parse(data)[0];
         $('#title').html(ad['title']);
         
         var img = ad['image'].split(',');
         
+        /* Update product view */
+        $.post('http://nekoten.khmerqq.com/app/update_view.php',{ad_id:ad_id});
         
         $('#ad_image').trigger('destroy.owl.carousel');
         //$('#ad_image').html($('#ad_image').find('.owl-stage-outer').html()).removeClass('owl-loaded');
         for (var i = 0; i < img.length; i++){
             var img_url = 'http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/'+img[i];
             
-            $('#ad_image').append('<img src="'+img_url+'" onclick="viewFullScreen()">');
+            $('#ad_image').append('<img id="ad-img-'+(i+1)+'" src="'+img_url+'" onclick="viewFullScreen('+img.length+')">');
         }
         $('#ad_image').owlCarousel({
             responsive:{
@@ -97,12 +178,34 @@ function loadProduct(ad_id){
             }
         });
         
+        /* Check Wishlist */
+        var wishlist = localStorage.getItem('wishlist');
+        if (wishlist.includes(','+ad_id)){
+            $('.wishlist-btn').addClass('added');
+        } else {
+            $('.wishlist-btn').removeClass('added');
+        }
+        /*
+        $.post('http://nekoten.khmerqq.com/ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+            if (data == 'existed'){
+            
+            }
+            alert(data);
+        });   
+        */
+        
+        
         $('#ad_id').val(ad_id);
         $('.pp #price').html(ad['price']);
         $('.pp #normal_price').html(ad['normal_price']);
         $('.pp #discount').html('-'+ad['discount']+'%');
         var qty = ad['quantity'];
-        var t = '';
+        $('.pp #quantity').html(qty);
+        /*
+        $.post('http://nekoten.khmerqq.com/module/quantity_panel.php',{lang:lang,qty:qty}, function(data){
+            $('.pp #quantity').html(data);
+        });
+        
         if (qty == 0){
             t += '<span class="sold-out">SOLD OUT</span>';
         } else if (qty <= 10){
@@ -112,7 +215,8 @@ function loadProduct(ad_id){
         } else {
             t += '<span class="in-stock">IN STOCK</span>';
         }
-        $('.pp #quantity').html(t);
+        */
+        
         
         $('.ii #rate').html(ad['rate']);
         $('.ii #review').html(ad['review']);
@@ -122,19 +226,7 @@ function loadProduct(ad_id){
         $('#product_body').show();
         $('#ad_images').show();
     });
-    $.post('http://www.nekoten.khmerqq.com/app/location.php',{},function(data){
-        var arr = JSON.parse(data);
-        for (var i = 0; i < arr.length; i++){
-            var location = arr[i];
-            $('.dt #location').append($('<option>', {
-                value: location['name_en'],
-                text: location['name_en']
-            }));
-        }
-        $('.dt #delivery_fee').html('Free');
-        $('.dt #delivery_fee').css('color', 'limegreen');
-        $('.dt #delivery_time').html('Tomorrow Morning');
-    });
+    
     
     /*
     $.post('http://www.nekoten.khmerqq.com/app/question.php',{ad_id:ad_id},function(data){

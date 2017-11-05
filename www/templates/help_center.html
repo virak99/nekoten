@@ -6,9 +6,14 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
+        <div class="wrap2" id="help">
         
+        </div>
     </ion-content>
 </ion-view>
 <script>
-    la();
+    la();      
+    $.post('http://nekoten.khmerqq.com/app/get_info.php',{name:'help'}, function(data){
+        $('#help').text(data);
+    });
 </script>

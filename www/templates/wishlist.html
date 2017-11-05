@@ -37,35 +37,50 @@
     </ion-content>
 </ion-view>
 <script>
-    
-    var user_id = localStorage.getItem('user_id');
-    var size_l = '120';
-    $.post('http://www.nekoten.khmerqq.com/app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
-        $('#wishlist-panel').html('');
-        var a = JSON.parse(data);        
-        for (var i = 0; i < a.length; i++){
-            var ad = a[i];
-            var str = '<li class="p-list">';
-                    str += '<div class="a">';
-                        str += '<img src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
-                    str += '</div>';
-                    str += '<div class="b">';
-                        str += '<div class="c">'+ad['title']+'</div>';
-                            str += '<div class="cc">';
-                                str += '<span class="ion-checkmark-round"></span>';
-                                str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';
-                            str += '</div>';
-                        str += '<div class="ee">';
-                            str += '<div class="dd">'+ad['price']+'</div>';
-                      str += '<div class="i">';
-                                str += '<span class="delete ion-ios-trash-outline"></span>';
+    loadWishlist();
+    function removeWishlist(ad_id){
+        var user_id = localStorage.getItem('user_id');
+        if (lang == 'en') var str = 'Remove from Wishlist?';
+        else var str = 'លុបចេញពីទំនិញចង់បាន?';
+        if (confirm(str)){
+            $.post('http://www.nekoten.khmerqq.com/module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
+                if (data == 'success'){
+                    loadWishlist();
+                }
+            })       
+        }        
+    }
+    function loadWishlist(){
+        var user_id = localStorage.getItem('user_id');
+        var size_l = '120';
+        $.post('http://www.nekoten.khmerqq.com/app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
+            $('#wishlist-panel').html('');
+            var a = JSON.parse(data);        
+            for (var i = 0; i < a.length; i++){
+                var ad = a[i];
+                var str = '<li class="p-list">';
+                        str += '<div class="a">';
+                            str += '<img src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
+                        str += '</div>';
+                        str += '<div class="b">';
+                            str += '<div class="c">'+ad['title']+'</div>';
+                                str += '<div class="cc">';
+                                    str += '<span class="ion-checkmark-round"></span>';
+                                    str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';
+                                str += '</div>';
+                            str += '<div class="ee">';
+                                str += '<div class="dd">'+ad['price']+'</div>';
+                          str += '<div class="i">';
+                                    str += '<span onclick="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
+                                str += '</div>';
                             str += '</div>';
                         str += '</div>';
-                    str += '</div>';
-                str += '</li>';
-            $('#wishlist-panel').append(str);
-        }
-        la();
-    });
+                    str += '</li>';
+                $('#wishlist-panel').append(str);
+            }
+            la();
+        }); 
+    }
+    
     
 </script>

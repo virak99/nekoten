@@ -1,14 +1,19 @@
 <div class"app-header">
-    <div class="header-title"><span k="កន្ត្រកទំនិញ">Cart</span> (<span class="cart_count"></span>)</div>
+    <div class="header-title"><span k="កន្ត្រកទំនិញ">Cart</span> (<span class="cart_count">0</span>)</div>
 </div>
 
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>  
         
         <div class="wrap">
-            <ul class="cart" id="cart-panel">
+            <center style="margin-top:30%; color:#bbb; display:none" id="no_item_in_cart">
+                <i style="font-size:100px" class="ion-bag"></i>                
+                <div k="គ្មានទំនិញក្នុងកន្ត្រក">Your Shopping Cart is Empty</div>        
+            </center>
+            <ul class="cart" id="cart-cart">
                 
             <ul>
+            
         </div>  
         
     </ion-content>
@@ -46,64 +51,13 @@
 
 <script>
     
-
+    
     $('.cart-footer .d').click();
+    //localStorage.removeItem('shopping_cart');
 
-    function loadCart(tab){
         
-        var shopping_cart = localStorage.getItem('shopping_cart');
-        if (!shopping_cart){
-            $('#no_item_in_cart').show();        
-            $('.cart-footer').hide();        
-        } else {        
-            $('#no_item_in_cart').hide();            
-            $('.cart-footer').show();        
-            var cart = localStorage.getItem('shopping_cart').split(',');
-            var size_l = '120';       
-            var subtotal = 0;
-            var cart_count = 0;
-            var delivery_fee = localStorage.getItem('delivery_fee');
-            $('.delivery_fee').text('$ '+delivery_fee);
-            
-            for (var j = 1; j < cart.length; j++){
-                var ad_id = cart[j].split(':')[0];
-                var opt = cart[j].split(':')[1];
-                var qty = cart[j].split(':')[2];                
-                cart_count += parseInt(qty);
-                
-                $.post('http://www.nekoten.khmerqq.com/app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
-                    $('#cart-'+tab).html('');
-                    var ad = JSON.parse(data)[0];        
-                    subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
-                    var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
-                        str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
-                            str += '<img src="http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
-                        str += '</div>';
-                        str += '<div class="b">';
-                            str += '<div class="c">'+ad['title']+'</div>';
-                            str += '<div class="cc"><span class="ion-checkmark-round"></span><span k=" មានក្នុងស្តុក"> In Stock</span></div>';
-                            str += '<div class="e">';
-                                str += '<div class="dd">'+ad['price']+'</div>';
-                                str += '<div class="h">';
-                                    str += '<span class="jj" onclick="qtyMinus(\''+ad['ad_id']+'\')"><span class="j ion-ios-minus-empty"></span></span>';
-                                    str += '<span id="qty">'+ad['qty']+'</span>';
-                                    str += '<span class="jj" onclick="qtyPlus(\''+ad['ad_id']+'\')"><span class="j ion-ios-plus-empty"></span></span>';
-                                str += '</div>';
-                                str += '<div class="i"><span class="delete ion-ios-trash-outline" onclick="deleteCart(\''+ad['ad_id']+'\')"></span></div>';
-                            str += '</div>';
-                        str += '</div>';
-                    str += '</li>';
-                    $('#cart-'+tab).append(str);                            
-                    
-                    $('.subtotal').text('$ '+subtotal.toFixed(2));
-                    $('.total').text('$ '+(parseFloat(subtotal)+parseFloat(delivery_fee)).toFixed(2));
-                });                 
-            }
-            $('.cart_count').text(cart_count);
-        }
-    }    
     la();
-    loadCart('panel');
+    loadCart();
     
     function deleteCart(ad_id){
         if (confirm('Remove this item from your Shopping Cart?')){
@@ -134,8 +88,8 @@
                 }
             }
             localStorage.setItem('shopping_cart', d);
-            loadCart('panel');
-            loadCart('review');
+            loadCart();
+            
         }        
     }
     function qtyMinus(ad_id){
@@ -155,8 +109,7 @@
                 }
             }
             localStorage.setItem('shopping_cart', d);
-            loadCart('panel');
-            loadCart('review');
+            loadCart();
         }   
     }
     

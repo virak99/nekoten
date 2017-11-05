@@ -10,9 +10,11 @@
     <link href="css/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/ionic/css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/alert-confirm.css" rel="stylesheet">
 
     <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
+    <script src="js/hammer.js"></script>
     
     
     
@@ -36,11 +38,16 @@
       <ion-nav-back-button>
       </ion-nav-back-button>
     </ion-nav-bar>
-    <!--
-      The views will be rendered in the <ion-nav-view> directive below
-      Templates are in the /templates folder (but you could also
-      have templates inline in this html file if you'd like).
-    -->
+   
+    <div class="ms-alert" id="added_to_cart_alert">
+        <div class="ms-alert-body">
+            <div class="ms-alert-header" k="បានដាក់ក្នុងកន្ត្រកទំនិញរួចរាល់">Added to Shopping Cart</div>            
+            <div class="ms-alert-buttons">                
+                <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide()" k="បិទ">OK</div>            
+                <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show(); window.location.href='#tab/cart'" k="កន្ត្រកទំនិញ">Go to Cart</div>
+            </div>                        
+        </div>    
+    </div>
     <ion-nav-view></ion-nav-view>
   </body>
 </html>

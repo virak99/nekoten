@@ -78,7 +78,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .search-bar i{
     color: #aaa;
 }
-.cancel{
+.search-bar .cancel{
     display: none;
     text-align: center;
     width: 80px;
@@ -94,7 +94,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .ad-item .a{
     padding: 5px;
 }
-.ad-item .a span:first-child{
+.ad-item .a .aa{
     color: #ff3366;
     font-size: 16px;
     font-weight: bold;
@@ -146,7 +146,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 15px; 
     font-size: 14px;
 }
-.ad-item .a span:last-child{
+.ad-item .a .ab{
     float: right;
     color: #aaa;
     font-size: 12px;    
@@ -384,8 +384,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .at .a{
     width: 100%;
-    display: inline-flex;
-    padding-bottom: 5px;
+    display: inline-flex;    
 }
 .bt{
     width: 100%;
@@ -409,8 +408,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     font-weight: bold;
     border: 1px solid #ff3366;
 }
-.at .b{
-    margin-top: 5px;
+.at .b{    
     width: 40%;
 }
 .at .c{
@@ -418,20 +416,22 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     display: inline-flex;
 }
 .at .d, .at .f{
-    height: 30px;
-    padding: 0 10px;
+    height: 25px;
+    padding: 0 7px;
     background-color: #eee;
     margin-right: 10px;
     line-height: 26px;
     text-align: center;
+    border-radius: 50%;
 }
 .at .e{
-    height: 30px;
+    height: 25px;
     padding: 0 10px;
     border: 1px solid #eee;
     margin-right: 10px;
     width: 100px;
     text-align: center;
+    border-radius: 10px;
 }
 
 .pd {
@@ -499,7 +499,31 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .qs .h{
     width: 100%;
 }
-
+.rb {
+    padding: 10px;
+}
+.rb .a{    
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+.rb .a .aa{
+    font-weight: bold;
+}
+.rb .a .ab{
+    float: right;
+    color: #387ef5;
+}
+.rb .b{
+    margin-top: 10px;
+    display: inline-flex;
+}
+.rb .c img{
+    width: 50px;
+    height: 50px;
+}
+.rb .d{
+    margin: 15px 0 0 20px;
+}
 .ra {
     padding: 10px;
 }
@@ -524,9 +548,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 #ad_image .owl-dots{
     text-align: left;
 }
+.wishlist-btn.added{
+    color: #ff3366;
+}
 .wishlist-btn{
     position: absolute;
-    right: 10px;
+    right: 5px;
     bottom: 0;
     z-index: 11;
     background-color: white;
@@ -584,9 +611,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     width: 100%
 }
 .pp{
-    margin: 15px;
-    display: inline-flex;
-    text-align: center;
+    padding: 15px;        
     width: 100%;
 }
 .pp #price{
@@ -601,6 +626,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .pp #quantity{
     font-weight: bold;
+    float: right;
 }
 .pp .item-left{
     color: orange;
@@ -667,13 +693,18 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .mr .item-content{
     padding: 15px 20px;
 }
-.mr .fa{
-    float: right;
+.mr .fa{    
     font-size: 18px;
-    line-height: 22px;
+    float: right;
+    line-height: 22px;    
+}
+.mr .z{
+    color: #ff3366;    
+    position: absolute;
+    right: 60px;    
 }
 .mr .fa-check{
-    color: limegreen;
+    color: limegreen;    
 }
 .footer{
     text-align: center;
@@ -1003,6 +1034,9 @@ ion-nav-view{
 .et .b{
     margin-bottom: 5px;
 }
+.et #delivery_fee{
+    color: #ff3366;
+}
 .uu{
     padding-top: 20px;
 }
@@ -1115,6 +1149,19 @@ ion-nav-view{
 .qw .item-content{
     padding: 15px;
 }
+.wrap2{
+    padding: 20px;
+}
+.noti-label{
+    color: white;
+    background: #ff3366;
+    position: fixed;
+    right: 10px;
+    top: 25px;
+    z-index: 102;
+    border-radius: 50%;
+    padding: 0 6px;    
+}
 .qw .u {
     text-align: center;
     margin-top: 40px;
@@ -1133,6 +1180,10 @@ ion-nav-view{
 }
 .zz a{
     padding: 15px;
+}
+
+#ad_images{
+    position: relative;
 }
 #ad_images .close{
     display: none;
@@ -1156,7 +1207,7 @@ ion-nav-view{
 }
 .img-full-screen .helper{
     width: 100%;
-    height: 200px;
+    height: 100px;
 }
 .img-full-screen{
     background-color: black;
@@ -1168,3 +1219,5 @@ ion-nav-view{
     overflow-x: hidden;     
     overflow-y: hidden;     
 }
+
+
