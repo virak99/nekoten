@@ -73,6 +73,12 @@ function openSmallModal(page){
     
 }
 
+function alertConfirm(en, kh){            
+    if (lang == 'en') $('#alert_confirm .ms-alert-header').text(en);
+    else  $('#alert_confirm .ms-alert-header').text(kh);
+    $('#alert_confirm').css('display', 'flex');                    
+}
+
 function loadCart(){        
     var shopping_cart = localStorage.getItem('shopping_cart');
     if (!shopping_cart){
@@ -116,7 +122,7 @@ function loadCart(){
                                 str += '<span id="qty">'+ad['qty']+'</span>';
                                 str += '<span class="jj" onclick="qtyPlus(\''+ad['ad_id']+'\')"><span class="j ion-ios-plus-empty"></span></span>';
                             str += '</div>';
-                            str += '<div class="i"><span class="delete ion-ios-trash-outline" onclick="deleteCart(\''+ad['ad_id']+'\')"></span></div>';
+                            str += '<div class="i"><span class="delete ion-ios-trash-outline" ontap="deleteCart(\''+ad['ad_id']+'\')"></span></div>';
                         str += '</div>';
                     str += '</div>';
                 str += '</li>';
@@ -133,6 +139,18 @@ function loadCart(){
     }
 }
 
+function switchLocationTab(){
+    /* For Add an Address of Review Order */
+    if (localStorage.getItem('delivery_to') != 'Phnom Penh,ភ្នំពេញ'){
+        $('#shipping_info_form #phnom_penh_tab').hide();
+        $('#shipping_info_form #province_tab').show();                
+    } else {
+        $('#shipping_info_form #phnom_penh_tab').show();
+        $('#shipping_info_form #province_tab').hide();            
+    }    
+}
+
+
 function updateDeliveryTo(name_en, name_kh, fee){
     
     localStorage.setItem('delivery_to', name_en+','+name_kh);
@@ -141,13 +159,17 @@ function updateDeliveryTo(name_en, name_kh, fee){
     if (lang == 'en'){        
         $('#shipping_info_form #location').text(name_en); // Shipping Info Page
         $('.mr #delivery_to').text(name_en); // More Page
-        $('#product_delivery_to #delivery_to').text(name_en); // Product Page
-        $('#product_delivery_to #delivery_fee').text(fee); // Product Page
+        $('#product_delivery_to #delivery_to').text(name_en); // Product Page        
+        $('#product_delivery_to #delivery_fee').text(fee); // Product Page        
+        $('.lg #location').text(name_en); // Add an address
+        switchLocationTab();
     } else {
         $('#shipping_info_form #location').text(name_kh);
         $('.mr #delivery_to').text(name_kh);
-        $('#product_delivery_to #delivery_to').text(name_kh); // Product Page
+        $('#product_delivery_to #delivery_to').text(name_kh); // Product Page        
         $('#product_delivery_to #delivery_fee').text(fee); // Product Page
+        $('.lg #location').text(name_kh); // Add an address
+        switchLocationTab();
     }  
 }
 

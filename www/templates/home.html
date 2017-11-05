@@ -2,7 +2,7 @@
     
     <form class="search-bar" onsubmit="submitSearchForm('search-home');">
         <i class="icon ion-search"></i>
-        <input id="search-home" k="ខ្ញុំកំពុងស្វែងរក ..." onkeyup="searchKeyword('home')" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
+        <input autocorrect="off" autocapitalize="off" id="search-home" k="ខ្ញុំកំពុងស្វែងរក ..." onkeyup="searchKeyword('home')" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
     
         <span onclick="cancelClick()" class="cancel" k="បិទ">Cancel</span>
     </form>
@@ -59,7 +59,7 @@
 
 <script>    
     
-    window.location.href="#tab/product2/";
+    //window.location.href="#tab/product2/";
    
     
     var size = $(window).width();        

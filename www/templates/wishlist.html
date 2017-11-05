@@ -40,15 +40,14 @@
     loadWishlist();
     function removeWishlist(ad_id){
         var user_id = localStorage.getItem('user_id');
-        if (lang == 'en') var str = 'Remove from Wishlist?';
-        else var str = 'លុបចេញពីទំនិញចង់បាន?';
-        if (confirm(str)){
+        alertConfirm('Remove from Wishlist?', 'លុបចេញពីទំនិញចង់បាន?');            
+        $('#alert_confirm .confirm').on('click', function(){                                      
             $.post('http://www.nekoten.khmerqq.com/module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
                 if (data == 'success'){
                     loadWishlist();
                 }
-            })       
-        }        
+            });       
+        });        
     }
     function loadWishlist(){
         var user_id = localStorage.getItem('user_id');
@@ -71,7 +70,7 @@
                             str += '<div class="ee">';
                                 str += '<div class="dd">'+ad['price']+'</div>';
                           str += '<div class="i">';
-                                    str += '<span onclick="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
+                                    str += '<span ontap="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
                                 str += '</div>';
                             str += '</div>';
                         str += '</div>';

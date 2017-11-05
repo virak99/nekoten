@@ -160,7 +160,7 @@
                 
                 <div id="province_tab" style="display:none">
                     <div class="d">
-                        <span class="dd" k="យើងខ្ញុំនឹងផ្ញើរទំនិញទៅតាមឡានក្រុង រឺឡានឈ្នួលទៅកានើខេត្តរបស់លោកអ្នក">We will send product via bus or rent car to your province.</span>
+                        <span class="dd" k="យើងខ្ញុំនឹងផ្ញើរទំនិញទៅតាមឡានក្រុង រឺឡានឈ្នួលទៅកាន់ខេត្តរបស់លោកអ្នក">We will send product via bus or rent car to your province.</span>
                     </div>
                     <div class="d">                    
                         <div class="f">
@@ -292,18 +292,16 @@
 </ion-view>
 <script>
     la();         
-    switchTab();
     
-    
-    function switchTab(){
-        if (localStorage.getItem('delivery_to') != 'Phnom Penh,ភ្នំពេញ'){
-            $('#shipping_info_form #phnom_penh_tab').hide();
-            $('#shipping_info_form #province_tab').show();            
-        } else {
-            $('#shipping_info_form #phnom_penh_tab').show();
-            $('#shipping_info_form #province_tab').hide();            
-        }
+    /* Default Location Add an Address Tab*/
+    if (lang == 'en'){
+        $('.lg #location').text(localStorage.getItem('delivery_to').split(',')[0]);
+    } else {
+        $('.lg #location').text(localStorage.getItem('delivery_to').split(',')[1]);
     }
+    switchLocationTab();
+    
+    
     
     function selectTab(tab){
         $('.my-tab-content .a').hide();

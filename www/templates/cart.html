@@ -60,7 +60,8 @@
     loadCart();
     
     function deleteCart(ad_id){
-        if (confirm('Remove this item from your Shopping Cart?')){
+        alertConfirm('Remove this item from your Shopping Cart?', 'ដកទំនិញនេះចេញពីកន្ត្រកទំនិញ?');            
+        $('#alert_confirm .confirm').on('click', function(){                                      
             var a = localStorage.getItem('shopping_cart').split(',');
             var b = '';            
             for (var i = 1; i < a.length; i++){                
@@ -69,7 +70,7 @@
             }
             localStorage.setItem('shopping_cart', b); 
             loadCart();
-        }
+        });
     }
     function qtyPlus(ad_id){
         if ($('#cart-item-'+ad_id+' #qty').html()<10){

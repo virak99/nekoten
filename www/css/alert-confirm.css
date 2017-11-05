@@ -72,9 +72,14 @@
 
 .ms-alert-button.confirm {
   color: #ff3366;
+  font-weight: bold;
 }
 
 .ms-alert-button.cancel {
   color: #666;
   border-right: 1px solid #e6e6e6;
+}
+
+.ms-alert-button.cancel:hover, .ms-alert-button.confirm:hover  {
+  background-color: #eee;  
 }

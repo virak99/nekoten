@@ -39,6 +39,7 @@
       </ion-nav-back-button>
     </ion-nav-bar>
    
+    
     <div class="ms-alert" id="added_to_cart_alert">
         <div class="ms-alert-body">
             <div class="ms-alert-header" k="បានដាក់ក្នុងកន្ត្រកទំនិញរួចរាល់">Added to Shopping Cart</div>            
@@ -48,6 +49,18 @@
             </div>                        
         </div>    
     </div>
+        
+    <div class="ms-alert" id="alert_confirm">
+        <div class="ms-alert-body">
+            <div class="ms-alert-header">Added to Shopping Cart</div>            
+            <div class="ms-alert-buttons">                
+                <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide()" k="បិទ">Cancel</div>            
+                <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show();" k="យល់ព្រម">OK</div>
+            </div>                        
+        </div>    
+    </div>
+    
+    
     <ion-nav-view></ion-nav-view>
   </body>
 </html>
