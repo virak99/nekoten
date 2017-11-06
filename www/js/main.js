@@ -8,7 +8,7 @@ function setDefault(name, value){
 }
 
 /* Initial */
-setDefault('delivery_fee', '0');
+
 setDefault('language', 'en');
 setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
 setDefault('delivery_fee', '0');
@@ -19,7 +19,6 @@ var user_id = localStorage.getItem('user_id');
 
 
 
-
 /* Fix ontap */
 $(document).on('tap', '[ontap]', function(){
      new Function($(this).attr('ontap'))();
@@ -27,13 +26,7 @@ $(document).on('tap', '[ontap]', function(){
 
 
 
-function la(en, kh){
-    if (localStorage.getItem('language') == 'en'){
-        return en;
-    } else {
-        return kh;
-    }
-}
+
 
 
 function isLogined(){
@@ -161,7 +154,7 @@ function updateDeliveryTo(name_en, name_kh, fee){
         $('.mr #delivery_to').text(name_en); // More Page
         $('#product_delivery_to #delivery_to').text(name_en); // Product Page        
         $('#product_delivery_to #delivery_fee').text(fee); // Product Page        
-        $('.lg #location').text(name_en); // Add an address
+        $('.lg #location').text(name_en); // Add an address        
         switchLocationTab();
     } else {
         $('#shipping_info_form #location').text(name_kh);
@@ -171,9 +164,11 @@ function updateDeliveryTo(name_en, name_kh, fee){
         $('.lg #location').text(name_kh); // Add an address
         switchLocationTab();
     }  
+    $('.lg #location').attr('value', name_en+','+name_kh); // Add an address
 }
 
 function loadProduct(ad_id){  
+    $('#related_products').html('');
     
     $.post('http://www.nekoten.khmerqq.com/app/product.php',{ad_id:ad_id, lang:lang},function(data){
         
@@ -245,6 +240,34 @@ function loadProduct(ad_id){
         $('.ii #view').html(ad['view']);
         $('.ii #n_order').html(ad['n_order']);
         $('.pd #desc').html(ad['description']);
+        
+        
+        /* Related Products */    
+        $.post('http://www.nekoten.khmerqq.com/app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
+            var a_wh = (size-30)/2;                    
+            var arr = JSON.parse(data);   
+            
+            for (var i = 0; i < arr.length; i++){            
+                var ad = arr[i];            
+                var ad_id = ad['ad_id'];  
+                
+                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
+                    str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
+                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
+                    str += '</div>';
+                    str += '<div class="a">';
+                        str += '<span class="aa">'+ad['price']+'</span>';
+                        str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
+                    str += '</div>';
+                str += '</ion-item>';
+                
+                $('#related_products').append(str);
+            }  
+                                                    
+        });
+    
+    
+    
         $('#product_body').show();
         $('#ad_images').show();
     });

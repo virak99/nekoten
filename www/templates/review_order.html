@@ -1,3 +1,33 @@
+<div id="order_placed_modal" class="modal">
+    <div class="header-title" k="បញ្ជាកម្មង់ទិញរួចរាល់">Order Complete</div>
+    <div class="modal-body">
+        <div class="sk">
+            <div class="a">
+                <img src="img/nekoten.jpg">
+            </div>
+            <div class="b">
+                <div class="c" k="សូមអរគុណចំពោះការកម្មង់ទំនិញ">
+                    Thank you for your order
+                </div>
+                <div class="d">
+                    We have received your order
+                </div>
+                <div class="e">
+                    <span class="f">Amount</span> 
+                    <span class="e">123</span>
+                </div>
+            </div>
+        </div>   
+        <div class="sd">
+            <button>My Order</button>
+            <button>Nekoten Home</button>
+        </div>
+    </div>
+</div>
+<script>
+    openModal('order_placed_modal');
+</script>
+
 <div class"app-header">
     <div class="header-title" k="បញ្ជាក់ការកម្មង់">Review Order</div>
     <div class="back" ng-click="myGoBack()">
@@ -79,13 +109,13 @@
         <span class="close ion-ios-close-empty"></span>
     </div>
     <div class="uu">
-        <div class="a item item-complex" onclick="selectDeliveryType('express')">
+        <div class="a item item-complex" onclick="chooseExpressDelivery()">
             <a class="item-content">
-                <div class="b" k="ដឹកជញ្ជូនរហ័ស">Express Delivery</div>
+                <div class="b" id="express_delivery_type" k="ដឹកជញ្ជូនរហ័ស">Express Delivery</div>
                 <div class="c">
-                    <span k="ទទួលទំនិញ" id="express_delivery_type">Recieve Product</span>
-                    <span id="express_delivery_day">Today</span>, 
-                    <span id="express_delivery_time">10:00 - 11:00</div>
+                    <span k="ទទួលទំនិញ">Recieve Product</span>                    
+                    <strong id="express_delivery_time"></strong>
+                </div>
             </a>
         </div>
         <div class="a item item-complex"onclick="openSmallModal('choose_day_time_modal')">
@@ -170,7 +200,7 @@
                     </div>
                     <div class="d">                    
                         <div class="f">
-                            <input id="bus_name" k="លេខទូរស័ព្ទឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Phone Number of Bus, Rent Car (Optional)">
+                            <input id="bus_phone_number" pattern="\d" type="number" k="លេខទូរស័ព្ទឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Phone Number of Bus, Rent Car (Optional)">
                             <span style="display:none" class="input-close ion-ios-close-outline"></span>
                         </div>
                     </div>
@@ -188,7 +218,7 @@
 <script>/*****************************************************************/</script>
 
 <ion-view hide-nav-bar="true" class="header-view">
-    <ion-content id="order">
+    <ion-content id="order" class="cart-ion-content">
         
         
         <div class="eq">
@@ -200,17 +230,15 @@
                 <a class="item-content">
                     <span class="c" k="បន្ថែមអាស័យដ្ឋាន">Add an address</span>
                 </a>
-            </div>
-        </div>
+            </div>        </div>
         <div class="hr"></div>
         <div class="et">
             <div class="a item item-complex" onclick="openModal('delivery_time_modal')">
                 <a class="item-content">
                     <div class="b" id="delivery_type" k="ដឹកជញ្ជូនរហ័ស">Express Delivery</div>
                     <div class="c">
-                        <span k="ទទួលទំនិញ">Receive Product</span>
-                        <span id="delivery_day">Today</span>
-                        <span id="delivery_time">08:00 - 09:00</span>    
+                        <span k="ទទួលទំនិញ">Receive Product</span>                        
+                        <strong id="delivery_time"></strong>    
                     </div>
                     <div class="fa fa-angle-right"></div>
                 </a>
@@ -238,10 +266,11 @@
         </div>  
         <div class="hr"></div>
         <div class="tp">
-            
             <input id="msg_seller" placeholder="Message to the seller (Optional)" k="សារសំរាប់អ្នកលក់ (មិនបំពេញក៏បាន)"
             <span class="input-close ion-ios-close-outline"></span>
-             
+        </div>
+        <div class="hr"></div>             
+        <div class="tp">
             <div class="a">
                 <span k="សរុបទំនិញ">Subtotal</span> (<span class="cart_count"></span> <span k="មុខ">item</span>)
                 <span class="subtotal"></span>
@@ -291,17 +320,30 @@
     
 </ion-view>
 <script>
+
+    loadShippingInfo();
     la();         
     
-    /* Default Location Add an Address Tab*/
+    /* Default values for Add an Address Tab*/
+    $('.lg #name').val(localStorage.getItem('full_name'));
+    $('.lg #phone_number').val(localStorage.getItem('phone_number'));
+    
+    var d = localStorage.getItem('delivery_to').split(',');
     if (lang == 'en'){
-        $('.lg #location').text(localStorage.getItem('delivery_to').split(',')[0]);
+        $('.lg #location').text(d[0]);
     } else {
-        $('.lg #location').text(localStorage.getItem('delivery_to').split(',')[1]);
+        $('.lg #location').text(d[1]);
     }
+    $('.lg #location').attr('value', d[0]+','+d[1]);
     switchLocationTab();
     
     
+    /* Default Delivery Time for Express Delivery */
+    var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
+    $.post('http://www.nekoten.khmerqq.com/module/delivery_time.php',{lang:lang, location:delivery_to}, function(data){
+        $('.uu #express_delivery_time').text(data);
+        $('.et #delivery_time').text(data);        
+    });        
     
     function selectTab(tab){
         $('.my-tab-content .a').hide();
@@ -334,36 +376,54 @@
     });
     
     
-    var chosen_date = 'Today';
-    $.post('http://www.nekoten.khmerqq.com/module/time_select.php',{lang:lang, chosen_date:chosen_date}, function(data){
-        a = JSON.parse(data);
-        for (var i = 0; i < a.length; i++){
-            var str = '<li value="'+a[i]+'"';
-            if (i == 0) str += ' class="selected" ';
-            str += 'onclick="selectDayTime(\'time\', \''+a[i]+'\')">';
-            str += a[i];
-            str += '</li>';
-            $('.yo #choose_time_ul').append(str);
-        }
-        
-    });
+    loadSelectDayTime('default');
+    function loadSelectDayTime(chosen_date){        
+        $.post('http://www.nekoten.khmerqq.com/module/time_select.php',{lang:lang, chosen_date:chosen_date}, function(data){
+            a = JSON.parse(data);
+            $('.yo #choose_time_ul').html('');
+            for (var i = 0; i < a.length; i++){
+                var str = '<li value="'+a[i]+'"';
+                if (i == 0) str += ' class="selected" ';
+                str += 'onclick="selectDayTime(\'time\', \''+a[i]+'\')">';
+                str += a[i];
+                str += '</li>';
+                $('.yo #choose_time_ul').append(str);
+            }        
+        });
+    }
     
     
-    
-    $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:localStorage.getItem('user_id')}, function(data){
-        var a = JSON.parse(data)[0];
-        if (a['result'] == 'success'){
-            $('.eq #add_address').hide();
-            var str = '<a class="item-content"><b>'+a['name']+'</b><br>';
-            str += a['address']+'<br>';
-            str += a['location']+'<br>';
-            str += 'Near by: '+a['near_by']+'<br>';
-            str += 'Tel: '+a['phone_number']+'</span>';
-            str += '<span class="fa fa-angle-right"></span></a>';
-            $('.eq #shipping_addr').html(str);
-        }
-       
-    });
+    function loadShippingInfo(){
+        $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:localStorage.getItem('user_id')}, function(data){
+            var a = JSON.parse(data)[0];
+            if (a['result'] == 'success'){
+                $('.eq #add_address').hide();
+                var str = '<a class="item-content"><b>'+a['name']+'</b><br>';
+                if (a['address'] != '') str += a['address']+'<br>';
+                if (lang == 'en') str += a['location'].split(',')[0]+'<br>'; else str += a['location'].split(',')[1]+'<br>';
+                if (a['near_by'] != ''){
+                    if (lang == 'en') str += 'Near by: '; else str += 'នៅក្បែរ';
+                    str += '('+a['near_by']+')<br>';
+                }            
+                str += 'Tel: '+a['phone_number']+'<br>';
+                if (a['bus_name'] != ''){
+                    str += '<div class="send-by-bus"></div>';                
+                    if (lang == 'en') {
+                        str += 'Send item via Bus<br>'; 
+                        str += 'Bus Name: '+a['bus_name']+'<br>';
+                        str += 'Bus Phone Number: ' + a['bus_phone_number'];
+                    } else {
+                        str += 'ផ្ញើរទំនិញតាមឡាន<br>';
+                        str += 'ឈ្មោះឡាន: '+a['bus_name']+'<br>';
+                        str += 'លេខទូរស័ព្ទឡាន: ' + a['bus_phone_number'];
+                    }                                                         
+                }
+                str += '<span class="fa fa-angle-right"></span></a>';
+                $('.eq #shipping_addr').html(str);
+            }
+           
+        });
+    }
     
     function selectLocation(name_en, name_kh){
         closeSmallModal('choose_location_modal');
@@ -371,7 +431,7 @@
     }
     
     $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
-        var arr = JSON.parse(data);
+        var arr = JSON.parse(data);        
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];
             var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
@@ -388,11 +448,11 @@
     
     
    
-    function selectDeliveryType(type){
+    function chooseExpressDelivery(){
         closeModal('delivery_time_modal');
-        $('#order #delivery_type').text($('#delivery_time_modal #'+type+'_delivery_type').text());
-        $('#order #delivery_time').text($('#delivery_time_modal #'+type+'_delivery_time').text());
-        $('#order #delivery_day').text($('#delivery_time_modal #'+type+'_delivery_day').text());
+        $('#order #delivery_type').text($('#delivery_time_modal #express_delivery_type').text());
+        $('#order #delivery_time').text($('#delivery_time_modal #express_delivery_time').text() + $('#delivery_time_modal #'+type+'_delivery_day').text());
+        
     }
     
     function selectPaymentMethod(type){
@@ -401,24 +461,29 @@
     }
             
     function selectDayTime(type, val){
-       $('#choose_'+type+'_ul li').removeClass('selected');
-       $('#choose_'+type+'_ul li[value="'+val+'"]').addClass('selected');
+        $('#choose_'+type+'_ul li').removeClass('selected');
+        $('#choose_'+type+'_ul li[value="'+val+'"]').addClass('selected');
+        if (type == 'day'){            
+            loadSelectDayTime(val);                
+        }       
     }
    
     function setScheduleDate(){
         closeModal('delivery_time_modal');
-        closeSmallModal('choose_day_time_modal');
-        $('.et #delivery_day').text($('.yo #choose_day_ul [class="selected"]').text());
-        $('.et #delivery_time').text($('.yo #choose_time_ul [class="selected"]').text());
+        closeSmallModal('choose_day_time_modal'); 
+        $('#order #delivery_type').text($('#delivery_time_modal #schedule_delivery_type').text());
+        $('.et #delivery_time').text($('.yo #choose_day_ul [class="selected"]').text()+' '+$('.yo #choose_time_ul [class="selected"]').text());
     }
     
     function postAddress(){
         var user_id = localStorage.getItem('user_id');
         var name = $('#shipping_info_form #name').val();
         var phone_number = $('#shipping_info_form #phone_number').val();
-        var location = $('#shipping_info_form #location').text();
+        var location = $('#shipping_info_form #location').attr('value');
         var address = $('#shipping_info_form #address').val();
         var near_by = $('#shipping_info_form #near_by').val();
+        var bus_name = $('#shipping_info_form #bus_name').val();
+        var bus_phone_number = $('#shipping_info_form #bus_phone_number').val();
         
         var addr_selected = $('.my-tab #tab-address').hasClass('selected');
        
@@ -429,35 +494,22 @@
         }
         
         $.post('http://www.nekoten.khmerqq.com/app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
-            address:address, near_by:near_by, coordinate:coordinate},
+            address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
             function(data){
                 if (data == 'success'){
+                    /*
                     var str = '<a class="item-content"><b>'+name+'</b><br>';
                     str += address+'<br>'+location+'<br>'+near_by+'<br>';
                     str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a><div class="fa fa-angle-right"></div>';
-                    $('.eq #shipping_addr').html(str);
+                    */
+                    
+                    loadShippingInfo();                    
                     $('#add_address').hide();
                     closeModal('shipping_info_modal');
                 }
             });                
         }
-    /*
-    var name = '1';
-    var house = '2';
-    var street = '3';
-    var sangkat = '4';
-    var khan = '5';
-    var phone_number = '6';
-    
-    
-    var str = '<a class="item-content"><b>'+name+'</b><br>';
-                str += house+' '+street+'<br>';
-                str += sangkat+' '+khan+'<br>';
-                str += location+'<br>';
-                str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a>';
-                $('.eq #shipping_addr').html(str);
-                closeModal('shipping_info');
-    */
+   
     $('#shipping_info_form input').on('keyup click', function(){
         if ($(this).val() != '') {
             $(this).siblings('.input-close').show();

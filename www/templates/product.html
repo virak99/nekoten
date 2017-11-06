@@ -104,7 +104,7 @@
                 <div class="b" k="បរិមាណ">Quantity</div>
                 <div class="c">
                     <span class="d fa fa-minus" onclick="qtyMinus()"></span>
-                    <input class="e" id="qty" type="number" value="1">
+                    <input class="e" id="qty" type="number" pattern="\d*" value="1">
                     <span class="f fa fa-plus" onclick="qtyPlus()"></span>
                 </div>
             </div>
@@ -128,22 +128,25 @@
         <div class="hr"></div>
         <div class="rb">
             <div class="a">
-                <span class="aa" k="ដាក់លក់ដោយ">Seller Info</span>
-                <span class="ab" k="ចូលមើលហាង">Go to Store</span>
+                <span class="aa" k="ដាក់លក់ដោយ">Seller Info</span>                
             </div>
             <div class="b">
                 <div class="c">
                     <img src="img/nekoten.png" />
                 </div>
                 <div class="d">
-                    Neleka Shop
+                    <span class="e">Neleka Shop</span> 
+                    <span class="f">
+                        (<span id="seller_item_num">0</span> 
+                        <span k="ទំនិញ">item</span>)
+                    </span>                        
                 </div>
             </div>
         </div>
         <div class="hr"></div>
         <div class="ra">
-            <div class="a" k="ផលិតផលស្រដៀងគ្នា">Related Products</div>
-            <div class="b">
+            <div class="aa" k="ផលិតផលស្រដៀងគ្នា">Related Products</div>
+            <div class="bb" id="related_products">
             
             </div>
         </div>
@@ -155,7 +158,36 @@
     la();
     
     var ad_id = $('#product_body #ad_id').val();
+    var size = $(window).width();
     
+    /* Related Products */    
+    $.post('http://www.nekoten.khmerqq.com/app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
+        var a_wh = (size-30)/2;                    
+        var arr = JSON.parse(data);   
+        
+        for (var i = 0; i < arr.length; i++){            
+            var ad = arr[i];            
+            var ad_id = ad['ad_id'];  
+            
+            var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
+                str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
+                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
+                str += '</div>';
+                str += '<div class="a">';
+                    str += '<span class="aa">'+ad['price']+'</span>';
+                    str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
+                str += '</div>';
+            str += '</ion-item>';
+            
+            $('#related_products').append(str);
+        }  
+        la();                                               
+    });
+            
+        
+        
+        
+        
     function wishlist(){
         var ad_id = $('#product_body #ad_id').val();
         $.post('http://nekoten.khmerqq.com/ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){

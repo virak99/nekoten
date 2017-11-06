@@ -509,9 +509,8 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .rb .a .aa{
     font-weight: bold;
 }
-.rb .a .ab{
-    float: right;
-    color: #387ef5;
+.rb .f{
+    color: #aaa;
 }
 .rb .b{
     margin-top: 10px;
@@ -522,19 +521,19 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     height: 50px;
 }
 .rb .d{
-    margin: 15px 0 0 20px;
+    margin: 15px 0 0 20px;    
+}
+.rb .e{
+    font-weight: bold;    
 }
 .ra {
     padding: 10px;
 }
-.ra .a{
+.ra .aa{
     font-weight: bold;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;    
 }
-.ra .b{
-    margin-top: 10px;
-}
+
 .owl-dots{
     position: absolute;
     left: 0;
@@ -898,6 +897,12 @@ ion-nav-view{
 .eq .fa-angle-right{        
     top: 50px !important;    
 }
+.eq .send-by-bus{
+    margin: 5px 0;
+    width: 50%;
+    height: 1px;
+    background: #eee;
+}
 .eq .a{
     display: inline-grid;
     padding: 10px 15px;
@@ -1051,7 +1056,10 @@ ion-nav-view{
     color: limegreen;
 }
 .scroll{
-    padding-bottom: 150px;   
+    padding-bottom: 100px;   
+}
+.cart-ion-content .scroll{
+    padding-bottom: 150px;
 }
 .uu .c .ion-arrow-down-b{
     margin-right: 5px;
