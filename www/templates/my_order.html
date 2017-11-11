@@ -1,8 +1,5 @@
 <div class"app-header">
-    <div class="header-title">
-        <span k="ទំនិញចង់បាន">My Wishlist</span> 
-        (<span id="n_wishlist">0</span>)
-    </div>
+    <div class="header-title" k="ការកម្មង់របស់ខ្ញុំ">My Order</div>
     <div class="back" ng-click="myGoBack()">
         <span class="ion-ios-arrow-left"></span>
     </div>
@@ -11,6 +8,29 @@
     <ion-content>
         <div class="wrap">
             <ul id="wishlist-panel" class="cart">
+                <script>
+                /*
+                <li class="p-list">
+                    <div class="a">
+                        <img src="img/1.jpg" style="width:100%;height:100%">
+                    </div>
+                    <div class="b">
+                        <div class="c">Vong Virak My name is </div>
+                            <div class="cc">
+                                <span class="ion-checkmark-round"></span>
+                                <span k=" មានក្នុងស្តុក"> In Stock</span>
+                            </div>
+                        <div class="ee">
+                            <div class="dd">$ 3.30</div>
+                      
+                      <div class="i">
+                                <span class="delete ion-ios-trash-outline"></span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                */
+                </script>
                 
             </ul>
         </div>
@@ -59,7 +79,6 @@
                 $('#wishlist-panel').append(str);
             }
             la();
-            $('#n_wishlist').text(a.length);
         }); 
     }
     

@@ -76,25 +76,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    .state('tab.shipping_address', {
-      url: '/shipping_address',
+    .state('tab.shipping_addr', {
+      url: '/shipping_addr',
       views: {
         'account': {
-          templateUrl: 'templates/shipping_address.html',    
+          templateUrl: 'templates/shipping_addr.html',    
           controller: 'NavCtrl'
         }
       }
-    })
+    })    
    
     .state('tab.review_order', {
-    url: '/review_order/',
-    views: {
-      'cart': {
-        templateUrl: 'templates/review_order.html',
-          controller: 'NavCtrl'
-      }
-    }
-  })
+        url: '/review_order',
+        views: {
+            'cart': {
+            templateUrl: 'templates/review_order.html',
+            controller: 'NavCtrl'
+        }
+        }
+    })
+    .state('tab.my_order', {
+        url: '/my_order',
+        views: {
+            'account': {
+                templateUrl: 'templates/my_order.html',
+                controller: 'NavCtrl'
+            }
+        }
+    })
   
     .state('tab.search', {
       url: '/search',

@@ -43,8 +43,17 @@ angular.module('starter.controllers', [])
         $scope.go = function ( path ) {
 	       $location.path( path );
         };
-        
-        
-        
+        $scope.refresh = function (page) {
+            if (page == 'shipping_addr'){
+                loadShippingAddr();
+            } else {
+                $.post('http://nekoten.khmerqq.com/app/get_info.php',{name:page}, function(data){
+                    $('#'+page).html(data);
+                    la();
+                    $scope.$broadcast('scroll.refreshComplete');
+                });
+            }
+        }
+
 });
 

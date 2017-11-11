@@ -53,7 +53,7 @@
         
         $('.mr .fa-check').hide();
         var a = localStorage.getItem(page);
-        if (typeof a !== 'undefined' && a !== null){        
+        if (a !== null){        
             if (page == 'language'){
                 var a = localStorage.getItem(page);        
                 $(".mr [id='"+a+"']").show();                           
@@ -61,15 +61,11 @@
                 else a = 'ភាសាខ្មែរ';
                 $('.mr #'+page).text(a);        
             } else if (page == 'delivery_to'){               
-                var en = localStorage.getItem('delivery_to').split(',')[0];
-                var kh = localStorage.getItem('delivery_to').split(',')[1];                
-                if (localStorage.getItem('language') == 'en'){                
-                    $(".mr [id='"+en+"']").show();                      
-                    $('.mr #'+page).text(en);            
-                } else {
-                    $(".mr [id='"+en+"']").show();                      
-                    $('.mr #'+page).text(kh);      
-                }
+                var en = a.split(',')[0];
+                var kh = a.split(',')[1];                
+                $(".mr [id='"+en+"']").show();   
+                if (lang == 'en') var str = en; else var str = kh;                                                   
+                $('.mr #'+page).text(str);                            
             }                  
         } else {
             //alert(localStorage.getItem(page));

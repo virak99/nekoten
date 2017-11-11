@@ -1,71 +1,58 @@
 <div id="order_placed_modal" class="modal">
-    <div class="header-title" k="បញ្ជាកម្មង់ទិញរួចរាល់">Order Complete</div>
+    <div class="header-title">
+        <span class="ion-checkmark-circled"></span>
+        <span k="បញ្ជាកម្មង់ទិញរួចរាល់">Order Complete </span>        
+    </div>
     <div class="modal-body">
         <div class="sk">
             <div class="a">
-                <img src="img/nekoten.jpg">
+                <img src="img/nekoten.png">
             </div>
             <div class="b">
                 <div class="c" k="សូមអរគុណចំពោះការកម្មង់ទំនិញ">
                     Thank you for your order
                 </div>
-                <div class="d">
-                    We have received your order
-                </div>
-                <div class="e">
-                    <span class="f">Amount</span> 
-                    <span class="e">123</span>
+                <div class="d">                                    
+                    <span class="e" k="តម្លៃ: ">Amount: </span> 
+                    <span class="f">$ 123</span>
                 </div>
             </div>
         </div>   
+        <div class="hr"></div>
         <div class="sd">
-            <button>My Order</button>
-            <button>Nekoten Home</button>
+            <button ontap="closeModal('order_placed_modal');" k="ការកម្មង់របស់ខ្ញុំ">My Order</button>
+            <button ontap="closeModal('order_placed_modal'); window.location.href='#tab\home'">Nekoten Home</button>
         </div>
     </div>
 </div>
-<script>
-    openModal('order_placed_modal');
-</script>
+
 
 <div class"app-header">
     <div class="header-title" k="បញ្ជាក់ការកម្មង់">Review Order</div>
-    <div class="back" ng-click="myGoBack()">
+    <div class="back" id="go_back_to_cart" ng-click="myGoBack()">
         <span class="ion-ios-arrow-left"></span>
     </div>
 </div>
 
-<div class="sm-modal" id="choose_location_modal">
-    <div class="shadow"></div>
-    <div class="header-title" k="ជ្រើសរើសខេត្តក្រុង">Choose City / Province</div>
-    <div class="back" onclick="closeSmallModal('choose_location_modal')">
-        <span class="close ion-ios-close-empty"></span>
-    </div>                        
-    <ion-content class="sm-modal-body">
-        <ul id="choose_location_ul_2">
-            
-        </ul>
-    </ion-content>
-</div>    
 
-<div class="sm-modal" id="choose_day_time_modal">
-    <div class="shadow"></div>
-    <div class="header-title" k="ជ្រើសរើសថ្ងៃនិងម៉ោង">Choose Date and Time</div>
-    <div class="back" onclick="closeSmallModal('choose_day_time_modal')">
+
+<div id="shipping_address_modal" class="modal">
+    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Shipping Address</div> 
+    <div class="back" onclick="closeModal('shipping_address_modal')">
         <span class="close ion-ios-close-empty"></span>
-    </div>                        
-    <ion-content class="sm-modal-body" style="padding:20px 10px">
-        <div class="yo">
-            <ul id="choose_day_ul" class="a">
-                
+    </div>        
+    <span ontap="alert('yes')" class="right-nav" k="កែប្រែ">Edit</span>
+    <ion-content class="modal-body">        
+        <div class="qw">
+            <ul class="shipping_address_item">
+                adasdsdvfdvdfvf
             </ul>
-            <ul id="choose_time_ul" class="b">
-               
-            </ul>
-        </div>
-        <button class="c" k="យល់ព្រម" onclick="setScheduleDate()">Okay</button>       
+            <div class="t">
+                <button class="btn" onclick="openModal('shipping_info_modal')">Add new Address</button>
+            </div>
+        </div>            
     </ion-content>
-</div>    
+</div>
 
 
 
@@ -130,91 +117,6 @@
 </div>
 
 
-<div id="shipping_info_modal" class="modal">
-    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
-    <div class="back" onclick="closeModal('shipping_info_modal')">
-        <span class="close ion-ios-close-empty"></span>
-    </div>
-    <div class="lg">
-        <div class="cc">
-            <form id="shipping_info_form">
-                <div class="d">
-                    <div class="e"><span class="ion-ios-person-outline"></span></div>
-                    <div class="f"><input id="name" k="ឈ្មោះ" placeholder="Name" type="text">
-                        <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                    </div>
-                </div>
-                <div class="d">
-                    <div class="e"><span class="ion-ios-telephone"></span></div>
-                    <div class="f"><input id="phone_number" k="ទូរស័ព្ទ" placeholder="Phone Number" type="number" pattern="\d*">
-                        <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                    </div>
-                </div>
-                <div class="d">
-                    <div class="e"><span class="ion-ios-location-outline"></span></div>
-                    <div class="f"><span id="location" class="f2" onclick="openSmallModal('choose_location_modal')">Phnom Penh</span></div>
-                    <div class="f1"><span class="fa fa-angle-right"></span></div>                                                    
-                </div>
-                <div id="phnom_penh_tab">
-                    <div class="my-tab">
-                        <div class="a selected" id="tab-address" onclick="selectTab('tab-address')">
-                            <span k="អាស័យដ្ឋាន">ADDRESS</span>
-                        </div>
-                        <div class="a" id="tab-gps" onclick="selectTab('tab-gps'); getLocation()">
-                            <span>GPS</span>
-                        </div>
-                    </div>
-                    <div class="my-tab-content">
-                        <div class="a" id="tab-address">
-                            <div class="d">                    
-                                <div class="f">
-                                    <input id="address" k="អាស័យដ្ឋាន (ឧ: ផ្ទះលេខ 41 ផ្លូវ 126)" placeholder="Address (ex: No. 41, St. 126)">
-                                    <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                                </div>
-                            </div>
-                            <div class="d">   
-                                <div class="f"><input id="near_by" k="នៅជិត (ឧ: នៅជិតផ្សារធំថ្មី)" placeholder="Nearby (ex: Near Phsar Thom Thmey)">
-                                    <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="a hide" id="tab-gps">
-                            <div class="getting-gps" k="កំពុងទាញយកទីតាំងបច្ចុប្បន្នរបស់អ្នក ...">Getting your Current Location ...</div>
-                            <iframe id="gps-map-frame" style="width:100%;height:250px" frameborder="0">                                
-                            </iframe>                                                    
-                            <input id="coordinate" type="hidden">
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="province_tab" style="display:none">
-                    <div class="d">
-                        <span class="dd" k="យើងខ្ញុំនឹងផ្ញើរទំនិញទៅតាមឡានក្រុង រឺឡានឈ្នួលទៅកាន់ខេត្តរបស់លោកអ្នក">We will send product via bus or rent car to your province.</span>
-                    </div>
-                    <div class="d">                    
-                        <div class="f">
-                            <input id="bus_name" k="ឈ្មោះឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Name of Bus, Rent Car (Optional)">
-                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                        </div>
-                    </div>
-                    <div class="d">                    
-                        <div class="f">
-                            <input id="bus_phone_number" pattern="\d" type="number" k="លេខទូរស័ព្ទឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Phone Number of Bus, Rent Car (Optional)">
-                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
-                        </div>
-                    </div>
-                </div>
-     
-                <div class="g">
-                    <button type="submit" onclick="postAddress()" k="ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ">Deliver to this Address</button>               
-                </div>
-            </form>
-            
-        </div>            
-    </div>  
-</div>
-
 <script>/*****************************************************************/</script>
 
 <ion-view hide-nav-bar="true" class="header-view">
@@ -223,6 +125,7 @@
         
         <div class="eq">
             <div class="a" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
+            <input id="shipping_addr_id" type="hidden">
             <div id="shipping_addr" class="item item-complex">
                 
             </div>
@@ -230,7 +133,8 @@
                 <a class="item-content">
                     <span class="c" k="បន្ថែមអាស័យដ្ឋាន">Add an address</span>
                 </a>
-            </div>        </div>
+            </div>                    
+        </div>
         <div class="hr"></div>
         <div class="et">
             <div class="a item item-complex" onclick="openModal('delivery_time_modal')">
@@ -251,7 +155,7 @@
                     <div class="b" k="របៀបបង់ប្រាក់">Payment Method</div>
                     <div class="c payment">
                         <span class="ion-cash"></span> 
-                        <span id="payment_method" k="បង់ប្រាក់ពេលទំនិញដល់ដៃ">Cash on Delivery</span>
+                        <span value="cash_on_delivery" id="payment_method" k="បង់ប្រាក់ពេលទទួលទំនិញ">Cash on Delivery</span>
                     </div>
                     <div class="fa fa-angle-right"></div>
                 </a>
@@ -308,25 +212,54 @@
             </div>
                 
         </div>
-        <div class="a" onclick="$('.cart-footer #summary').toggle()">
+        <div class="a" ontap="$('.cart-footer #summary').toggle()">
             <div class="aa">
                 <div class="b"><span k="តម្លៃសរុប">Total</span></div>
                 <div class="c"><span class="ion-arrow-down-b"></span></div>
             </div>
             <div class="ab"><span class="total"></span></div>
         </div>
-        <div class="d" k="បញ្ជាទិញ" onclick="window.location.href='#tab/review_order/'">PLACE ORDER</div>
+        <div class="d" k="បញ្ជាទិញ" ontap="placeOrder()">PLACE ORDER</div>
     </div>
     
 </ion-view>
 <script>
 
-    loadShippingInfo();
+    loadDefaultShippingInfo();
     la();         
     
-    /* Default values for Add an Address Tab*/
-    $('.lg #name').val(localStorage.getItem('full_name'));
-    $('.lg #phone_number').val(localStorage.getItem('phone_number'));
+    /*Fix Delivery Fee not showng */
+    delivery_fee = localStorage.getItem('delivery_fee');
+    $('.delivery_fee').text('$ '+delivery_fee);
+    
+    
+    
+    
+    
+    
+    /* Load Default Address from Review Order page */
+    function loadDefaultShippingInfo(){
+        var user_id = localStorage.getItem('user_id');        
+        $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:user_id}, function(data){
+            var a = JSON.parse(data)[0]; 
+            str = shippingInfoItem(a);
+            str += '<span class="fa fa-angle-right"></span>';
+            $('.eq #shipping_addr').html(str);
+            $('.eq #shipping_addr_id').val(a['id']);
+            
+            $('.eq #shipping_addr .shipping-item').on('click', function(){
+                loadShippingAddr(a['id']); // arg : selected_id
+                //window.location.href = "#tab/shipping_addr_cart";            
+                openModal('shipping_address_modal');
+            });
+        });
+                
+        
+    }
+    
+    
+    
+    /* Switch Location Tab Input for Add an address Modal */
     
     var d = localStorage.getItem('delivery_to').split(',');
     if (lang == 'en'){
@@ -341,26 +274,42 @@
     /* Default Delivery Time for Express Delivery */
     var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
     $.post('http://www.nekoten.khmerqq.com/module/delivery_time.php',{lang:lang, location:delivery_to}, function(data){
-        $('.uu #express_delivery_time').text(data);
-        $('.et #delivery_time').text(data);        
+        var a = JSON.parse(data);
+        $('.uu #express_delivery_time').text(a['text']);
+        $('.et #delivery_time').text(a['text']); 
+        $('.uu #express_delivery_time').attr('value', a['value']);
+        $('.et #delivery_time').attr('value', a['value']); 
+        
     });        
     
-    function selectTab(tab){
-        $('.my-tab-content .a').hide();
-        $('.my-tab-content #'+tab).show();
-        $('.my-tab .a').removeClass('selected');
-        $('.my-tab #'+tab).addClass('selected');
-    }
-    function getLocation(){
-        var onSuccess = function(position) {
-            var lat = position.coords.latitude;
-            var lng = position.coords.longitude;
-            var str = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyDocD-TtjQMfFFWBrBVUnl9BzBrhmX-AdA&q='+lat+','+lng;
-            $('#gps-map-frame').attr('src', str);
-            $('#coordinate').val(lat+','+lng);
+    function placeOrder(){
+        var cart = localStorage.getItem('shopping_cart');
+        var delivery_fee = localStorage.getItem('delivery_fee');
+        var total_price = $('#order .total').text();
+        var ordered_by = localStorage.getItem('user_id');
+        var location = localStorage.getItem('delivery_to').split(',')[0];
+        var message = $('#order #msg_seller').val();
+        var shipping_addr_id = $('.eq #shipping_addr_id').val();  
+        var payment_method = $('#order #payment_method').attr('value');
+        var delivery_time = $('#order #delivery_time').attr('value');
+        
+        
+        $.post('http://www.nekoten.khmerqq.com/app/place_order.php', 
+        {cart:cart, delivery_fee:delivery_fee, total_price:total_price,ordered_by:ordered_by,
+        location:location, message:message, shipping_addr_id:shipping_addr_id,
+        payment_method:payment_method, delivery_time:delivery_time},
+        function(data){
+            if (data == 'success'){
+                localStorage.removeItem('shopping_cart');
+                loadCart();
+                $('#go_back_to_cart').click();
+                openModal('order_placed_modal');    
+            } else {
+                alert(data);
+            }
             
-        };
-        navigator.geolocation.getCurrentPosition(onSuccess);
+        });
+        
     }
     
     $.post('http://www.nekoten.khmerqq.com/module/date_select.php',{lang:lang}, function(data){        
@@ -376,16 +325,17 @@
     });
     
     
-    loadSelectDayTime('default');
-    function loadSelectDayTime(chosen_date){        
+    loadSelectTime('default');
+    function loadSelectTime(chosen_date){        
         $.post('http://www.nekoten.khmerqq.com/module/time_select.php',{lang:lang, chosen_date:chosen_date}, function(data){
             a = JSON.parse(data);
             $('.yo #choose_time_ul').html('');
             for (var i = 0; i < a.length; i++){
-                var str = '<li value="'+a[i]+'"';
+                var b = a[i];
+                var str = '<li value="'+b['value']+'"';
                 if (i == 0) str += ' class="selected" ';
-                str += 'onclick="selectDayTime(\'time\', \''+a[i]+'\')">';
-                str += a[i];
+                str += 'onclick="selectDayTime(\'time\', \''+b['value']+'\')">';
+                str += b['text'];
                 str += '</li>';
                 $('.yo #choose_time_ul').append(str);
             }        
@@ -393,57 +343,9 @@
     }
     
     
-    function loadShippingInfo(){
-        $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:localStorage.getItem('user_id')}, function(data){
-            var a = JSON.parse(data)[0];
-            if (a['result'] == 'success'){
-                $('.eq #add_address').hide();
-                var str = '<a class="item-content"><b>'+a['name']+'</b><br>';
-                if (a['address'] != '') str += a['address']+'<br>';
-                if (lang == 'en') str += a['location'].split(',')[0]+'<br>'; else str += a['location'].split(',')[1]+'<br>';
-                if (a['near_by'] != ''){
-                    if (lang == 'en') str += 'Near by: '; else str += 'នៅក្បែរ';
-                    str += '('+a['near_by']+')<br>';
-                }            
-                str += 'Tel: '+a['phone_number']+'<br>';
-                if (a['bus_name'] != ''){
-                    str += '<div class="send-by-bus"></div>';                
-                    if (lang == 'en') {
-                        str += 'Send item via Bus<br>'; 
-                        str += 'Bus Name: '+a['bus_name']+'<br>';
-                        str += 'Bus Phone Number: ' + a['bus_phone_number'];
-                    } else {
-                        str += 'ផ្ញើរទំនិញតាមឡាន<br>';
-                        str += 'ឈ្មោះឡាន: '+a['bus_name']+'<br>';
-                        str += 'លេខទូរស័ព្ទឡាន: ' + a['bus_phone_number'];
-                    }                                                         
-                }
-                str += '<span class="fa fa-angle-right"></span></a>';
-                $('.eq #shipping_addr').html(str);
-            }
-           
-        });
-    }
     
-    function selectLocation(name_en, name_kh){
-        closeSmallModal('choose_location_modal');
-        updateDeliveryTo(name_en, name_kh);
-    }
     
-    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
-        var arr = JSON.parse(data);        
-        for (var i = 0; i < arr.length; i++){
-            var a = arr[i];
-            var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
-                str += '<a class="item-content">';
-                str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
-                str += '<span class="price-li">$ '+a['price']+' </span>';
-            str += '</a></li>';
-            $('#choose_location_ul_2').append(str); 
-        }
-        load('delivery_to');
-        la();
-    });
+    
     
     
     
@@ -451,20 +353,22 @@
     function chooseExpressDelivery(){
         closeModal('delivery_time_modal');
         $('#order #delivery_type').text($('#delivery_time_modal #express_delivery_type').text());
-        $('#order #delivery_time').text($('#delivery_time_modal #express_delivery_time').text() + $('#delivery_time_modal #'+type+'_delivery_day').text());
+        $('#order #delivery_time').text($('#delivery_time_modal #express_delivery_time').text());
+        $('#order #delivery_time').attr('value', $('#delivery_time_modal #express_delivery_time').attr('value'));
         
     }
     
     function selectPaymentMethod(type){
         closeModal('payment_method_modal');
         $('#order #payment_method').html($('#payment_method_modal #'+type).html());
+        $('#order #payment_method').attr('value', type);
     }
             
     function selectDayTime(type, val){
         $('#choose_'+type+'_ul li').removeClass('selected');
         $('#choose_'+type+'_ul li[value="'+val+'"]').addClass('selected');
         if (type == 'day'){            
-            loadSelectDayTime(val);                
+            loadSelectTime(val);                
         }       
     }
    
@@ -473,55 +377,12 @@
         closeSmallModal('choose_day_time_modal'); 
         $('#order #delivery_type').text($('#delivery_time_modal #schedule_delivery_type').text());
         $('.et #delivery_time').text($('.yo #choose_day_ul [class="selected"]').text()+' '+$('.yo #choose_time_ul [class="selected"]').text());
+        
+        $('#order #delivery_type').attr('value', $('#delivery_time_modal #schedule_delivery_type').attr('value'));
+        $('.et #delivery_time').attr('value', $('.yo #choose_day_ul [class="selected"]').attr('value')+','+$('.yo #choose_time_ul [class="selected"]').attr('value'));
     }
     
-    function postAddress(){
-        var user_id = localStorage.getItem('user_id');
-        var name = $('#shipping_info_form #name').val();
-        var phone_number = $('#shipping_info_form #phone_number').val();
-        var location = $('#shipping_info_form #location').attr('value');
-        var address = $('#shipping_info_form #address').val();
-        var near_by = $('#shipping_info_form #near_by').val();
-        var bus_name = $('#shipping_info_form #bus_name').val();
-        var bus_phone_number = $('#shipping_info_form #bus_phone_number').val();
-        
-        var addr_selected = $('.my-tab #tab-address').hasClass('selected');
-       
-        if (addr_selected) {
-            var coordinate = '';
-        } else {
-            var coordinate = $('#shipping_info_form #coordinate').val();
-        }
-        
-        $.post('http://www.nekoten.khmerqq.com/app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
-            address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
-            function(data){
-                if (data == 'success'){
-                    /*
-                    var str = '<a class="item-content"><b>'+name+'</b><br>';
-                    str += address+'<br>'+location+'<br>'+near_by+'<br>';
-                    str += '<span class="ion-ios-telephone-outline"> '+phone_number+'</span></a><div class="fa fa-angle-right"></div>';
-                    */
-                    
-                    loadShippingInfo();                    
-                    $('#add_address').hide();
-                    closeModal('shipping_info_modal');
-                }
-            });                
-        }
-   
-    $('#shipping_info_form input').on('keyup click', function(){
-        if ($(this).val() != '') {
-            $(this).siblings('.input-close').show();
-        }
-    });
-    $('#shipping_info_form input').on('blur', function(){
-            $(this).siblings('.input-close').hide();
-    });
-    $('#shipping_info_form .input-close').on('click', function(){
-        $(this).hide();
-        $(this).siblings('input').val('');
-    });
+    
 
    
 </script>

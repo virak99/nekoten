@@ -677,6 +677,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     font-size: 16px;
     color: black;
 }
+.mr .fa-angle-right{
+    font-size: 22px;
+}
 .mr .a{
     float: right;
     margin-right: 15px;
@@ -692,8 +695,19 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .mr .item-content{
     padding: 15px 20px;
 }
-.mr .fa{    
+.mr .fa-check{
     font-size: 18px;
+    color: limegreen;  
+    display: none;
+}
+.qw .fa-check{
+    font-size: 18px;
+    color: limegreen;   
+    position: absolute;
+    right: 10px;
+    top: 50px;        
+}
+.mr .fa{    
     float: right;
     line-height: 22px;    
 }
@@ -702,9 +716,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     position: absolute;
     right: 60px;    
 }
-.mr .fa-check{
-    color: limegreen;    
-}
+
 .footer{
     text-align: center;
     margin-top: 20px;
@@ -733,6 +745,53 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 20px 10px;    
     height: 100%;
 }
+.header-title .ion-checkmark-circled{
+    color: limegreen;
+    font-size: 1.1em;
+}
+ion-content.modal-body{
+    margin-top: 60px;
+}
+.modal-body{
+    margin-top: 20px;
+}
+.sk{
+    display: inline-flex;
+    width: 100%;
+    padding: 15px;
+    border-top: 1px solid #eee;        
+}
+.sk .a img{
+    width: 50px;
+}
+.sk .b{
+    margin-left: 20px;
+}
+.sk .c{
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 5px;
+}
+.sk .d{
+    color: #aaa;
+    margin-top: 5px;
+}
+.sk .f{    
+    color: #ff3366;    
+}
+.sd{
+    padding: 15px;
+}
+.sd button{    
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    color: #ff3366;
+    background-color: white;
+    border: 1px solid #ff3366;
+    margin-bottom: 20px;
+}
 .btn{
     width: 100%;
     padding: 10px;
@@ -749,8 +808,13 @@ ion-nav-view{
     position: relative;
     top: 100px;    
     text-align: center;
+    z-index: 9;
 }
-
+#gps-map-frame{
+    width: 100%;     
+    position: relative;
+    z-index: 10;
+}
 .lg {
     padding: 20px;
 }
@@ -1181,7 +1245,7 @@ ion-nav-view{
     margin: 15px;
 }
 .qw .fa-angle-right{
-    font-size: 20px;
+    font-size: 22px;
     position: absolute;
     top: 55px;
     right: 10px;
@@ -1227,5 +1291,11 @@ ion-nav-view{
     overflow-x: hidden;     
     overflow-y: hidden;     
 }
-
-
+.right-nav{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    padding: 25px 10px;
+    line-height: 30px;
+}

@@ -20,8 +20,11 @@
         $.post('http://www.nekoten.khmerqq.com/app/feedback.php', {message:message}, function(data){
             if (data == 'success') {
                 $('#message').text('');
-                alert('Thank you for your feedback!'); 
-                $('.back').click();
+                myAlert('Thank you for your feedback!', 'សូមអរគុណចំពោះមតិយោបល់');
+                $('#alert .confirm').on('click', function(){   
+                    window.location.href = "#tab/more";
+                });
+                
             }
         });
     }

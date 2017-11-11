@@ -39,6 +39,148 @@
       </ion-nav-back-button>
     </ion-nav-bar>
    
+   
+   
+<div class="sm-modal" id="choose_location_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសខេត្តក្រុង">Choose City / Province</div>
+    <div class="back" onclick="closeSmallModal('choose_location_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body">
+        <ul id="choose_location_ul_2">
+            
+        </ul>
+    </ion-content>
+</div>    
+
+<div class="sm-modal" id="choose_day_time_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសថ្ងៃនិងម៉ោង">Choose Date and Time</div>
+    <div class="back" onclick="closeSmallModal('choose_day_time_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body" style="padding:20px 10px">
+        <div class="yo">
+            <ul id="choose_day_ul" class="a">
+                
+            </ul>
+            <ul id="choose_time_ul" class="b">
+               
+            </ul>
+        </div>
+        <button class="c" k="យល់ព្រម" onclick="setScheduleDate()">Okay</button>       
+    </ion-content>
+</div>    
+
+   
+   
+<div id="shipping_info_modal" class="modal">
+    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
+    <div class="back" onclick="closeModal('shipping_info_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <div class="lg">
+        <div class="cc">
+            <form id="shipping_info_form">
+                <div class="d">
+                    <div class="e"><span class="ion-ios-person-outline"></span></div>
+                    <div class="f"><input id="name" k="ឈ្មោះ" placeholder="Name" type="text">
+                        <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                    </div>
+                </div>
+                <div class="d">
+                    <div class="e"><span class="ion-ios-telephone"></span></div>
+                    <div class="f"><input id="phone_number" k="ទូរស័ព្ទ" placeholder="Phone Number" type="number" pattern="\d*">
+                        <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                    </div>
+                </div>
+                <div class="d">
+                    <div class="e"><span class="ion-ios-location-outline"></span></div>
+                    <div class="f"><span id="location" class="f2" onclick="openSmallModal('choose_location_modal')">Phnom Penh</span></div>
+                    <div class="f1"><span class="fa fa-angle-right"></span></div>                                                    
+                </div>
+                <div id="phnom_penh_tab">
+                    <div class="my-tab">
+                        <div class="a selected" id="tab-address" onclick="selectTab('tab-address')">
+                            <span k="អាស័យដ្ឋាន">ADDRESS</span>
+                        </div>
+                        <div class="a" id="tab-gps" onclick="selectTab('tab-gps'); getLocation()">
+                            <span>GPS</span>
+                        </div>
+                    </div>
+                    <div class="my-tab-content">
+                        <div class="a" id="tab-address">
+                            <div class="d">                    
+                                <div class="f">
+                                    <input id="address" k="អាស័យដ្ឋាន (ឧ: ផ្ទះលេខ 41 ផ្លូវ 126)" placeholder="Address (ex: No. 41, St. 126)">
+                                    <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                                </div>
+                            </div>
+                            <div class="d">   
+                                <div class="f"><input id="near_by" k="នៅជិត (ឧ: នៅជិតផ្សារធំថ្មី)" placeholder="Nearby (ex: Near Phsar Thom Thmey)">
+                                    <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="a hide" id="tab-gps">
+                            <div class="getting-gps" k="កំពុងទាញយកទីតាំងបច្ចុប្បន្នរបស់អ្នក ...">Getting your Current Location ...</div>
+                            <iframe id="gps-map-frame" height="250" frameborder="0">                                
+                            </iframe>                                                    
+                            <input id="coordinate" type="hidden">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="province_tab" style="display:none">
+                    <div class="d">
+                        <span class="dd" k="យើងខ្ញុំនឹងផ្ញើរទំនិញទៅតាមឡានក្រុង រឺឡានឈ្នួលទៅកាន់ខេត្តរបស់លោកអ្នក">We will send product via bus or rent car to your province.</span>
+                    </div>
+                    <div class="d">                    
+                        <div class="f">
+                            <input id="bus_name" k="ឈ្មោះឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Name of Bus, Rent Car (Optional)">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">                    
+                        <div class="f">
+                            <input id="bus_phone_number" pattern="\d" type="number" k="លេខទូរស័ព្ទឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Phone Number of Bus, Rent Car (Optional)">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                </div>
+     
+                <div class="g">
+                    <button type="submit" onclick="postAddress()" k="ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ">Deliver to this Address</button>               
+                </div>
+            </form>
+            
+        </div>            
+    </div>  
+</div>
+
+    <script>
+        
+    $('#shipping_info_form input').on('keyup click', function(){
+        if ($(this).val() != '') {
+            $(this).siblings('.input-close').show();
+        }
+    });
+    $('#shipping_info_form input').on('blur', function(){
+            $(this).siblings('.input-close').hide();
+    });
+    $('#shipping_info_form .input-close').on('click', function(){
+        $(this).hide();
+        $(this).siblings('input').val('');
+    });
+    
+    /* Default values for Add an Address Tab*/
+    $('.lg #name').val(localStorage.getItem('full_name'));
+    $('.lg #phone_number').val(localStorage.getItem('phone_number'));
+    
+    </script>
+    
     
     <div class="ms-alert" id="added_to_cart_alert">
         <div class="ms-alert-body">
@@ -52,9 +194,18 @@
         
     <div class="ms-alert" id="alert_confirm">
         <div class="ms-alert-body">
-            <div class="ms-alert-header">Added to Shopping Cart</div>            
+            <div class="ms-alert-header"></div>            
             <div class="ms-alert-buttons">                
                 <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide()" k="បិទ">Cancel</div>            
+                <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide()" k="យល់ព្រម">OK</div>
+            </div>                        
+        </div>    
+    </div>
+    
+    <div class="ms-alert" id="alert">
+        <div class="ms-alert-body">
+            <div class="ms-alert-header"></div>            
+            <div class="ms-alert-buttons">                            
                 <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show();" k="យល់ព្រម">OK</div>
             </div>                        
         </div>    

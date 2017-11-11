@@ -1,0 +1,24 @@
+
+<div class"app-header">
+    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Shipping Address</div>
+    <div class="back" ng-click="myGoBack()">
+        <span class="ion-ios-arrow-left"></span>        
+    </div>    
+</div>
+<ion-view hide-nav-bar="true" class="header-view">
+    <ion-refresher on-refresh="refresh('shipping_addr')"></ion-refresher>
+    <ion-content>
+        <div class="qw">
+            <ul class="shipping_address_item">
+            
+            </ul>
+            <div class="t">
+                <button class="btn" onclick="openModal('shipping_info_modal')">Add new Address</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
+<script>
+    la();
+    loadShippingAddr(0); // Arg: selected_id
+</script>

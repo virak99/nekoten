@@ -14,6 +14,7 @@
 <script>
     la();
     $.post('http://nekoten.khmerqq.com/app/get_info.php',{name:'about_us'}, function(data){
-        $('#about_us').text(data);
+        $('#about_us').html(data);
+        la();
     });
 </script>
