@@ -7,6 +7,7 @@
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
         <div class="fb">
+            
             <center k="សូមអរគុណសំរាប់មតិកែលម្អ">Tell us what we could do better</center>
             <textarea id="message"></textarea>
             <div class="btn" onclick="submitFeedback()" k="បញ្ជូន">Submit</div>
@@ -15,14 +16,16 @@
 </ion-view>
 <script>
     la();
+    
     function submitFeedback() {
         var message = $('#message').val();
-        $.post('http://www.nekoten.khmerqq.com/app/feedback.php', {message:message}, function(data){
+        $.post(url+'app/feedback.php', {message:message}, function(data){
             if (data == 'success') {
                 $('#message').text('');
                 myAlert('Thank you for your feedback!', 'សូមអរគុណចំពោះមតិយោបល់');
                 $('#alert .confirm').on('click', function(){   
-                    window.location.href = "#tab/more";
+                    $('.fb #message').val('');
+                    window.location.href = "#tab/more";                    
                 });
                 
             }

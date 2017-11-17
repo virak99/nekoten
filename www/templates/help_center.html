@@ -13,7 +13,7 @@
 </ion-view>
 <script>
     la();      
-    $.post('http://nekoten.khmerqq.com/app/get_info.php',{name:'help'}, function(data){
+    $.post(url+'app/get_info.php',{name:'help'}, function(data){
         $('#help').html(data);
         la();
     });

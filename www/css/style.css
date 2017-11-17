@@ -1,3 +1,4 @@
+/*color: #1b95e0;*/
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     color: #ff3366;
 }
@@ -20,6 +21,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 0 20px;
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
+}
+#no_res{
+    margin: 50px 0;
+}
+.other-products{
+    margin: 10px 0;
 }
 .gh .a {
     width: 50%;
@@ -69,7 +76,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 25px 10px;
 }
 
-.search-bar{
+.search-bar{    
     display: inline-flex;
     width: 100%;
     margin-top: 30px;
@@ -80,9 +87,15 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .search-bar .cancel{
     display: none;
+    right: 0;
+    position: absolute;
     text-align: center;
     width: 80px;
     line-height: 30px;
+    border: 1px solid white;
+    border-left: 1px solid #eee;
+    margin-top: -1px;
+    background-color: white;
 }
 .ad-item{    
     width: 170px;    
@@ -462,6 +475,11 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     display: inline-flex;
     width: 100%;
 }
+.qs .i{
+    width: 100%;
+    background: #eee;
+    padding: 5px;
+}
 .so{
     padding: 20px;
 }
@@ -486,12 +504,23 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .qs .d{
     width: calc(100% - 30px);
 }
-.qs .e{
+.qs .e .ee{
     font-weight: bold;
 }
 .qs .f{
     float: right;
     color: #aaa;
+}
+.qs .bb{
+    width: 100%;
+    padding-top: 10px;
+    text-align: center;
+}
+.qs .bc{
+    width: 100%;
+    padding: 5px 0;
+    text-align: right;
+    color: #1b95e0;
 }
 .qs .g{
     width: 100%;
@@ -641,6 +670,16 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     margin-right: 15px;
     background-color: #ff9900;
     color: white;
+}
+#tt ion-slide{
+    width: 100px;
+}
+.slider-pager .slider-pager-page{
+    color: #ff3366;
+    width: 10px;
+}
+.icon.ion-record{
+    font-size: 0.8em;
 }
 .home-slider img{
     width: 100%;
@@ -804,6 +843,7 @@ ion-content.modal-body{
 ion-nav-view{
     margin-bottom: 100px;
 }
+
 .lg .getting-gps{
     position: relative;
     top: 100px;    
@@ -947,8 +987,10 @@ ion-nav-view{
     padding: 15px 20px;
     border-bottom: 1px solid #eee;
 }
-.sr .d li .fa{
+.sr .d .fa-check {
     float: right;
+    font-size: 18px;
+    color: limegreen;    
 }
 .sr .d{
     background-color: white;
@@ -1205,13 +1247,13 @@ ion-nav-view{
     padding: 10px;
 }
 .question-footer input{
-    width: calc(100% - 60px);
+    width: calc(100% - 75px);
     padding: 0 10px;
     height: 30px;
     border: none;
 }
 .question-footer button{
-    width: 60px;
+    width: 75px;
     float: right;
     height: 30px;
     background: #ff3366;

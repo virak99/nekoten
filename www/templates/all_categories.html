@@ -21,7 +21,7 @@
     </ion-content>
 </ion-view>
 <script>
-    $.post('http://www.nekoten.khmerqq.com/app/category.php',{},function(data){
+    $.post(url+'app/category.php',{},function(data){
         var cate = JSON.parse(data);
         for (var i = 0; i < cate.length; i++){
             var c = cate[i];     

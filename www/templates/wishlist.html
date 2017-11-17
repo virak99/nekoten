@@ -39,11 +39,11 @@
             for (var i = 0; i < a.length; i++){
                 var ad = a[i];
                 var str = '<li class="p-list">';
-                        str += '<div class="a">';
+                        str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">';
                             str += '<img src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
                         str += '</div>';
                         str += '<div class="b">';
-                            str += '<div class="c">'+ad['title']+'</div>';
+                            str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
                                 str += '<div class="cc">';
                                     str += '<span class="ion-checkmark-round"></span>';
                                     str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';

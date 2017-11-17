@@ -240,7 +240,7 @@
     /* Load Default Address from Review Order page */
     function loadDefaultShippingInfo(){
         var user_id = localStorage.getItem('user_id');        
-        $.post('http://www.nekoten.khmerqq.com/app/shipping_info.php',{user_id:user_id}, function(data){
+        $.post(url+'app/shipping_info.php',{user_id:user_id}, function(data){
             var a = JSON.parse(data)[0]; 
             str = shippingInfoItem(a);
             str += '<span class="fa fa-angle-right"></span>';
@@ -273,7 +273,7 @@
     
     /* Default Delivery Time for Express Delivery */
     var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
-    $.post('http://www.nekoten.khmerqq.com/module/delivery_time.php',{lang:lang, location:delivery_to}, function(data){
+    $.post(url+'module/delivery_time.php',{lang:lang, location:delivery_to}, function(data){
         var a = JSON.parse(data);
         $('.uu #express_delivery_time').text(a['text']);
         $('.et #delivery_time').text(a['text']); 
@@ -294,7 +294,7 @@
         var delivery_time = $('#order #delivery_time').attr('value');
         
         
-        $.post('http://www.nekoten.khmerqq.com/app/place_order.php', 
+        $.post(url+'app/place_order.php', 
         {cart:cart, delivery_fee:delivery_fee, total_price:total_price,ordered_by:ordered_by,
         location:location, message:message, shipping_addr_id:shipping_addr_id,
         payment_method:payment_method, delivery_time:delivery_time},
@@ -312,7 +312,7 @@
         
     }
     
-    $.post('http://www.nekoten.khmerqq.com/module/date_select.php',{lang:lang}, function(data){        
+    $.post(url+'module/date_select.php',{lang:lang}, function(data){        
         a = JSON.parse(data);
         for (var i = 0; i < a.length; i++){
             var str = '<li value="'+a[i]['val']+'"';
@@ -327,7 +327,7 @@
     
     loadSelectTime('default');
     function loadSelectTime(chosen_date){        
-        $.post('http://www.nekoten.khmerqq.com/module/time_select.php',{lang:lang, chosen_date:chosen_date}, function(data){
+        $.post(url+'module/time_select.php',{lang:lang, chosen_date:chosen_date}, function(data){
             a = JSON.parse(data);
             $('.yo #choose_time_ul').html('');
             for (var i = 0; i < a.length; i++){

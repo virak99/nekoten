@@ -53,8 +53,9 @@
     $('#register_form input').on('blur', function(){
             $(this).siblings('.input-close').hide();
     });
-    $('#register_form .input-close').on('click', function(){
+    $('#register_form .input-close').on('tap', function(){
         $(this).hide();
+        $(this).siblings('input').focus();
         $(this).siblings('input').val('');
     });
     
@@ -69,7 +70,7 @@
         } else if (password.length == 0) {
             alert('Please enter your password.');
         } else {
-            $.post('http://www.nekoten.khmerqq.com/app/register.php',{full_name:full_name, phone:phone, password:password},function(data){
+            $.post(url+'app/register.php',{full_name:full_name, phone:phone, password:password},function(data){
                 var a = JSON.parse(data);
                 
                 if (a['result'] == 'success'){

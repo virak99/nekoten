@@ -47,8 +47,9 @@
     $('#sign_in_form input').on('blur', function(){
             $(this).siblings('.input-close').hide();
     });
-    $('#sign_in_form .input-close').on('click', function(){
+    $('#sign_in_form .input-close').on('tap', function(){
         $(this).hide();
+        $(this).siblings('input').focus();
         $(this).siblings('input').val('');
     });
     $("#sign_in_form").submit(function(e){

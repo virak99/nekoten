@@ -8,17 +8,37 @@ function setDefault(name, value){
 }
 
 /* Initial */
-
 setDefault('language', 'en');
 setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
 setDefault('delivery_fee', '0');
 setDefault('user_id', 'not_login');
 
-
 var lang = localStorage.getItem('language');
 var user_id = localStorage.getItem('user_id');
+var url = 'http://www.nekoten.sangskrit.com/';
 
+/* Load Shopping Cart Label */
 
+if (localStorage.getItem('shopping_cart') != null){
+    var cart = localStorage.getItem('shopping_cart').split(',');
+    var n_cart = 0;
+    for (var i = 1; i < cart.length; i++){
+        n_cart += parseInt(cart[i].split(':')[2]);
+    }
+    
+    setTimeout(function() {
+        
+        $('.badge').text(n_cart);
+      
+    }, 500);
+} else {
+    setTimeout(function() {
+    
+        $('.badge').hide();
+        
+    }, 500);
+    
+}
 
 /* Fix ontap */
 $(document).on('tap', '[ontap]', function(){
@@ -39,7 +59,7 @@ function selectLocation(name_en, name_kh){
     updateDeliveryTo(name_en, name_kh);
 }
 
-$.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
+$.post(url+'app/location.php',{}, function(data){
     var arr = JSON.parse(data);        
     for (var i = 0; i < arr.length; i++){
         var a = arr[i];
@@ -72,7 +92,7 @@ function postAddress(){
         var coordinate = $('#shipping_info_form #coordinate').val();
     }
     
-    $.post('http://www.nekoten.khmerqq.com/app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
+    $.post(url+'app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
         address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
         function(data){
             if (data == 'success'){               
@@ -99,7 +119,7 @@ function getLocation(){
 
 function isLogined(){
     var a = localStorage.getItem('user_id');
-    return (typeof a !== 'undefined' && a !== null);
+    return (typeof a !== 'undefined' && a !== '');
 }
 
 
@@ -151,7 +171,7 @@ function myAlert(en, kh){
 function loadShippingAddr(selected_id){
     var user_id = localStorage.getItem('user_id');
     $('.qw .shipping_address_item').html('');
-    $.post('http://nekoten.khmerqq.com/app/shipping_address.php', {user_id:user_id}, function(data){
+    $.post(url+'app/shipping_address.php', {user_id:user_id}, function(data){
         var a = JSON.parse(data);        
         if (a.length == 0){            
             var str = '<div class="u">';
@@ -238,10 +258,10 @@ function shippingInfoItem(a){
 
 function loadCart(){        
     var shopping_cart = localStorage.getItem('shopping_cart');
-    if (!shopping_cart){
+    if (shopping_cart == ''){
         $('#no_item_in_cart').show();        
-        $('.cart-footer').hide();        
-        
+        $('.cart-footer').hide(); 
+        $('.badge').hide();
     } else {        
         
         $('#no_item_in_cart').hide();            
@@ -266,11 +286,11 @@ function loadCart(){
                 var ad = JSON.parse(data)[0];        
                 subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
                 var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
-                    str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
+                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'cart\')" style="width:'+size_l+'px;height:'+size_l+'px">';
                         str += '<img src="http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
                     str += '</div>';
                     str += '<div class="b">';
-                        str += '<div class="c">'+ad['title']+'</div>';
+                        str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
                         str += '<div class="cc"><span class="ion-checkmark-round"></span><span k=" មានក្នុងស្តុក"> In Stock</span></div>';
                         str += '<div class="e">';
                             str += '<div class="dd">'+ad['price']+'</div>';
@@ -291,7 +311,9 @@ function loadCart(){
             });                 
         }
         $('.cart_count').text(cart_count);
+        
         $('.badge').text(cart_count);
+        $('.badge').show();
         
     }
 }
@@ -334,10 +356,10 @@ function updateDeliveryTo(name_en, name_kh, fee){
     loadCart();
 }
 
-function loadProduct(ad_id){  
+function loadProduct(ad_id, page){  
     $('#related_products').html('');
     
-    $.post('http://www.nekoten.khmerqq.com/app/product.php',{ad_id:ad_id, lang:lang},function(data){
+    $.post(url+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
         
         var ad = JSON.parse(data)[0];
         $('#title').html(ad['title']);
@@ -345,15 +367,19 @@ function loadProduct(ad_id){
         var img = ad['image'].split(',');
         
         /* Update product view */
-        $.post('http://nekoten.khmerqq.com/app/update_view.php',{ad_id:ad_id});
+        $.post(url+'app/update_view.php',{ad_id:ad_id});
         
         $('#ad_image').trigger('destroy.owl.carousel');
         //$('#ad_image').html($('#ad_image').find('.owl-stage-outer').html()).removeClass('owl-loaded');
         for (var i = 0; i < img.length; i++){
-            var img_url = 'http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/'+img[i];
+            var img_url = url+'ads/'+ad['ad_id']+'/'+img[i];
             
             $('#ad_image').append('<img id="ad-img-'+(i+1)+'" src="'+img_url+'" onclick="viewFullScreen('+img.length+')">');
+            
+            
         }
+        
+        
         $('#ad_image').owlCarousel({
             responsive:{
                 0:{
@@ -364,13 +390,14 @@ function loadProduct(ad_id){
         
         /* Check Wishlist */
         var wishlist = localStorage.getItem('wishlist');
+        
         if (wishlist.includes(','+ad_id)){
-            $('.wishlist-btn').addClass('added');
-        } else {
+            $('.wishlist-btn').addClass('added');            
+        } else {            
             $('.wishlist-btn').removeClass('added');
         }
         /*
-        $.post('http://nekoten.khmerqq.com/ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+        $.post(url+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
             if (data == 'existed'){
             
             }
@@ -385,21 +412,7 @@ function loadProduct(ad_id){
         $('.pp #discount').html('-'+ad['discount']+'%');
         var qty = ad['quantity'];
         $('.pp #quantity').html(qty);
-        /*
-        $.post('http://nekoten.khmerqq.com/module/quantity_panel.php',{lang:lang,qty:qty}, function(data){
-            $('.pp #quantity').html(data);
-        });
         
-        if (qty == 0){
-            t += '<span class="sold-out">SOLD OUT</span>';
-        } else if (qty <= 10){
-            t += '<span class="item-left">'+qty+' item';
-            if (qty > 1) t += 's';
-            t += ' left</span>';
-        } else {
-            t += '<span class="in-stock">IN STOCK</span>';
-        }
-        */
         
         
         $('.ii #rate').html(ad['rate']);
@@ -418,7 +431,7 @@ function loadProduct(ad_id){
                 var ad = arr[i];            
                 var ad_id = ad['ad_id'];  
                 
-                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
+                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \'home\');" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
@@ -439,56 +452,78 @@ function loadProduct(ad_id){
         $('#ad_images').show();
     });
     
-    
-    /*
-    $.post('http://www.nekoten.khmerqq.com/app/question.php',{ad_id:ad_id},function(data){
-        var arr = JSON.parse(data);
-        $('#question_panel #question').html('');
-        $('question_panel #n_question').text(arr[0]['nq']);
-        for (var i = 0; i < arr.length; i++){
-            var q = arr[i];
-            var str = '<div class="b">';
-                str += '<div class="c">';
-                    str += '<img src="http://www.nekoten.khmerqq.com/users/'+q['posted_by']+'/profile.jpg">';
-                str += '</div>';
-                str += '<div class="d">';
-                    str += '<div class="g">';
-                        str += '<span class="e">'+q['full_name']+'</span>';
-                        str += '<span class="f">'+q['posted_date']+'</span>';
-                    str += '</div>';
-                    str += '<div class="h">'+q['question']+'</div>';
-                str += '</div></div>';
-            $('#question_panel #question').append(str);
-        }        
-    });
-    */
-    loadQuestionList('panel');
-    window.location.href='#tab/product/';    
+    loadQuestionReviewList('question', 'panel', ad_id);
+    loadQuestionReviewList('review', 'panel', ad_id);
+    window.location.href='#tab/product-'+page;    
 }
 
 
-function loadQuestionList(opt){
-    var ad_id = $('#ad_id').val();
-    $.post('http://www.nekoten.khmerqq.com/app/question.php',{ad_id:ad_id},function(data){
-        var arr = JSON.parse(data);
-        $('#question_'+opt+' #question').html('');
-        $('#question_'+opt+' #n_question').text(arr[0]['nq']);
-        for (var i = 0; i < arr.length; i++){
-            var q = arr[i];
+function loadQuestionReviewList(type, opt, AD_ID){
+    if (AD_ID == '') var ad_id = $('#product_body #ad_id').val();        
+    else var ad_id = AD_ID;
+    
+    $.post(url+'app/question_review.php',{type:type, ad_id:ad_id},function(data){        
+        var arr = JSON.parse(data);        
+        /* Default Value */
+        $('#'+type+'_'+opt+' #'+type).html('');
+        /*
+        $('#'+type+'_modal #'+type).html('');
+        $('#'+type+'_panel #n_'+type).text(0);
+        $('#'+type+'_modal #n_'+type).text(0);
+        */      
+        if (arr.length == 0){
             
-            var str = '<div class="b">';
-                str += '<div class="c">';
-                    str += '<img src="http://www.nekoten.khmerqq.com/users/'+q['posted_by']+'/profile.jpg">';
-                str += '</div>';
-                str += '<div class="d">';
-                    str += '<div class="g">';
-                        str += '<span class="e">'+q['full_name']+'</span>';
-                        str += '<span class="f">'+q['posted_date']+'</span>';
+            $('#'+type+'_'+opt+' #n_'+type).text(0);
+            var str = '<div class="bb">';
+            if (type == 'question'){
+                if (lang == 'en') str += 'No Question'; else str += 'គ្មានសំនួរ';
+            } else {
+                if (lang == 'en') str += 'No Review'; else str += 'គ្មានរង្វាយតម្លៃ';
+            }            
+            str += '</div>';
+            $('#'+type+'_'+opt+' #'+type).append(str);
+            
+            var str = '<div class="bc">';            
+            if (type == 'question'){
+                if (lang == 'en') str += 'Ask Question'; else str += 'សួរសំនួរ';
+            } else {
+                if (lang == 'en') str += 'Write a Review'; else str += 'សរសេររង្វាយតម្លៃ';
+            }            
+            str += '</div>';
+            if (opt == 'panel') $('#'+type+'_panel #'+type).append(str);
+        } else {
+            $('#'+type+'_'+opt+' #n_'+type).text(arr[0]['num_rows']);
+            if (opt == 'panel') var end = 3; else var end = arr.length;
+            for (var i = 0; i < end; i++){
+                var q = arr[i];
+                
+                var str = '<div class="b">';
+                    str += '<div class="c">';
+                        str += '<img src="'+url+'users/'+q['posted_by']+'/profile.jpg">';
                     str += '</div>';
-                    str += '<div class="h">'+q['question']+'</div>';
-                str += '</div></div>';
-            $('#question_'+opt+' #question').append(str);
-        }        
+                    str += '<div class="d">';
+                        str += '<div class="g">';
+                            str += '<span class="e">';
+                            str += '<span class="ee">'+q['full_name']+'</span>';
+                            if (type == 'review'){
+                                if (lang == 'en') str += ' rated '; else str += ' បានវាយតម្លៃ ';
+                                str += '<span class="fa fa-star"></span> ';
+                                str += q['rate'];
+                            }
+                            str += '</span>';
+                            str += '<span class="f">'+q['posted_date']+'</span>';
+                        str += '</div>';
+                        str += '<div class="h">'+q['data']+'</div>';
+                        
+                        if (type == 'question' && q['answer'] != ''){
+                            str += '<div class="i">';
+                            if (lang == 'en') str += 'Seller: '; else str += 'អ្នកលក់: ';
+                            str += '<span>'+q['answer']+'</span></div>';
+                        }                    
+                    str += '</div></div>';                
+                    $('#'+type+'_'+opt+' #'+type).append(str);
+            }               
+        }
     });
 }
 
@@ -496,28 +531,42 @@ function loadQuestionList(opt){
 function searchClick(){ 
     $('.cancel').show();    
 }
-function cancelClick(){
-   $('.search-bar .cancel').hide();
-   $('.search-bar .search').val('');
-   $('.search-form').html('');
-   $('.search-form').height('0');
+function cancelClick(){       
+    $('.search-bar .search').val('');
+    $('.search-form').html('');
+    $('.search-form').height('0');
+    $('.search-bar .cancel').hide();
+    
 }
 function addSearchHistory(keyword){
     var a = localStorage.getItem('search_history');
-    if (!a.includes(','+keyword)){
-        a = ','+keyword + a;
+    var c = '';
+    if (a == null){
+        c = ','+keyword;
+    } else if (!a.includes(','+keyword)){
+        c = ','+keyword + a;        
+    } else {        
+        b = a.split(',');        
+        var d = b.length;
+        if (d > 9) d = 9;
+        for (var i = 1; i < d; i++){
+            if (b[i] != keyword) c += ',' + b[i];
+        }
+        c += ',' + c;
     }
-    localStorage.setItem('search_history', a);
+    
+    localStorage.setItem('search_history', c);
     loadSearchHistory();
 }
-/*
+
+
 function search(keyword){    
     $('#search_res_item').html('');
     cancelClick();
-    searchProduct(keyword); 
+    searchProduct(keyword, 'best_match'); 
     window.location.href = '#tab/search_res';
 }
-*/
+
 
 
 function searchKeyword(tab){
@@ -530,12 +579,11 @@ function searchKeyword(tab){
         $.post('http://www.nekoten.khmerqq.com/app/search.php',{q:q},function(data){
             var arr = JSON.parse(data);
             $('.search-form').html('');
-            $('.search-form').height('800px');
+            $('.search-form').height('800px');            
             for (var i = 0; i < arr.length; i++){
                 var ad = arr[i];
                 var str = '<ion-item class="item item-complex" onclick="search(\''+ad['keyword']+'\')")>';
-                str += '<a class="item-content">'+ad['keyword']+'</a></ion-item>';
-                //$('.search-form').append('<li onclick="$(\'#search_res_item\').html(\'\'); cancelClick(); searchProduct(\''+ad['keyword']+'\'); window.location.href=\'#tab/search_res\'")>'+ad['keyword']+'</li>');
+                str += '<a class="item-content">'+ad['keyword']+'</a></ion-item>';                
                 $('.search-form').append(str);
                 
                 
@@ -545,25 +593,68 @@ function searchKeyword(tab){
 }
 
 function submitSearchForm(tab){
-    var keyword = $('#'+tab).val();
-    searchProduct(keyword);;
-    cancelClick(); 
-    window.location.href = '#tab/search_res';
-    addSearchHistory(keyword);
+    var keyword = $('#'+tab).val();        
+    if (keyword != ''){
+        window.location.href = '#tab/search_res';    
+        searchProduct(keyword, 'best_match');            
+        addSearchHistory(keyword);    
+        cancelClick();
+    }
 }
 
-function searchProduct(keyword) {
+function searchProduct(keyword, opt) {
+    
+    var size_l = '120';
+    var size_g = ($(window).width()-30)/2;
+    $('#search_res_item').html('');
+    
+    $.post(url+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword, opt:opt},function(data){
+        
+        var arr = JSON.parse(data);            
+        for (var i = 0; i < arr.length; i++){
+            var ad = arr[i];                
+            var ad_id = ad['ad_id'];
+                var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
+                str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
+                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+url+'ads/'+ad['ad_id']+'/1.jpg">';
+                str += '</div>';
+                str += '<div class="b">';
+                    str += '<div class="c">'+ad['title']+'</div>';
+                    str += '<div class="e">';
+                        str += '<div class="d">'+ad['price']+'</div>';
+                        str += '<div class="g">'+ad['n_order']+' Orders</div>';
+                    str += '</div>';
+                str += '</div>';
+            str += '</li>';                
+            $('#search_res_item').append(str);            
+        }   
+        
+        if (arr.length < 2) loadOtherProducts(keyword);
+    });
+    
+
+    setTimeout(function() {
+        $('#search-res').val(keyword);        
+        $('#search_res_keyword').val(keyword);                
+    }, 100);
+}
+    
+function loadOtherProducts(keyword){
     
     var size_l = '120';
     var size_g = ($(window).width()-30)/2;
     
-    $.post('http://www.nekoten.khmerqq.com/app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword},function(data){
-        var arr = JSON.parse(data);
-        //$('#search_res_item').html('');
-        for (var i = 0; i < arr.length; i++){
-            var ad = arr[i];
+    $('#no_res_keyword').text("'"+keyword+"'");
+    $('#no_res').show();
+    $('.other-products').show();
+
+    /* Other Products */                    
+    $.post('http://www.nekoten.khmerqq.com/app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
+        var arr2 = JSON.parse(data2);        
+        for (var j = 0; j < arr2.length; j++){
+            var ad = arr2[j];                    
             var ad_id = ad['ad_id'];
-            var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\');">';
+                var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
                 str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
@@ -574,14 +665,13 @@ function searchProduct(keyword) {
                         str += '<div class="g">'+ad['n_order']+' Orders</div>';
                     str += '</div>';
                 str += '</div>';
-            str += '</li>';
-            $('#search_res_item').append(str);
-        }        
+            str += '</li>';                
+            $('#other_products').append(str);
+        }      
     });
-    setTimeout(function() {
-        $('#search-search-res').val(keyword);
-    }, 100);
 }
+        
+    
 
 function la(){
     if (localStorage.getItem('language') == 'kh'){

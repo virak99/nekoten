@@ -13,24 +13,61 @@
 </div>
 <!-- /Shipping Info Modal -->
 
+
+<!-- Question Modal -->
+<div id="submit_review_modal" class="modal">
+    <div class="header-title"><span k="សរសេររង្វាយតម្លៃ">Write a Review</span> (<span id="n_question">0</span>)</div>
+    <div class="back" onclick="closeModal('submit_review_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body qs">
+        <div id="submit_review_modal">
+                
+        </div>        
+        <btn clas
+    </ion-content>    
+    
+</div>
+<!-- /Question Modal -->
+
+
+
 <!-- Question Modal -->
 <div id="question_modal" class="modal">
-    <div class="header-title"><span k="សំនួរ">Question</span> (<span id="n_question"></span>)</div>
+    <div class="header-title"><span k="សំនួរ">Question</span> (<span id="n_question">0</span>)</div>
     <div class="back" onclick="closeModal('question_modal')">
         <span class="close ion-ios-close-empty"></span>
-    </div>
-    
+    </div>    
     <ion-content class="sm-modal-body qs">
         <div id="question">
             
-        </div>
+        </div>        
     </ion-content>    
     <div class="question-footer">
-        <input placeholder="Ask about the product" k="សួរអំពីផលិតផល">
-        <button k="សួរ">Ask</button>
+        <input id="question_body" placeholder="Ask about the product" k="សួរអំពីផលិតផល">
+        <button ontap="askQuestion()" k="សួរ">Ask</button>
     </div>
 </div>
 <!-- /Question Modal -->
+
+
+<!-- Review Modal -->
+<div id="review_modal" class="modal">
+    <div class="header-title"><span k="រង្វាយតម្លៃ">Review</span> (<span id="n_review">0</span>)</div>
+    <div class="back" onclick="closeModal('review_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body qs">
+        <div id="review">
+            
+        </div>        
+    </ion-content>    
+    <div class="question-footer" ontap="openModal('submit_review_modal')">
+        <input id="review_body" placeholder="Write a review" k="វាយតម្លៃផលិតផល">
+        <button k="បញ្ជូន">Submit</button>
+    </div>
+</div>
+<!-- /Review Modal -->
 
 <div class="back" ng-click="myGoBack()" onclick="$('#ad_image').html(''); $('#product_body').hide(); $('#ad_images').hide(); $('.tab-nav').show();">
     <span class="ion-ios-arrow-left"></span>
@@ -43,6 +80,8 @@
         <div id="ad_images" style="display:none">
             <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
             <div class="helper" onclick="removeFullScreen()"></div>
+            
+        
             <div class="home-slider owl-carousel owl-theme" id="ad_image">
 
             </div>
@@ -52,6 +91,7 @@
             
         </div>
         
+            
         <div id="product_body">        
             <input id="ad_id" type="text" style="display:none">
             <div class="w" id="title"></div>
@@ -88,8 +128,8 @@
                     </div>
                     <div class="c">
                         <span k="ទទួលទំនិញ">Receive Product</span>
-                        <strong id="delivery_day">Today</strong>
-                        <strong id="delivery_time">08:00 - 09:00</strong>    
+                        <strong id="delivery_day"></strong>
+                        <strong id="delivery_time"></strong>    
                     </div>
                     <div class="fa fa-angle-right"></div>                    
                 </a>
@@ -110,8 +150,8 @@
             </div>
         </div>
         <div class="bt">
-            <span class="h" ontap="loadQuestionList('modal'); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
-            <span class="i" k="ដាក់ចូលកន្ត្រក" ontap="addToCart();">Add to Cart</span>
+            <span class="h" ontap="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
+            <span class="i" k="ដាក់ចូលកន្ត្រក" ontap="addToCart()">Add to Cart</span>
         </div>
         <div class="hr"></div>
         <div class="pd">
@@ -119,9 +159,16 @@
             <div class="b" id="desc"></div>
         </div>
         <div class="hr"></div>
-        <div class="qs" id="question_panel" onclick="loadQuestionList('modal'); openModal('question_modal')">
+        <div class="qs" id="question_panel" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')">
             <div class="a" k="សំនួរ និង ចម្លើយ">Question (<span id="n_question">0</span>)</div>
             <div id="question">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="qs" id="review_panel" onclick="loadQuestionReviewList('review', 'modal', ''); openModal('review_modal')">
+            <div class="a" k="រង្វាយតម្លៃ">Review (<span id="n_review">0</span>)</div>
+            <div id="review">
             
             </div>
         </div>
@@ -161,17 +208,21 @@
     var size = $(window).width();
     
     /* Related Products */    
-    $.post('http://www.nekoten.khmerqq.com/app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
+    $.post(url+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
         var a_wh = (size-30)/2;                    
         var arr = JSON.parse(data);   
+        
+        var b = window.location.href.split('/');
+        var page = b[b.length-1].split('-')[1];
+        if (page == 'wishlist') page = 'account';
         
         for (var i = 0; i < arr.length; i++){            
             var ad = arr[i];            
             var ad_id = ad['ad_id'];  
             
-            var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
+            var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \''+page+'\');" class="ad-item">';
                 str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
+                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+url+'ads/'+ad['ad_id']+'/1_m.jpg">';
                 str += '</div>';
                 str += '<div class="a">';
                     str += '<span class="aa">'+ad['price']+'</span>';
@@ -184,17 +235,40 @@
         la();                                               
     });
             
+    
+    function askQuestion(type){
+        var body = $('#question_body').val();
+        var ad_id = $('#product_body #ad_id').val();
         
+        
+        $.post(url+'/app/ask_question.php',{body:body,ad_id:ad_id,user_id:user_id}, function(data){
+            if (data.includes('success')){
+                loadQuestionReviewList('question', 'panel', '');
+                loadQuestionReviewList('question', 'modal', '');
+                myAlert('Question submitted', 'សំនួរត្រូវបានបង្ហោះរួចរាល់។');
+                $('#alert .confirm').on('click', function(){
+                    closeModal('question_modal');
+                });                
+            }
+        });
+        
+        
+    }
         
         
         
     function wishlist(){
         var ad_id = $('#product_body #ad_id').val();
-        $.post('http://nekoten.khmerqq.com/ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+        
+        $.post(url+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+            
             if (data.includes('existed')){
                 $('.wishlist-btn').removeClass('added');                
-            } else if (data.includes('success')){
-                $('.wishlist-btn').addClass('added');                
+            } else if (data.includes('success')){                
+                myAlert('Added to Wishlist', 'បានដាក់ចូលក្នុងទំនិញចង់បានរួចរាល់');
+                $('#alert .confirm').on('click', function(){
+                    $('.wishlist-btn').addClass('added');                
+                });
             }
             
         });   
@@ -315,7 +389,7 @@
         $('.owl-dots').show();
     }
     
-    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
+    $.post(url+'app/location.php',{}, function(data){
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];

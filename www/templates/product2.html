@@ -157,7 +157,7 @@
             <div class="b" id="related_products">
                 <ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
                 <div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                    <img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
+                    <img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.sangskrit.com/ads/'+ad['ad_id']+'/1_m.jpg">';
                 </div>';
                 <div class="a">';
                     <span class="aa">'+ad['price']+'</span>';
@@ -280,7 +280,7 @@
         $('.owl-dots').show();
     }
     
-    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
+    $.post(url+'app/location.php',{}, function(data){
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];

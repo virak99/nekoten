@@ -1,12 +1,11 @@
 <div class"app-header">
     <form class="search-bar search-res" onsubmit="submitSearchForm('search-res');">
-        <div class="back" ng-click="myGoBack()" onclick="$('#search_res_item').html('')">
+        <div class="back" ng-click="myGoBack()" onclick="exitSearchResult()">
             <span class="ion-ios-arrow-left"></span>
         </div>
         <i class="icon ion-search"></i>
-        <input onkeyup="searchKeyword('search-res')" k="ខ្ញុំកំពុងស្វែងរក ..." id="search-search-res" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
-    
-        <span onclick="cancelClick()" class="cancel" k="បិទ">Cancel</span>
+        <input autocorrect="off" autocapitalize="off" onkeyup="searchKeyword('search-res')" k="ខ្ញុំកំពុងស្វែងរក ..." id="search-res" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
+        <span ontap="cancelClick()" class="cancel" k="បិទ">Cancel</span>
     </form>
     <ul class="search-form">
         
@@ -14,6 +13,7 @@
 </div>
 <ion-view hide-nav-bar="true" style="margin-top:65px">
     <ion-content>
+    <input type="hidden" id="search_res_keyword">
         <div class="sr">
             <div class="a">
                 <div class="b" onclick="toggleSortBy()">
@@ -43,7 +43,7 @@
                         <span class="fa fa-check" style="display:none"></span>  
                     </a>
                 </ion-item>
-                <ion-item class="item item-complex" id="num_rating" onclick="sortBy('num_rating')">
+                <ion-item class="item item-complex" id="date_added" onclick="sortBy('date_added')">
                     <a class="item-content">
                         <span class="e" k="ថ្ងៃដាក់លក់ (ថ្មី ទៅ ចាស់)">Date Added (New to Old)</span>
                         <span class="fa fa-check" style="display:none"></span>   
@@ -52,8 +52,10 @@
             </ul>
         </div>
         <div class="wrap">
+        
             <ul id="search_res_item">
-          
+            <script>
+            /*
                 <li class="p-list item item-complex">
                 <a class="item-content">
                     <div class="a">
@@ -67,28 +69,37 @@
                         </div>
                     </div>
                     </a>
-                </li>
-                 <li class="p-list item item-complex">
-                <a class="item-content">
-                    <div class="a">
-                        <img src="img/1.jpg" style="width:100%">
-                    </div>
-                    <div class="b">
-                        <div class="c">KISSCASE For iPhone 7 Phone Case For iphone 5 5s 6 6s Case 3 in 1 360 Full Protective PC Phone Cases For iPhone 6 6s Plus 7 Plus</div>
-                        <div class="e">
-                             <div class="d">$3.30</div>
-                            <div class="g">5 Orders</div>
-                        </div>
-                    </div>
-                    </a>
-                </li>
+                </li>*/
                 
-            <ul>
+                </script>
+            </ul>
+            <center id="no_res" style="display:none">
+                <span k="គ្មានលទ្ធផលស្វែងរកសំរាប់ពាក្យ ">No result found for keyword </span>
+                <span id="no_res_keyword"></span>
+            </center>
+            <div class="other-products new-arrival" style="display:none">
+                <h3 k="ទំនិញផ្សេងទៀត">Other Products</h3>
+            </div>                
+            
+            <ul id="other_products">
+            
+            </ul>
+                  
         </div>
     </ion-content>
 </ion-view>
 <script>
     la();
+    
+    function exitSearchResult(){
+        
+        $('#search_res_item').html('');
+        $('#no_res').hide();        
+        $('.other-products').hide();
+        $('#other_products').html('');
+        
+    }
+    
     function changeViewMode(){
         var size_l = '120';
         var size_g = ($(window).width()-30)/2;
@@ -128,10 +139,12 @@
         }
     }
     function sortBy(opt){
+        var keyword = $('#search_res_keyword').val();
         $('#sort_by').text($('.sr #'+opt+' .e').text());
         $('.sr .fa-check').hide();
         $('.sr #'+opt+' .fa-check').show();
-        toggleSortBy();
+        toggleSortBy();        
+        searchProduct(keyword, opt);
     }
     
     

@@ -43,7 +43,7 @@
         var user_id = localStorage.getItem('user_id');
         alertConfirm('Remove from Wishlist?', 'លុបចេញពីទំនិញចង់បាន?');            
         $('#alert_confirm .confirm').on('click', function(){                                      
-            $.post('http://www.nekoten.khmerqq.com/module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
+            $.post(url+'module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
                 if (data == 'success'){
                     loadWishlist();
                 }
@@ -53,7 +53,7 @@
     function loadWishlist(){
         var user_id = localStorage.getItem('user_id');
         var size_l = '120';
-        $.post('http://www.nekoten.khmerqq.com/app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
+        $.post(url+'app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
             $('#wishlist-panel').html('');
             var a = JSON.parse(data);        
             for (var i = 0; i < a.length; i++){

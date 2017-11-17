@@ -16,7 +16,7 @@
     
     la();
     
-    $.post('http://www.nekoten.khmerqq.com/app/location.php',{}, function(data){
+    $.post(url+'app/location.php',{}, function(data){
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];    

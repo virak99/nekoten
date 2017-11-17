@@ -5,7 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
+
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -115,7 +117,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
     .state('tab.all_categories', {
-    url: '/all_categories/',
+    url: '/all_categories',
     views: {
       'search': {
         templateUrl: 'templates/all_categories.html',
@@ -133,8 +135,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
     
-    .state('tab.product', {
-      url: '/product/',
+   
+    .state('tab.product-home', {
+      url: '/product-home',
       views: {
         'home': {
           templateUrl: 'templates/product.html',
@@ -142,8 +145,35 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('tab.product-wishlist', {
+      url: '/product-wishlist',
+      views: {
+        'account': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.product-search', {
+      url: '/product-search',
+      views: {
+        'search': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.product-cart', {
+      url: '/product-cart',
+      views: {
+        'cart': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
     .state('tab.product2', {
-      url: '/product2/',
+      url: '/product2',
       views: {
         'home': {
           templateUrl: 'templates/product2.html',
@@ -151,6 +181,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    
   .state('tab.account', {
     url: '/account',
     views: {

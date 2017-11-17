@@ -11,6 +11,7 @@
     <link href="lib/ionic/css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/alert-confirm.css" rel="stylesheet">
+    
 
     <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
@@ -29,6 +30,7 @@
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
     <script src="js/main.js"></script>
+    
   </head>
 
   <body ng-app="starter">
@@ -170,8 +172,9 @@
     $('#shipping_info_form input').on('blur', function(){
             $(this).siblings('.input-close').hide();
     });
-    $('#shipping_info_form .input-close').on('click', function(){
+    $('#shipping_info_form .input-close').on('tap', function(){
         $(this).hide();
+        $(this).siblings('input').focus();
         $(this).siblings('input').val('');
     });
     
@@ -202,6 +205,19 @@
         </div>    
     </div>
     
+    <script>
+        /*
+        alertConfirm(en, kh);
+        $('#alert_confirm .confirm').on('click', function(){
+        
+        });
+        myAlert(en, kh);
+        $('#alert .confirm').on('click', function(){
+        
+        });
+        */
+    </script>
+
     <div class="ms-alert" id="alert">
         <div class="ms-alert-body">
             <div class="ms-alert-header"></div>            

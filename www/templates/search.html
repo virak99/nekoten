@@ -1,8 +1,8 @@
 <div class"app-header">
     <form class="search-bar" onsubmit="submitSearchForm('search-search');">
         <i class="icon ion-search"></i>
-        <input onkeyup="searchKeyword('search');" k="ខ្ញុំកំពុងស្វែងរក ..." id="search-search" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
-        <span onclick="cancelClick()" k="បិទ" class="cancel">Cancel</span>
+        <input autocorrect="off" autocapitalize="off" onkeyup="searchKeyword('search');" k="ខ្ញុំកំពុងស្វែងរក ..." id="search-search" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
+        <span ontap="cancelClick()" k="បិទ" class="cancel">Cancel</span>
     </form>
     <ul class="search-form">
         
@@ -11,7 +11,7 @@
 <ion-view hide-nav-bar="true" style="margin-top:65px">
     <ion-content>
         <div class="fv item item-complex">            
-            <a class="item-content" href="#tab/all_categories/">
+            <a class="item-content" href="#tab/all_categories">
                 <span class="ion-ios-list-outline a"></span> 
                 <span  k="ប្រភេទទាំងអស់">All Categories</span>
                 <span class="fa fa-angle-right"></span>
@@ -30,19 +30,22 @@
 </ion-view>
 <script>
     
-    localStorage.setItem('search_history', ',Phone,Watch,Clothes,Anker,Shiseido');
+    //localStorage.setItem('search_history', ',Phone,Watch,a,b,c,d');
     loadSearchHistory();
     function loadSearchHistory(){        
         $('.sh .b').html('');
-        var a = localStorage.getItem('search_history').split(',');
-        if (a.length > 0) $('.sh .c').show();
-        for (var i = 1; i < a.length; i++){       
-            var str = '<ion-item class="item item-complex" onclick="searchProduct(\''+a[i]+'\');">';
-            str += '<a class="item-content" href="#tab/search_res">';
-            str += a[i];
-            str += '</a></ion_item>';
-            
-            $('.sh .b').append(str);
+        search_history = localStorage.getItem('search_history');
+        if (search_history != null){
+            var a = search_history.split(',');
+            if (a.length > 0) $('.sh .c').show();
+            for (var i = 1; i < a.length; i++){       
+                var str = '<ion-item class="item item-complex" onclick="searchProduct(\''+a[i]+'\', \'best_match\');">';
+                str += '<a class="item-content" href="#tab/search_res">';
+                str += a[i];
+                str += '</a></ion_item>';
+                
+                $('.sh .b').append(str);
+            }
         }
     }
     
