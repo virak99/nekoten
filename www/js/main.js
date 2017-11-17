@@ -258,7 +258,7 @@ function shippingInfoItem(a){
 
 function loadCart(){        
     var shopping_cart = localStorage.getItem('shopping_cart');
-    if (shopping_cart == ''){
+    if (shopping_cart == '' || shopping_cart == null){
         $('#no_item_in_cart').show();        
         $('.cart-footer').hide(); 
         $('.badge').hide();
@@ -266,7 +266,7 @@ function loadCart(){
         
         $('#no_item_in_cart').hide();            
         $('.cart-footer').show();        
-        var cart = localStorage.getItem('shopping_cart').split(',');
+        var cart = shopping_cart.split(',');
         var size_l = '120';       
         var subtotal = 0;
         var cart_count = 0;
@@ -281,13 +281,13 @@ function loadCart(){
             var qty = cart[j].split(':')[2];                
             cart_count += parseInt(qty);
             
-            $.post('http://www.nekoten.khmerqq.com/app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
+            $.post(url+'app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
                 
                 var ad = JSON.parse(data)[0];        
                 subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
                 var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
                     str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'cart\')" style="width:'+size_l+'px;height:'+size_l+'px">';
-                        str += '<img src="http://nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
+                        str += '<img src="'+url+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
                     str += '</div>';
                     str += '<div class="b">';
                         str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
@@ -423,7 +423,7 @@ function loadProduct(ad_id, page){
         
         
         /* Related Products */    
-        $.post('http://www.nekoten.khmerqq.com/app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
+        $.post(url+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
             var a_wh = (size-30)/2;                    
             var arr = JSON.parse(data);   
             
@@ -433,7 +433,7 @@ function loadProduct(ad_id, page){
                 
                 var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \'home\');" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
+                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+url+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="a">';
                         str += '<span class="aa">'+ad['price']+'</span>';
@@ -576,7 +576,7 @@ function searchKeyword(tab){
         $('.search-form').html('');
         $('.search-form').height('0');
     } else {
-        $.post('http://www.nekoten.khmerqq.com/app/search.php',{q:q},function(data){
+        $.post(url+'app/search.php',{q:q},function(data){
             var arr = JSON.parse(data);
             $('.search-form').html('');
             $('.search-form').height('800px');            
@@ -649,14 +649,14 @@ function loadOtherProducts(keyword){
     $('.other-products').show();
 
     /* Other Products */                    
-    $.post('http://www.nekoten.khmerqq.com/app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
+    $.post(url+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
         var arr2 = JSON.parse(data2);        
         for (var j = 0; j < arr2.length; j++){
             var ad = arr2[j];                    
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
                 str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
-                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1.jpg">';
+                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+url+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';
                     str += '<div class="c">'+ad['title']+'</div>';
