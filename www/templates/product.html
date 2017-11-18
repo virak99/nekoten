@@ -14,21 +14,45 @@
 <!-- /Shipping Info Modal -->
 
 
-<!-- Question Modal -->
-<div id="submit_review_modal" class="modal">
-    <div class="header-title"><span k="សរសេររង្វាយតម្លៃ">Write a Review</span> (<span id="n_question">0</span>)</div>
+<!-- Submit Review Modal -->
+<div id="submit_review_modal" class="modal" style="z-index:110">
+    <div class="header-title"><span k="សរសេររង្វាយតម្លៃ">Write a Review</span></div>
     <div class="back" onclick="closeModal('submit_review_modal')">
         <span class="close ion-ios-close-empty"></span>
     </div>    
-    <ion-content class="sm-modal-body qs">
-        <div id="submit_review_modal">
-                
-        </div>        
-        <btn clas
+    <ion-content class="sm-modal-body">
+        <div class="wr">
+            <div class="a">
+                <div class="b">
+                    <img id="rv_img">
+                </div>
+                <div class="c" id="rv_title">
+                    Vong Virak Vong Virak Vong Virak Vong Virak
+                </div>
+            </div>
+        </div>    
+        <div class="hr"></div>
+        <div class="wt">
+            <div class="a">
+                <div class="b" k="សូមវាយតម្លៃផលិតផលនេះ">Please rate this product</div>
+                <input id="review_rate" type="hidden" value="0">
+                <div class="c">
+                    <span id="r1" class="fa fa-star"></span>
+                    <span id="r2" class="fa fa-star"></span>
+                    <span id="r3" class="fa fa-star"></span>
+                    <span id="r4" class="fa fa-star"></span>
+                    <span id="r5" class="fa fa-star"></span>
+                    <span id="rate_text"></span>
+                </div>
+            </div>
+            <div class="d">
+                <textarea id="review_text" rows="6" placeholder="Write your review about product (Delivery, Packaging etc)" k="សូមសរសេរវាយតំលៃអំពីផលិតផល (ការដឹកជញ្ជូន ការវេចខ្ចប់ ល។)"></textarea>
+            </div>
+            <button class="btn" ontap="submitReview()" k="បញ្ចូនរង្វាយតម្លៃ">Submit Review</button>        
+        </div>
     </ion-content>    
-    
 </div>
-<!-- /Question Modal -->
+<!-- /Submit Review Modal -->
 
 
 
@@ -62,9 +86,16 @@
             
         </div>        
     </ion-content>    
-    <div class="question-footer" ontap="openModal('submit_review_modal')">
-        <input id="review_body" placeholder="Write a review" k="វាយតម្លៃផលិតផល">
-        <button k="បញ្ជូន">Submit</button>
+    <div class="question-footer" ontap="closeModal('review_modal'); openModal('submit_review_modal')">
+        <center>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+        </center>
+        <center k="សរសេររង្វាយតម្លៃរបស់អ្នក">Submit your Review</center>
     </div>
 </div>
 <!-- /Review Modal -->
@@ -76,7 +107,15 @@
 </div>
         
 <ion-view hide-nav-bar="true">
-    <ion-content class="no-tabs">        
+    <ion-content class="no-tabs"> 
+    <script>/*
+    <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
+        <ion-slide ng-repeat="chat in chats">
+            <img ng-src="{{chat.face}}">
+        </ion-slide>
+    </ion-slide-box>
+    */</script>
+    
         <div id="ad_images" style="display:none">
             <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
             <div class="helper" onclick="removeFullScreen()"></div>
@@ -208,7 +247,7 @@
     var size = $(window).width();
     
     /* Related Products */    
-    $.post(url+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
+    $.post(URL+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
         var a_wh = (size-30)/2;                    
         var arr = JSON.parse(data);   
         
@@ -222,7 +261,7 @@
             
             var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \''+page+'\');" class="ad-item">';
                 str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+url+'ads/'+ad['ad_id']+'/1_m.jpg">';
+                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                 str += '</div>';
                 str += '<div class="a">';
                     str += '<span class="aa">'+ad['price']+'</span>';
@@ -236,12 +275,12 @@
     });
             
     
-    function askQuestion(type){
+    function askQuestion(){
         var body = $('#question_body').val();
         var ad_id = $('#product_body #ad_id').val();
         
         
-        $.post(url+'/app/ask_question.php',{body:body,ad_id:ad_id,user_id:user_id}, function(data){
+        $.post(URL+'/app/ask_question.php',{body:body,ad_id:ad_id,user_id:user_id}, function(data){
             if (data.includes('success')){
                 loadQuestionReviewList('question', 'panel', '');
                 loadQuestionReviewList('question', 'modal', '');
@@ -260,7 +299,7 @@
     function wishlist(){
         var ad_id = $('#product_body #ad_id').val();
         
-        $.post(url+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+        $.post(URL+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
             
             if (data.includes('existed')){
                 $('.wishlist-btn').removeClass('added');                
@@ -389,7 +428,7 @@
         $('.owl-dots').show();
     }
     
-    $.post(url+'app/location.php',{}, function(data){
+    $.post(URL+'app/location.php',{}, function(data){
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];
@@ -403,6 +442,46 @@
         load('delivery_to');
         la();
     });
+    
+    
+    
+    /* Submit Review */
+
+    $('.wt .c .fa').on('tap', function(){
+        var a = parseInt($(this).attr('id')[1], 10);
+        var rate_en = ['Very Poor', 'Poor', 'Neutral', 'Good', 'Excellent'];
+        var rate_kh = ['អន់', 'មធ្យម', 'ល្អបង្គួរ', 'ល្អ', 'ល្អប្រសើរ'];
+
+        if (lang == 'en') var str = rate_en[a-1]; else str = rate_kh[a-1]; 
+        $('.wt .c #rate_text').text(str);
+        $('.wt #review_rate').val(a);
+        
+        for (var i = 1; i <= a; i++){
+            $('.wt .c #r'+i).addClass('fa-star selected');
+        }
+        if (a < 5) {
+            for (var j = (a+1); j <= 5; j++){
+                $('.wt .c #r'+j).removeClass('selected');
+            }
+        }
+    });
+    
+    function submitReview(){
+        var ad_id = $('#product_body #ad_id').val();
+        var review = $('.wt #review_text').val();
+        var rate = $('.wt #review_rate').val();
+        
+        $.post(URL+'/app/submit_review.php', {user_id:user_id, ad_id:ad_id, review:review, rate:rate}, function(data){
+            if (data.includes('success')){
+                loadQuestionReviewList('review', 'panel', ad_id);
+                myAlert('Thank you for your review.', 'សូមអរគុណសំរាប់ការវាយតម្លៃរបស់លោកអ្នក ។');
+                $('#alert .confirm').on('click', function(){                        
+                    closeModal('submit_review_modal');                        
+                });
+            }
+        });
+    }
+        
     
     
     

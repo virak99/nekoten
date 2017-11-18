@@ -16,7 +16,7 @@
     
     la();
     
-    $.post(url+'app/location.php',{}, function(data){
+    $.post(URL+'app/location.php',{}, function(data){
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];    

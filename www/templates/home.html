@@ -17,16 +17,17 @@
         <input id="all" type="hidden" value="0">
     
         <div class="home">
-
+            <a href="#tab/iframe">Iframe</a>
+        
             <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
                 <ion-slide>
-                    <img src="img/slide-1.jpg">
+                    <img ng-src="img/slide-1.jpg">
                 </ion-slide>
                 <ion-slide>
-                    <img src="img/slide-2.jpg">
+                    <img ng-src="img/slide-2.jpg">
                 </ion-slide>
                 <ion-slide>
-                    <img src="img/slide-3.jpg">
+                    <img ng-src="img/slide-3.jpg">
                 </ion-slide>
             </ion-slide-box>
             
@@ -60,7 +61,7 @@
    
     
     var size = $(window).width();        
-    $.post(url+'app/new_arrival.php',{size:size},function(data){
+    $.post(URL+'app/new_arrival.php',{size:size},function(data){
         $('#data').val(data);  
         $('#all').val(JSON.parse(data).length);
         loadMore();
@@ -86,7 +87,7 @@
                 
                 var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \'home\');" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg">';
+                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="a">';
                         str += '<span class="aa">'+ad['price']+'</span>';
@@ -106,7 +107,7 @@
 
     //getLocation();
     
-    $.post(url+'app/category.php',{},function(data){
+    $.post(URL+'app/category.php',{},function(data){
         var cate = JSON.parse(data);
         for (var i = 0; i < cate.length; i++){
             var c = cate[i];            

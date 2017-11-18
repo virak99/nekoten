@@ -1,3 +1,35 @@
+<div id="order_placed_modal" class="modal">
+    <div class="header-title">
+        <span class="ion-checkmark-circled"></span>
+        <span k="បញ្ជាកម្មង់ទិញរួចរាល់">Order Complete </span>        
+    </div>
+    <div class="modal-body">
+        <div class="sk">
+            <div class="a">
+                <img src="img/nekoten.png">
+            </div>
+            <div class="b">
+                <div class="c" k="សូមអរគុណចំពោះការកម្មង់ទំនិញ">
+                    Thank you for your order
+                </div>
+                <div class="d">                                    
+                    <span class="e" k="តម្លៃ: ">Amount: </span> 
+                    <span class="f">$ 123</span>
+                </div>
+            </div>
+        </div>   
+        <div class="hr"></div>
+        <div class="sd">
+            <button ontap="closeModal('order_placed_modal');" k="ការកម្មង់របស់ខ្ញុំ">My Order</button>
+            <button ontap="closeModal('order_placed_modal'); window.location.href='#tab\home'">Nekoten Home</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <div class"app-header">
     <div class="header-title"><span k="កន្ត្រកទំនិញ">Cart</span> (<span class="cart_count">0</span>)</div>
 </div>
@@ -89,7 +121,7 @@
                 } else {
                     d += c[2];
                 }
-            }
+            }            
             localStorage.setItem('shopping_cart', d);
             loadCart();
             

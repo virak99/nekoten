@@ -70,7 +70,7 @@
         } else if (password.length == 0) {
             alert('Please enter your password.');
         } else {
-            $.post(url+'app/register.php',{full_name:full_name, phone:phone, password:password},function(data){
+            $.post(URL+'app/register.php',{full_name:full_name, phone:phone, password:password},function(data){
                 var a = JSON.parse(data);
                 
                 if (a['result'] == 'success'){

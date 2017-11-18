@@ -19,7 +19,7 @@
     
     function submitFeedback() {
         var message = $('#message').val();
-        $.post(url+'app/feedback.php', {message:message}, function(data){
+        $.post(URL+'app/feedback.php', {message:message}, function(data){
             if (data == 'success') {
                 $('#message').text('');
                 myAlert('Thank you for your feedback!', 'សូមអរគុណចំពោះមតិយោបល់');

@@ -58,7 +58,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
-  
+  .state('tab.iframe', {
+    url: '/iframe',
+    views: {
+      'home': {
+        templateUrl: 'templates/iframe.html',
+        controller: 'NavCtrl'
+      }
+    }
+  })
 
   .state('tab.cart', {
       url: '/cart',
@@ -102,6 +110,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         views: {
             'account': {
                 templateUrl: 'templates/my_order.html',
+                controller: 'NavCtrl'
+            }
+        }
+    })
+    .state('tab.order_detail', {
+        url: '/order_detail',
+        views: {
+            'account': {
+                templateUrl: 'templates/order_detail.html',
                 controller: 'NavCtrl'
             }
         }

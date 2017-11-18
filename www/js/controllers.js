@@ -1,10 +1,11 @@
 angular.module('starter.controllers', [])
 
 
-.controller('ScrollCtrl', function($scope, $ionicScrollDelegate) {
+.controller('ScrollCtrl', function($scope, $ionicScrollDelegate, Chats) {
   $scope.data = {
     title : ""
   };
+  $scope.chats = Chats.all();
   $scope.onComplete = function() {    
     var scrollTop = $ionicScrollDelegate.getScrollPosition().top;        
     if (($(window).height() - scrollTop) < 300){
@@ -31,7 +32,9 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('NavCtrl', function($scope, $location, $ionicHistory, $state){
+.controller('NavCtrl', function($scope, $location, $ionicHistory, $state, Chats){
+        $scope.chats = Chats.all();
+
         $scope.myGoBack = function() {
            $backView = $ionicHistory.backView();
            if ($backView != null){
@@ -46,13 +49,15 @@ angular.module('starter.controllers', [])
         $scope.refresh = function (page) {
             if (page == 'shipping_addr'){
                 loadShippingAddr();
+            } else if (page == 'my_order'){
+                loadMyOrder();
             } else {
-                $.post('http://nekoten.khmerqq.com/app/get_info.php',{name:page}, function(data){
+                $.post(URL+'app/get_info.php',{name:page}, function(data){
                     $('#'+page).html(data);
-                    la();
-                    $scope.$broadcast('scroll.refreshComplete');
-                });
+                    la();                    
+                });                
             }
+            $scope.$broadcast('scroll.refreshComplete');
         }
         
 

@@ -1,82 +1,128 @@
 <div class"app-header">
-    <div class="header-title" k="ការកម្មង់របស់ខ្ញុំ">My Order</div>
+    <div class="header-title" k="ការកម្មង់របស់ខ្ញុំ">My Orders</div>
     <div class="back" ng-click="myGoBack()">
         <span class="ion-ios-arrow-left"></span>
     </div>
 </div>
-<ion-view hide-nav-bar="true" class="header-view">
-    <ion-content>
-        <div class="wrap">
-            <ul id="wishlist-panel" class="cart">
-                <script>
-                /*
-                <li class="p-list">
+<ion-view hide-nav-bar="true" class="header-view">    
+    <ion-content>        
+        <ion-refresher on-refresh="refresh('my_order')"></ion-refresher>
+        <div id="my-order-panel">                
+        <script>
+            /*
+            <div class="uj">
+                <div class="a">
+                    <span class="b" k="កាលបរិច្ឆេទ">Order Date: </span>
+                    <span id="order_date">2913</span>
+                </div>
+                <div class="a">
+                    <span class="b">Order ID: </span>
+                    <span id="order_id">02139</span>
+                </div>
+            </div>
+            <ul class="cart">
+                <li class="p-list" >                    
                     <div class="a">
                         <img src="img/1.jpg" style="width:100%;height:100%">
                     </div>
                     <div class="b">
-                        <div class="c">Vong Virak My name is </div>
-                            <div class="cc">
-                                <span class="ion-checkmark-round"></span>
-                                <span k=" មានក្នុងស្តុក"> In Stock</span>
-                            </div>
+                        <div class="c">
+                            Vong Virak My name is Vong Virak My name isVong Virak My name is                            
+                        </div>    
                         <div class="ee">
-                            <div class="dd">$ 3.30</div>
-                      
-                      <div class="i">
-                                <span class="delete ion-ios-trash-outline"></span>
-                            </div>
+                            <div class="dd">
+                                <span>$ 3</span>
+                                <span>x 5</span>
+                            </div>                                                    
                         </div>
                     </div>
-                </li>
-                */
-                </script>
-                
+                </li>                                                     
             </ul>
+            <div class="hr"></div>
+            */
+        </script>
+            
         </div>
     </ion-content>
 </ion-view>
 <script>
     la();
-    loadWishlist();
+    loadMyOrder();
     function removeWishlist(ad_id){
         var user_id = localStorage.getItem('user_id');
         alertConfirm('Remove from Wishlist?', 'លុបចេញពីទំនិញចង់បាន?');            
         $('#alert_confirm .confirm').on('click', function(){                                      
-            $.post(url+'module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
+            $.post(URL+'module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
                 if (data == 'success'){
                     loadWishlist();
                 }
             });       
         });        
     }
-    function loadWishlist(){
+    function loadMyOrder(){
         var user_id = localStorage.getItem('user_id');
-        var size_l = '120';
-        $.post(url+'app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
-            $('#wishlist-panel').html('');
-            var a = JSON.parse(data);        
+        $.post(URL+'app/my_order.php', {user_id:user_id, size_l:SIZE_L}, function (data){        
+            $('#my-order-panel').html('');
+            var a = JSON.parse(data);                 
             for (var i = 0; i < a.length; i++){
-                var ad = a[i];
-                var str = '<li class="p-list">';
+                var b = a[i];  
+                var str = '<div class="item-complex item"><a href="#tab/order_detail" class="item-content">'
+                    str += '<div class="uj">';
                         str += '<div class="a">';
-                            str += '<img src="http://www.nekoten.khmerqq.com/ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
+                            str += '<span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>';
+                            str += '<span>'+b['ordered_date']+'</span>';
                         str += '</div>';
-                        str += '<div class="b">';
-                            str += '<div class="c">'+ad['title']+'</div>';
-                                str += '<div class="cc">';
-                                    str += '<span class="ion-checkmark-round"></span>';
-                                    str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';
-                                str += '</div>';
-                            str += '<div class="ee">';
-                                str += '<div class="dd">'+ad['price']+'</div>';
-                          str += '<div class="i">';
-                                    str += '<span ontap="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
-                                str += '</div>';
-                            str += '</div>';
+                        str += '<div class="a">';
+                            str += '<span class="b">Order ID: </span>';
+                            str += '<span>'+b['id']+'</span>';
                         str += '</div>';
-                    str += '</li>';
-                $('#wishlist-panel').append(str);
+                    str += '</div>';
+                    str += '<ul class="cart">';
+                    
+                    var c = b['ads'];
+                    for (j = 0; j < c.length; j++){
+                        var d = c[j];
+                        var str2 = '<li class="p-list">';                    
+                            str2 += '<div class="a">';
+                                str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
+                            str2 += '</div>';
+                            str2 += '<div class="b">';
+                                str2 += '<div class="c">';
+                                    str2 += d['title'];
+                                str2 += '</div>';    
+                                str2 += '<div class="ee">';
+                                    str2 += '<div class="dd">';
+                                        str2 += '<span>$ 3</span> ';
+                                        str2 += '<span style="color:black">x 5</span>';
+                                    str2 += '</div>';
+                                str2 += '</div>';
+                            str2 += '</div>';
+                        str2 += '</li>';
+                        str += str2;
+                    }
+                    
+                    str += '</ul>';
+                    str += '<div class="uk">';
+                        str += '<div class="a">';                        
+                            str += '<span class="b">';
+                                str += '<span k="សរុបទំនិញ">Subtotal</span> (0 ';                                                        
+                                if (lang == 'en') str += 'item)'; else str += 'មុខ)';
+                            str += '</span>';
+                            str += '<span class="c">$ '+b['subtotal']+'</span>';                                                        
+                        str += '</div>';
+                        str += '<div class="a">';                        
+                            str += '<span class="b" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>';                                                        
+                            str += '<span class="c">$ '+b['delivery_fee']+'</span>';                                                        
+                        str += '</div>';                                                                    
+                        str += '<div class="a">';                        
+                            str += '<span class="b" k="សរុប">Total</span>';                                                        
+                            str += '<span class="d">$ '+b['total']+'</span>';                                                        
+                        str += '</div>';                                                                    
+                    str += '</div>';
+                str += '</a></div>';
+                str += '<div class="hr"></div>';
+            
+                $('#my-order-panel').append(str);
             }
             la();
         }); 

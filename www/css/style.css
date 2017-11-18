@@ -205,6 +205,19 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     height: 64px;
     overflow: hidden;
 }
+.uj{
+    width: 100%;
+    padding: 15px;
+}
+.uj .a{
+    width: 100%;
+}
+.uj .b{
+    color: #aaa;
+}
+#my-order-panel .cart{
+    padding: 0 15px;
+}
 .cart .c{
     height: 43px;
 }
@@ -215,6 +228,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     float: left;
     color: #ff3366;
 }
+
 .cart .h{
     float: left;
     margin-left: 20px;
@@ -223,6 +237,25 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     float: right;
     font-size: 20px;
 }
+.uk{
+    width: 100%;
+    padding: 15px;
+}
+.uk .a{
+    width: 100%;
+}
+.uk .b{
+    color: #aaa;
+}
+.uk .c{
+    float: right;
+    color: #aaa;
+}
+.uk .d{
+    float: right;
+    font-weight: bold;    
+}
+
 .p-list .ee{
     width: 100%;
     margin-top: 15px;
@@ -999,7 +1032,55 @@ ion-nav-view{
     width: 100%;
     z-index: 10;
 }
-
+.wr{
+    width: 100%;
+    padding: 15px;
+}
+.wr .a{
+    width: 100%;
+    display: inline-flex;
+}
+.wr .b{
+    width: 120px;
+}
+.wr .b img{
+    width: 100%;
+}
+.wr .c {
+    margin-left: 10px;
+    width: 100%;
+}
+.wt {
+    width: 100%;
+    padding: 15px;
+}
+.wt .c{
+    margin-top: 15px;
+}
+.wt .c .fa{
+    font-size: 1.5em;
+    padding: 10px;
+    color: #ddd;
+}
+.wt .c .fa.selected{
+    color: #ff3366;
+}
+.wt .c #rate_text{
+    float: right;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+.wt .d{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.wt .d textarea{
+    padding: 5px;
+    border: 1px solid #eee;
+    width: 100%;
+}
 .eq .fa-angle-right{        
     top: 50px !important;    
 }

@@ -21,7 +21,7 @@
         <ul class="mr">
             <ion-item href="#tab/my_order">
             <span class="b ion-ios-list-outline"></span>
-                <span k="ការកម្មង់របស់ខ្ញុំ">My Order</span>
+                <span k="ការកម្មង់របស់ខ្ញុំ">My Orders</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
             <ion-item href="#tab/wishlist">
@@ -36,12 +36,12 @@
             </ion-item>
             <ion-item href="#">
                 <span class="b ion-ios-chatbubble-outline"></span>
-                <span k="រង្វាយតម្លៃ">My Review</span>
+                <span k="រង្វាយតម្លៃ">My Reviews</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
             <ion-item href="#">
                 <span class="b ion-ios-help-outline"></span>
-                <span k="សំនួរ ចម្លើយ">My Question</span>
+                <span k="សំនួរ ចម្លើយ">My Questions</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
             <ion-item href="#">
@@ -66,7 +66,7 @@
             
             $('.gh #full_name').text(localStorage.getItem('full_name'));
             $('.gh #phone_number').text(localStorage.getItem('phone_number'));
-            $('.gh #profile_pic').attr('src', url+'users/'+localStorage.getItem('user_id')+'/profile.jpg');
+            $('.gh #profile_pic').attr('src', URL+'users/'+localStorage.getItem('user_id')+'/profile.jpg');
         }   
     }, 1);
 </script>

@@ -15,7 +15,8 @@ setDefault('user_id', 'not_login');
 
 var lang = localStorage.getItem('language');
 var user_id = localStorage.getItem('user_id');
-var url = 'http://www.nekoten.sangskrit.com/';
+var URL = 'http://www.nekoten.sangskrit.com/';
+var SIZE_L = '120';
 
 /* Load Shopping Cart Label */
 
@@ -59,7 +60,7 @@ function selectLocation(name_en, name_kh){
     updateDeliveryTo(name_en, name_kh);
 }
 
-$.post(url+'app/location.php',{}, function(data){
+$.post(URL+'app/location.php',{}, function(data){
     var arr = JSON.parse(data);        
     for (var i = 0; i < arr.length; i++){
         var a = arr[i];
@@ -92,7 +93,7 @@ function postAddress(){
         var coordinate = $('#shipping_info_form #coordinate').val();
     }
     
-    $.post(url+'app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
+    $.post(URL+'app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
         address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
         function(data){
             if (data == 'success'){               
@@ -171,7 +172,7 @@ function myAlert(en, kh){
 function loadShippingAddr(selected_id){
     var user_id = localStorage.getItem('user_id');
     $('.qw .shipping_address_item').html('');
-    $.post(url+'app/shipping_address.php', {user_id:user_id}, function(data){
+    $.post(URL+'app/shipping_address.php', {user_id:user_id}, function(data){
         var a = JSON.parse(data);        
         if (a.length == 0){            
             var str = '<div class="u">';
@@ -262,8 +263,9 @@ function loadCart(){
         $('#no_item_in_cart').show();        
         $('.cart-footer').hide(); 
         $('.badge').hide();
-    } else {        
-        
+        $('#cart-cart').html('');
+        $('#cart-review').html('');
+    } else {                
         $('#no_item_in_cart').hide();            
         $('.cart-footer').show();        
         var cart = shopping_cart.split(',');
@@ -281,13 +283,13 @@ function loadCart(){
             var qty = cart[j].split(':')[2];                
             cart_count += parseInt(qty);
             
-            $.post(url+'app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
+            $.post(URL+'app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
                 
                 var ad = JSON.parse(data)[0];        
                 subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
                 var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
                     str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'cart\')" style="width:'+size_l+'px;height:'+size_l+'px">';
-                        str += '<img src="'+url+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
+                        str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
                     str += '</div>';
                     str += '<div class="b">';
                         str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
@@ -306,8 +308,8 @@ function loadCart(){
                 $('#cart-cart').append(str);                            
                 $('#cart-review').append(str);                            
                 
-                $('.subtotal').text('$ '+subtotal.toFixed(2));
-                $('.total').text('$ '+(parseFloat(subtotal)+parseFloat(delivery_fee)).toFixed(2));
+                $('.subtotal').text('$ '+subtotal);
+                $('.total').text('$ '+(parseFloat(subtotal)+parseFloat(delivery_fee)));
             });                 
         }
         $('.cart_count').text(cart_count);
@@ -359,27 +361,30 @@ function updateDeliveryTo(name_en, name_kh, fee){
 function loadProduct(ad_id, page){  
     $('#related_products').html('');
     
-    $.post(url+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
+    $.post(URL+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
         
         var ad = JSON.parse(data)[0];
         $('#title').html(ad['title']);
-        
+        $('.wr #rv_title').html(ad['title']); // Submit Review
+        $('.wr #rv_img').attr('src', URL+'ads/'+ad_id+'/1_m.jpg');
         var img = ad['image'].split(',');
         
         /* Update product view */
-        $.post(url+'app/update_view.php',{ad_id:ad_id});
+        $.post(URL+'app/update_view.php',{ad_id:ad_id});
         
         $('#ad_image').trigger('destroy.owl.carousel');
         //$('#ad_image').html($('#ad_image').find('.owl-stage-outer').html()).removeClass('owl-loaded');
+        //var nn = '[';
         for (var i = 0; i < img.length; i++){
-            var img_url = url+'ads/'+ad['ad_id']+'/'+img[i];
-            
-            $('#ad_image').append('<img id="ad-img-'+(i+1)+'" src="'+img_url+'" onclick="viewFullScreen('+img.length+')">');
-            
-            
+            var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
+            //nn += '{"face":"'+img_URL+'"},';
+            $('#ad_image').append('<img id="ad-img-'+(i+1)+'" src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">');
         }
-        
-        
+        /*
+        nn = nn.substring(0,nn.length-1);
+        nn += ']';
+        localStorage.setItem('aa', nn);
+        */
         $('#ad_image').owlCarousel({
             responsive:{
                 0:{
@@ -397,7 +402,7 @@ function loadProduct(ad_id, page){
             $('.wishlist-btn').removeClass('added');
         }
         /*
-        $.post(url+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+        $.post(URL+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
             if (data == 'existed'){
             
             }
@@ -423,7 +428,7 @@ function loadProduct(ad_id, page){
         
         
         /* Related Products */    
-        $.post(url+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
+        $.post(URL+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
             var a_wh = (size-30)/2;                    
             var arr = JSON.parse(data);   
             
@@ -433,7 +438,7 @@ function loadProduct(ad_id, page){
                 
                 var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \'home\');" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+url+'ads/'+ad['ad_id']+'/1_m.jpg">';
+                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="a">';
                         str += '<span class="aa">'+ad['price']+'</span>';
@@ -455,6 +460,7 @@ function loadProduct(ad_id, page){
     loadQuestionReviewList('question', 'panel', ad_id);
     loadQuestionReviewList('review', 'panel', ad_id);
     window.location.href='#tab/product-'+page;    
+    
 }
 
 
@@ -462,7 +468,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
     if (AD_ID == '') var ad_id = $('#product_body #ad_id').val();        
     else var ad_id = AD_ID;
     
-    $.post(url+'app/question_review.php',{type:type, ad_id:ad_id},function(data){        
+    $.post(URL+'app/question_review.php',{type:type, ad_id:ad_id},function(data){        
         var arr = JSON.parse(data);        
         /* Default Value */
         $('#'+type+'_'+opt+' #'+type).html('');
@@ -499,7 +505,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
                 
                 var str = '<div class="b">';
                     str += '<div class="c">';
-                        str += '<img src="'+url+'users/'+q['posted_by']+'/profile.jpg">';
+                        str += '<img src="'+URL+'users/'+q['posted_by']+'/profile.jpg">';
                     str += '</div>';
                     str += '<div class="d">';
                         str += '<div class="g">';
@@ -576,7 +582,7 @@ function searchKeyword(tab){
         $('.search-form').html('');
         $('.search-form').height('0');
     } else {
-        $.post(url+'app/search.php',{q:q},function(data){
+        $.post(URL+'app/search.php',{q:q},function(data){
             var arr = JSON.parse(data);
             $('.search-form').html('');
             $('.search-form').height('800px');            
@@ -608,7 +614,7 @@ function searchProduct(keyword, opt) {
     var size_g = ($(window).width()-30)/2;
     $('#search_res_item').html('');
     
-    $.post(url+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword, opt:opt},function(data){
+    $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword, opt:opt},function(data){
         
         var arr = JSON.parse(data);            
         for (var i = 0; i < arr.length; i++){
@@ -616,7 +622,7 @@ function searchProduct(keyword, opt) {
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
                 str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
-                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+url+'ads/'+ad['ad_id']+'/1.jpg">';
+                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';
                     str += '<div class="c">'+ad['title']+'</div>';
@@ -649,14 +655,14 @@ function loadOtherProducts(keyword){
     $('.other-products').show();
 
     /* Other Products */                    
-    $.post(url+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
+    $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
         var arr2 = JSON.parse(data2);        
         for (var j = 0; j < arr2.length; j++){
             var ad = arr2[j];                    
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
                 str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
-                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+url+'ads/'+ad['ad_id']+'/1.jpg">';
+                    str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';
                     str += '<div class="c">'+ad['title']+'</div>';
