@@ -107,7 +107,7 @@
 </div>
         
 <ion-view hide-nav-bar="true">
-    <ion-content class="no-tabs"> 
+    <div class="no-tabs ion-content"> 
     <script>/*
     <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
         <ion-slide ng-repeat="chat in chats">
@@ -218,12 +218,12 @@
             </div>
             <div class="b">
                 <div class="c">
-                    <img src="img/nekoten.png" />
+                    <img id="seller_img" />
                 </div>
                 <div class="d">
-                    <span class="e">Neleka Shop</span> 
+                    <span class="e" id="seller_full_name"></span> 
                     <span class="f">
-                        (<span id="seller_item_num">0</span> 
+                        (<span id="seller_n_product">0</span> 
                         <span k="ទំនិញ">item</span>)
                     </span>                        
                 </div>
@@ -237,7 +237,7 @@
             </div>
         </div>
         
-    </ion-content>
+    </div>
 </ion-view>
 <script>
     $('.tab-nav').hide();

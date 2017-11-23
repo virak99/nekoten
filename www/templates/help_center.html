@@ -1,20 +1,23 @@
 <div class"app-header">
     <div class="header-title" k="ជំនួយ">Help Center</div>
-    <div class="back" ng-click="myGoBack()">
+    <div class="back" ng-click="myGoBack()" onclick="$('.tab-nav').show()">
         <span class="ion-ios-arrow-left"></span>
     </div>
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
-    <ion-content>
-        <div class="wrap2" id="help">
-        
-        </div>
+    <ion-content overflow-scroll="true">        
+    <button class="btn" ontap="loadHelp()">Refresh</button>
+        <iframe src="" class="iframe" id="help_iframe">
+        </iframe>
     </ion-content>
 </ion-view>
-<script>
-    la();      
-    $.post(URL+'app/get_info.php',{name:'help'}, function(data){
-        $('#help').html(data);
-        la();
-    });
+<script>     
+    la();
+    loadHelp();
+    function loadHelp(){
+        $('.tab-nav').hide();
+        //$('#help_iframe').attr('src', 'http://www.nekoten.sangskrit.com/app/help_content.php?id=sign_in_register&lang='+lang);
+        $('#help_iframe').attr('src', 'http://www.nekoten.sangskrit.com/app/help.php?lang='+lang);
+    }
+    
 </script>

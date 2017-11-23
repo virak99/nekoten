@@ -13,10 +13,8 @@
     </ion-content>
 </ion-view>
 <script>
-    $.post(URL+'app/get_info.php',{name:'contact_us'}, function(data){
-        $('#contact_us').html(data);
-        la();
-    });
-            
+    $.post(URL+'app/get_info.php',{name:'contact_us'}, function(data){       
+        $('#contact_us').html(JSON.parse(data)['value']);
+    });   
     
 </script>

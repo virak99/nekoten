@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
     var scrollTop = $ionicScrollDelegate.getScrollPosition().top;        
     if (($(window).height() - scrollTop) < 300){
         loadMore();
-    }    
+    }        
     
   };
   
@@ -51,6 +51,12 @@ angular.module('starter.controllers', [])
                 loadShippingAddr();
             } else if (page == 'my_order'){
                 loadMyOrder();
+            } else if (page == 'cart'){
+                loadCart();
+            } else if (page == 'wishlist'){
+                loadWishlist();
+            } else if (page == 'question'){
+                loadQuestion();
             } else {
                 $.post(URL+'app/get_info.php',{name:page}, function(data){
                     $('#'+page).html(data);

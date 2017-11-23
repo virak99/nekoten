@@ -66,7 +66,7 @@
             var a = JSON.parse(data);                 
             for (var i = 0; i < a.length; i++){
                 var b = a[i];  
-                var str = '<div class="item-complex item"><a href="#tab/order_detail" class="item-content">'
+                var str = '<div class="item-complex item"><a href="#tab/order_detail" onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
                     str += '<div class="uj">';
                         str += '<div class="a">';
                             str += '<span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>';

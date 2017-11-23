@@ -36,7 +36,7 @@
 
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content class="cart-ion-content">  
-        
+        <ion-refresher on-refresh="refresh('cart')"></ion-refresher>
         <div class="wrap">
             <center style="margin-top:30%; color:#bbb; display:none" id="no_item_in_cart">
                 <i style="font-size:100px" class="ion-bag"></i>                

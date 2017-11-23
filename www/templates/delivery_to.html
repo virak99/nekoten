@@ -20,7 +20,7 @@
         var arr = JSON.parse(data);
         for (var i = 0; i < arr.length; i++){
             var a = arr[i];    
-            var str = '<ion-item class="item item-complex" onclick="updateDeliveryTo(\''+a['name_en']+'\',\''+a['name_kh']+'\',\''+a['price']+'\');load(\'delivery_to\');">';
+            var str = '<ion-item class="item item-complex" onclick="updateDeliveryTo(\''+a['name_en']+'\'); load(\'delivery_to\');">';
                     str += '<a href="#tab/more" class="item-content"><span k="'+a['name_kh']+'">'+a['name_en']+'</span>';                    
                     str += '<span id="'+a['name_en']+'" class="fa fa-check"></span>';
                     str += '<strong class="z">$ '+a['price']+'</strong>';

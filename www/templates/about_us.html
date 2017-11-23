@@ -12,9 +12,8 @@
     </ion-content>
 </ion-view>
 <script>
-    la();
-    $.post(URL+'app/get_info.php',{name:'about_us'}, function(data){
-        $('#about_us').html(data);
+    $.post(URL+'app/get_info.php',{name:'about_us'}, function(data){       
+        $('#about_us').html(JSON.parse(data)['value']);
         la();
     });
 </script>

@@ -1,3 +1,29 @@
+/* Global Variable */
+var lang = localStorage.getItem('language');
+var user_id = localStorage.getItem('user_id');
+var URL = 'http://www.nekoten.sangskrit.com/';
+var SIZE_L = '120';
+var APP_VERSION = '1.0';
+var REMIND_UPDATE_FOR_N_TIMES = '15';
+
+/* Check Update Available */
+$.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
+    var a = JSON.parse(data);
+    var latest_version = a[0]['value'];
+    var change_log = a[1]['value'];
+    var remind_update_left = localStorage.getItem('remind_update_left'); 
+    if (latest_version > APP_VERSION){
+        if (remind_update_left < 1){
+            localStorage.setItem('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
+            $('#new_update_available_alert #change_log').html(change_log);
+            $('#new_update_available_alert').css('display', 'flex');
+        } else {
+            
+            remind_update_left--;
+            localStorage.setItem('remind_update_left', remind_update_left);
+        }
+    }
+});
 
 function setDefault(name, value){
     var a = localStorage.getItem(name);
@@ -12,11 +38,8 @@ setDefault('language', 'en');
 setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
 setDefault('delivery_fee', '0');
 setDefault('user_id', 'not_login');
+setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
 
-var lang = localStorage.getItem('language');
-var user_id = localStorage.getItem('user_id');
-var URL = 'http://www.nekoten.sangskrit.com/';
-var SIZE_L = '120';
 
 /* Load Shopping Cart Label */
 
@@ -55,16 +78,16 @@ function selectTab(tab){
 }
 
     
-function selectLocation(name_en, name_kh){
+function selectLocation(name_en){
     closeSmallModal('choose_location_modal');
-    updateDeliveryTo(name_en, name_kh);
+    updateDeliveryTo(name_en);
 }
 
 $.post(URL+'app/location.php',{}, function(data){
     var arr = JSON.parse(data);        
     for (var i = 0; i < arr.length; i++){
         var a = arr[i];
-        var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\', \''+a['name_kh']+'\')">';
+        var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\')">';
             str += '<a class="item-content">';
             str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
             str += '<span class="price-li">$ '+a['price']+' </span>';
@@ -105,6 +128,49 @@ function postAddress(){
     });                
 }
 
+function loadOrderDetail(order_id){
+    $.post(URL+'app/order.php', {order_id:order_id}, function(data){
+        var a = JSON.parse(data)[0];
+        $('#order_detail #order_date').text(a['ordered_date']);
+        $('#order_detail #order_id').text(a['id']);
+        var src = URL+'sellers/'+a['seller_id']+'/profile.jpg';
+        $('#order_detail #seller_img').attr('src', src);
+        $('#order_detail #seller_full_name').text(a['seller_name_'+lang]);
+        $('#order_detail #seller_n_product').text(a['seller_n_product']);
+        
+        var c = a['ads'];
+        var str = '';
+        for (j = 0; j < c.length; j++){
+            var d = c[j];
+
+            var str2 = '<li class="p-list">';                    
+                str2 += '<div class="a">';
+                    str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
+                str2 += '</div>';
+                str2 += '<div class="b">';
+                    str2 += '<div class="c">';
+                        str2 += d['title'];
+                    str2 += '</div>';    
+                    str2 += '<div class="ee">';
+                        str2 += '<div class="dd">';
+                            str2 += '<span>$ 3</span> ';
+                            str2 += '<span style="color:black">x 5</span>';
+                        str2 += '</div>';
+                    str2 += '</div>';
+                str2 += '</div>';
+            str2 += '</li>';
+            str += str2;
+        }
+        $('#order_detail #order_items').html(str);
+        
+    });
+    $.post(URL+'app/shipping_info.php',{order_id:order_id}, function(data){
+        var a = JSON.parse(data)[0]; 
+        var str = shippingInfoItem(a);
+        $('.xv #shipping_addr').html(str);
+        la();
+    });
+}
 
 function getLocation(){
     var onSuccess = function(position) {
@@ -201,7 +267,7 @@ function loadShippingAddr(selected_id){
                 
                 if (current_page == 'review_order'){     
                     var id = $(this).attr('value');
-                    var str = '<a class="item-content shipping-item" value="'+id+'">';
+                    var str = '<a onclick="onclick="updateDeliveryTo(\''+a['name_en']+'\');" class="item-content shipping-item" value="'+id+'">';
                     str += $(this).html();
                     str += '<span class="fa fa-angle-right"></span></a>';                                        
                     $('.eq #shipping_addr').html(str);
@@ -211,6 +277,10 @@ function loadShippingAddr(selected_id){
                         openModal('shipping_address_modal');
                     });
                     closeModal('shipping_address_modal');                    
+                } else if (current_page == 'shipping_addr'){     
+                    var id = $(this).attr('value');
+                    editAddress(id);
+                    openModal('shipping_info_modal');                    
                 }
             });
         }            
@@ -218,6 +288,17 @@ function loadShippingAddr(selected_id){
     });
 }
 
+function editAddress(id){
+    $.post(URL+'app/shipping_address.php', {id:id}, function(data){
+        var a = JSON.parse(data);
+        $('#shipping_info_modal #name').val(a['name']);
+        $('#shipping_info_modal #phone_number').val(a['phone_number']);
+        $('#shipping_info_modal #address').val(a['address']);
+        $('#shipping_info_modal #near_by').val(a['near_by']);
+        $('#shipping_info_modal #bus_name').val(a['bus_name']);
+        $('#shipping_info_modal #bus_phone_number').val(a['bus_phone_number']);
+    });
+}
 
 
 function shippingInfoItem(a){
@@ -331,31 +412,45 @@ function switchLocationTab(){
     }    
 }
 
-
-function updateDeliveryTo(name_en, name_kh, fee){
-    
-    localStorage.setItem('delivery_to', name_en+','+name_kh);
-    localStorage.setItem('delivery_fee', fee);
-    if (fee == 0) var fee2 = 'Free'; else var fee2 = '$ '+fee;
-    if (lang == 'en'){        
-        $('#shipping_info_form #location').text(name_en); // Shipping Info Page
-        $('.mr #delivery_to').text(name_en); // More Page
-        $('#product_delivery_to #delivery_to').text(name_en); // Product Page  
-        $('.lg #location').text(name_en); // Add an address  
-        $('.delivery_fee').text('$ '+ fee); // Cart & Review Order Page
-        $('#product_delivery_to #delivery_fee').text(fee2); // Product Page        
-        switchLocationTab();
+function updateAvailablePaymentMethod(){
+    var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
+    if (delivery_to == 'Phnom Penh'){
+        $('.uu #cash_on_delivery_opt').show();
     } else {
-        $('#shipping_info_form #location').text(name_kh);
-        $('.mr #delivery_to').text(name_kh);
-        $('#product_delivery_to #delivery_to').text(name_kh); // Product Page        
-        $('#product_delivery_to #delivery_fee').text(fee2); // Product Page
-        $('.lg #location').text(name_kh); // Add an address
-        $('.delivery_fee').text('$ '+ fee); // Cart & Review Order Page
-        switchLocationTab();
-    }  
-    $('.lg #location').attr('value', name_en+','+name_kh); // Add an address
-    loadCart();
+        selectPaymentMethod('transfer_money');
+        $('.uu #cash_on_delivery_opt').hide();
+    }
+}
+
+function updateDeliveryTo(name_en){
+    $.post(URL+'app/location.php', {name_en:name_en}, function(data){
+        var name_kh = JSON.parse(data)[0]['name_kh'];
+        var fee = JSON.parse(data)[0]['price'];
+        localStorage.setItem('delivery_to', name_en+','+name_kh);
+        localStorage.setItem('delivery_fee', fee);
+        if (fee == 0) var fee2 = 'Free'; else var fee2 = '$ '+fee;
+        if (lang == 'en'){        
+            $('#shipping_info_form #location').text(name_en); // Shipping Info Page
+            $('.mr #delivery_to').text(name_en); // More Page
+            $('#product_delivery_to #delivery_to').text(name_en); // Product Page  
+            $('.lg #location').text(name_en); // Add an address  
+            $('.delivery_fee').text('$ '+ fee); // Cart & Review Order Page
+            $('#product_delivery_to #delivery_fee').text(fee2); // Product Page        
+            switchLocationTab();
+        } else {
+            $('#shipping_info_form #location').text(name_kh);
+            $('.mr #delivery_to').text(name_kh);
+            $('#product_delivery_to #delivery_to').text(name_kh); // Product Page        
+            $('#product_delivery_to #delivery_fee').text(fee2); // Product Page
+            $('.lg #location').text(name_kh); // Add an address
+            $('.delivery_fee').text('$ '+ fee); // Cart & Review Order Page
+            switchLocationTab();
+        }  
+        updateAvailablePaymentMethod();
+        $('.lg #location').attr('value', name_en+','+name_kh); // Add an address
+        loadCart();
+        
+    });   
 }
 
 function loadProduct(ad_id, page){  
@@ -401,14 +496,6 @@ function loadProduct(ad_id, page){
         } else {            
             $('.wishlist-btn').removeClass('added');
         }
-        /*
-        $.post(URL+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
-            if (data == 'existed'){
-            
-            }
-            alert(data);
-        });   
-        */
         
         
         $('#ad_id').val(ad_id);
@@ -426,6 +513,11 @@ function loadProduct(ad_id, page){
         $('.ii #n_order').html(ad['n_order']);
         $('.pd #desc').html(ad['description']);
         
+        
+        var src = URL+'sellers/'+ad['seller_id']+'/profile.jpg';
+        $('#product_body #seller_img').attr('src', src);
+        $('#product_body #seller_full_name').text(ad['seller_name_'+lang]);
+        $('#product_body #seller_n_product').text(ad['seller_n_product']);
         
         /* Related Products */    
         $.post(URL+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
@@ -468,7 +560,8 @@ function loadQuestionReviewList(type, opt, AD_ID){
     if (AD_ID == '') var ad_id = $('#product_body #ad_id').val();        
     else var ad_id = AD_ID;
     
-    $.post(URL+'app/question_review.php',{type:type, ad_id:ad_id},function(data){        
+    $.post(URL+'app/question_review.php',{type:type, ad_id:ad_id},function(data){ 
+        alert(data);
         var arr = JSON.parse(data);        
         /* Default Value */
         $('#'+type+'_'+opt+' #'+type).html('');
@@ -589,7 +682,7 @@ function searchKeyword(tab){
             for (var i = 0; i < arr.length; i++){
                 var ad = arr[i];
                 var str = '<ion-item class="item item-complex" onclick="search(\''+ad['keyword']+'\')")>';
-                str += '<a class="item-content">'+ad['keyword']+'</a></ion-item>';                
+                str += '<a class="item-content">'+ad['display_keyword']+'</a></ion-item>';                
                 $('.search-form').append(str);
                 
                 

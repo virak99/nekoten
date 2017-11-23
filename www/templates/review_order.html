@@ -32,8 +32,8 @@
     <div class="back" onclick="closeModal('payment_method_modal')">
         <span class="close ion-ios-close-empty"></span>
     </div>
-    <div class="uu">
-        <div class="a item item-complex" onclick="selectPaymentMethod('cash_on_delivery')">
+    <ion-content class="uu modal-body">
+        <div id="cash_on_delivery_opt" class="a item item-complex" onclick="selectPaymentMethod('cash_on_delivery')">
             <a class="item-content">
                 <div class="b" k="បង់ប្រាក់ពេលទទួលទំនិញ" id="cash_on_delivery">Cash on Delivery</div>
                 <div class="c">
@@ -42,7 +42,7 @@
             </a>
         </div>
         
-        <div class="a item item-complex" onclick="selectPaymentMethod('transfer_money')">
+        <div id="transfer_money_opt" class="a item item-complex" onclick="selectPaymentMethod('transfer_money')">
             <a class="item-content">
                 <div class="b" k="ផ្ញើរប្រាក់តាមទូរស័ព្ទ">Transfer money</div>
                 <div class="c payment" id="transfer_money">
@@ -53,8 +53,7 @@
                 </div>
             </a>
         </div>
-        
-    </div>
+    </ion-content>
 </div>
 
 
@@ -66,7 +65,7 @@
     <div class="back" onclick="closeModal('delivery_time_modal')">
         <span class="close ion-ios-close-empty"></span>
     </div>
-    <div class="uu">
+    <ion-content class="uu modal-body">
         <div class="a item item-complex" onclick="chooseExpressDelivery()">
             <a class="item-content">
                 <div class="b" id="express_delivery_type" k="ដឹកជញ្ជូនរហ័ស">Express Delivery</div>
@@ -84,7 +83,7 @@
             </div>
             </a>
         </div>
-    </div>
+    </ion-content>
 </div>
 
 
@@ -122,7 +121,7 @@
         
         <div class="et">
             <div class="a item item-complex" onclick="openModal('payment_method_modal')">
-                <a class="item-content">
+                <a class="item-content" id="payment_method_panel">
                     <div class="b" k="របៀបបង់ប្រាក់">Payment Method</div>
                     <div class="c payment">
                         <span class="ion-cash"></span> 
@@ -198,6 +197,7 @@
 
     loadDefaultShippingInfo();
     loadCart();
+    updateAvailablePaymentMethod();
     la();         
     
     /*Fix Delivery Fee not showng */
@@ -225,8 +225,6 @@
                 openModal('shipping_address_modal');
             });
         });
-                
-        
     }
     
     

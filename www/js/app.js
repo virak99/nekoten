@@ -86,6 +86,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('tab.question', {
+      url: '/question',
+      views: {
+        'account': {
+          templateUrl: 'templates/question.html',    
+          controller: 'NavCtrl'
+        }
+      }
+    })
     .state('tab.shipping_addr', {
       url: '/shipping_addr',
       views: {

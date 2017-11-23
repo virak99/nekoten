@@ -40,13 +40,14 @@
         </ul>
         <div class="footer">
             <div class="a"><img src="img/nekoten.png"></div>
-            <div class="b">Version 1.0</div>
+            <div class="b">Version <span id="app_version"></span></div>
             <div class="c">2017 Nekoten.com.<br>All rights reserved</div>
         </div>
         
   </ion-content>
 </ion-view>
 <script>
+    $('#app_version').text(APP_VERSION);
     la();
     
     function load(page){    
