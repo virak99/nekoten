@@ -6,7 +6,6 @@ var SIZE_L = '120';
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 
-
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
     var a = JSON.parse(data);
@@ -41,10 +40,6 @@ setDefault('delivery_fee', '0');
 setDefault('user_id', 'not_login');
 setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
 var nth_page = 0;
-
-
-
-
 
 /* Load Shopping Cart Label */
 
@@ -212,12 +207,7 @@ function openModal(page){
 function closeModal(page){        
     $('#'+page).css('transform', 'translateY(100%)');    
     $('.header-view').show();        
-    var a = window.location.href.split('/');
-    var b = a[a.length-1];
-    if (!b.includes('product')){
-        $('.tab-nav').show();
-    }
-    
+    $('.tab-nav').show();
 }
 
 
@@ -312,7 +302,7 @@ function editAddress(id){
 
 
 function shippingInfoItem(a){
-    
+              
     if (a['result'] == 'success'){
         $('.eq #add_address').hide();
         var str = '<a class="item-content shipping-item" value="'+a['id']+'"><b>'+a['name']+'</b><br>';
@@ -323,18 +313,13 @@ function shippingInfoItem(a){
             str += a['near_by']+'<br>';
         }                    
         if (lang == 'en') str += 'Tel: '; else str += 'លេខទូរស័ព្ទ: ';
-        str += a['phone_number']+'<br>';
+        str += +a['phone_number']+'<br>';
         if (a['coordinate'] != '') {            
             var lat = a['coordinate'].split(',')[0].substr(0,9);
             var lng = a['coordinate'].split(',')[1].substr(0,9);
             str += 'GPS: '+lat+', '+lng;
-            
-            
-            
-            //str += '<div class="gps-map-frame" height="200"></div>';
-            
             var src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC62zOchEdNGLWgfZmgQqzmsVgyZrmQeZo&zoom=18&q='+a['coordinate'];            
-            str += '<iframe class="gps-map-frame" height="200" frameborder="0" src="'+src+'"></iframe>';            
+            str += '<iframe id="gps-map-frame" height="200" frameborder="0" src="'+src+'"></iframe>';            
         }
         if (a['bus_name'] != ''){
             str += '<div class="send-by-bus"></div>';                
@@ -469,7 +454,7 @@ function updateDeliveryTo(name_en){
 }
 
 function loadProduct(ad_id, page){  
-    $('.product_page').html('');
+    $('#related_products').html('');
     $('.tab-nav').hide();
     $.post(URL+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
         
@@ -482,26 +467,26 @@ function loadProduct(ad_id, page){
         /* Update product view */
         $.post(URL+'app/update_view.php',{ad_id:ad_id});
         
-        $('.ad_image').trigger('destroy.owl.carousel');
-        var str = '';
+        $('#ad_image').trigger('destroy.owl.carousel');
+        //$('#ad_image').html($('#ad_image').find('.owl-stage-outer').html()).removeClass('owl-loaded');
+        //var nn = '[';
         for (var i = 0; i < img.length; i++){
             var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
-            str += '<img id="ad-img-'+(i+1)+'" src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';
-            
+            //nn += '{"face":"'+img_URL+'"},';
+            $('#ad_image').append('<img id="ad-img-'+(i+1)+'" src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">');
         }
-        
-        $('.ad_image').html(str);
-        
-        
-        $('.ad_image').owlCarousel({
+        /*
+        nn = nn.substring(0,nn.length-1);
+        nn += ']';
+        localStorage.setItem('aa', nn);
+        */
+        $('#ad_image').owlCarousel({
             responsive:{
                 0:{
                     items:1
                 }
             }
         });
-        
-        
         
         /* Check Wishlist */
         var wishlist = localStorage.getItem('wishlist');
@@ -559,39 +544,34 @@ function loadProduct(ad_id, page){
         });
 
         $('#product_body').show();
-        $('.ad_images').show();
+        $('#ad_images').show();
     });
     
     loadQuestionReviewList('question', 'panel', ad_id);
     loadQuestionReviewList('review', 'panel', ad_id);
     nth_page ++;
-    window.location.href='#tab/product-'+page+'-'+nth_page;
-    if (nth_page == 3) nth_page = '0';
-    
+    window.location.href='#tab/product-'+page+'-'+nth_page;    
     
 }
 
 
 function loadQuestionReviewList(type, opt, AD_ID){
-    var ad_id = '';
-    if (opt != 'account') {
-        if (AD_ID == '') var ad_id = $('#product_body #ad_id').val();        
-        else var ad_id = AD_ID;
-    }
+    if (AD_ID == '') var ad_id = $('#product_body #ad_id').val();        
+    else var ad_id = AD_ID;
     
-    $.post(URL+'app/question_review.php',{type:type, opt:opt, ad_id:ad_id, user_id:user_id},function(data){ 
+    $.post(URL+'app/question_review.php',{type:type, ad_id:ad_id},function(data){ 
         
         var arr = JSON.parse(data);        
         /* Default Value */
         $('#'+type+'_'+opt+' #'+type).html('');
-            
+        /*
+        $('#'+type+'_modal #'+type).html('');
+        $('#'+type+'_panel #n_'+type).text(0);
+        $('#'+type+'_modal #n_'+type).text(0);
+        */      
         if (arr.length == 0){
-            if (opt == 'account') {
-                $('#account_n_question').text(0);
-            } else {
-                $('#'+type+'_'+opt+' #n_'+type).text(0);
-            }
             
+            $('#'+type+'_'+opt+' #n_'+type).text(0);
             var str = '<div class="bb">';
             if (type == 'question'){
                 if (lang == 'en') str += 'No Question'; else str += 'គ្មានសំនួរ';
@@ -610,12 +590,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
             str += '</div>';
             if (opt == 'panel') $('#'+type+'_panel #'+type).append(str);
         } else {
-            if (opt == 'account') {
-                $('#account_n_question').text(arr[0]['num_rows']);
-            } else {
-                $('#'+type+'_'+opt+' #n_'+type).text(arr[0]['num_rows']);
-            }
-            
+            $('#'+type+'_'+opt+' #n_'+type).text(arr[0]['num_rows']);
             if (opt == 'panel') var end = 3; else var end = arr.length;
             for (var i = 0; i < end; i++){
                 var q = arr[i];

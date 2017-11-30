@@ -431,16 +431,13 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     border-bottom: 1px solid #ff3366;
 }
 .cate{
-    display: inline-flex;  
-    width: 100%;
+    display: inline-flex;    
 }
 .cate li{
     padding: 20px 5px 0px 5px;
     text-align: center;
-    width: 25%;
-    border-bottom: 1px solid #eee;
-    border-right: 1px solid #eee;
-    color: #aaa;
+    overflow-x: auto;
+    width: 95px;
 }
 .cate .fa{
     font-size: 1.5em;
@@ -631,13 +628,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 #cate .owl-dots{
     display: none;
 }
-#cate li, #cate-2 li{
-    height: 80px;
-}
-.ad_image .owl-dots{
+#ad_image .owl-dots{
     text-align: left;
 }
-
 .wishlist-btn.added{
     color: #ff3366;
 }
@@ -912,7 +905,7 @@ ion-nav-view{
     text-align: center;
     z-index: 9;
 }
-.gps-map-frame{
+#gps-map-frame{
     width: 100%;     
     position: relative;
     z-index: 10;
@@ -1406,10 +1399,10 @@ ion-nav-view{
     padding: 15px;
 }
 
-.ad_images{
+#ad_images{
     position: relative;
 }
-.ad_images .close{
+#ad_images .close{
     display: none;
     position: absolute;
     top: 0;

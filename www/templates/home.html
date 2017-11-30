@@ -11,14 +11,26 @@
     </ul>
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
-    <ion-content on-scroll-complete="onComplete()">
+    <div class="ion-content" id="home" on-scroll-complete="onComplete()">
         <input id="data" type="hidden">
         <input id="start" type="hidden" value="0">
         <input id="all" type="hidden" value="0">
     
-        <div class="home">
+        <div class="home">            
+            <div class="map_canvas" style="width:100%;height:400px">
             
-        
+            </div>
+            <script>
+                $(window).geocomplete({
+                    map: ".map_canvas",
+                    mapOptions: {
+                        draggable: false,
+                        zoom: 16
+                    },                
+                    location: [52.4078567, 16.92718339999999]                        
+                });
+                </script>
+        <script>/*
             <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
                 <ion-slide onclick="window.location.href='#tab/iframe'">
                     <img ng-src="img/slide-1.jpg">
@@ -30,11 +42,41 @@
                     <img ng-src="img/slide-3.jpg">
                 </ion-slide>
             </ion-slide-box>
-            
-            
+            */</script>
+            <div class="home-slider owl-carousel owl-theme">
+                
+            </div>
+            <script> 
+                $.post(URL+'app/home_slider.php', {}, function(data){
+                    var a = JSON.parse(data);
+                    var str = '';
+                    
+                    for (var i = 0; i < a.length; i++){
+                        str += '<img src="'+a[i]['img_src']+'">';
+                    }
+                    $('.home-slider').html(str);
+                    $('.home-slider').owlCarousel({
+                        loop:true,
+                        margin:10,
+                        autoplay:true,
+                        autoplayTimeout:5000,
+                        autoplayHoverPause:true,
+                        responsive:{
+                            0:{
+                                items:1
+                            }
+                        }
+                    });
+                });
+                
+                
+            </script>
             
             <ul class="cate owl-carousel owl-theme" id="cate">
-            
+                
+            </ul>
+            <ul class="cate owl-carousel owl-theme" id="cate-2">
+                
             </ul>
             
             
@@ -51,12 +93,18 @@
             </div>
         </div>
         
-    </ion-content>
+    </div>
 </ion-view>
 
 
 <script>    
-    
+    $('#home').scroll(function() {
+        var start = parseInt($('#start').val(), 10);
+        var all = parseInt($('#all').val(), 10);
+       if(($('#new_arrival').height() - $('#home').scrollTop()) < 100 && (start < all)) {
+           loadMore();
+       }
+    });
     //window.location.href="#tab/product2/";
    
     
@@ -109,10 +157,34 @@
     
     $.post(URL+'app/category.php',{},function(data){
         var cate = JSON.parse(data);
-        for (var i = 0; i < cate.length; i++){
+        var str = '';
+        for (var i = 0; i < 4; i++){
             var c = cate[i];            
-            $('#cate').append('<li><div><span class="fa '+c['fa']+'"></span></div><div k="'+c['name_kh']+'">'+c['name_en']+'</div></li>');            
+            str += '<li>';
+                str += '<div>';
+                    str += '<span class="fa '+c['fa']+'"></span>';
+                str += '</div>';
+                str += '<div k="'+c['name_kh']+'">';
+                    str += c['name_en'];
+                str += '</div>';
+            str += '</li>';            
         }
+        $('#cate').html(str);
+        var str = '';
+        for (var i = 4; i < 8; i++){
+            var c = cate[i];            
+            str += '<li>';
+                str += '<div>';
+                    str += '<span class="fa '+c['fa']+'"></span>';
+                str += '</div>';
+                str += '<div k="'+c['name_kh']+'">';
+                    str += c['name_en'];
+                str += '</div>';
+            str += '</li>';            
+        }
+        $('#cate-2').html(str);
+        
+        /*
         $('#cate').owlCarousel({
                 margin:10,                
                 responsive:{
@@ -121,6 +193,7 @@
                     }
                 }
             });
+            */
         la();
             
     });

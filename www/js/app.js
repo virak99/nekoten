@@ -162,8 +162,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
     
    
-    .state('tab.product-home', {
-      url: '/product-home',
+    .state('tab.product-home-1', {
+      url: '/product-home-1',
+      views: {
+        'home': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.product-home-2', {
+      url: '/product-home-2',
+      views: {
+        'home': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.product-home-3', {
+      url: '/product-home-3',
       views: {
         'home': {
           templateUrl: 'templates/product.html',

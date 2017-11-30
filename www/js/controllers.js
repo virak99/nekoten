@@ -2,6 +2,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('ScrollCtrl', function($scope, $ionicScrollDelegate, Chats) {
+    /*
   $scope.data = {
     title : ""
   };
@@ -13,7 +14,7 @@ angular.module('starter.controllers', [])
     }        
     
   };
-  
+  */
 })
 
 .controller('TabCtrl', function($scope){
