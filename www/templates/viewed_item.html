@@ -1,0 +1,26 @@
+<div class="app-header">
+    <div class="header-title">
+        <span k="ទំនិញដែលទើបចូលមើល">Recently viewed Products</span> 
+        (<span id="n_viewed_item">0</span>)
+    </div>
+    <div class="back" ng-click="myGoBack()">
+        <span class="ion-ios-arrow-left"></span>
+    </div>
+</div>
+<ion-view hide-nav-bar="true" class="header-view">
+    <ion-content>
+        <ion-refresher on-refresh="refresh('viewed_item')"></ion-refresher>
+        <div class="wrap">
+            <ul id="viewed_item_panel" class="cart">
+                
+            </ul>
+        </div>
+    </ion-content>
+</ion-view>
+<script>
+
+    la();
+    loadWishlistViewedItem('viewed_item');
+    
+    
+</script>

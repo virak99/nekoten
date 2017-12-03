@@ -1,18 +1,18 @@
 <div class="app-header">
     <div class="header-title">
-        <span k="សំនួរ">Question</span> 
-        (<span id="account_n_question">0</span>)
+        <span k="រង្វាយតម្លៃ">My Review</span> 
+        (<span id="account_n_review">0</span>)
     </div>
     <div class="back" ng-click="myGoBack()">
         <span class="ion-ios-arrow-left"></span>
     </div>
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
-    <ion-content id="question_account">
-        <ion-refresher on-refresh="refresh('question')"></ion-refresher>
+    <ion-content id="review_account">
+        <ion-refresher on-refresh="refresh('review')"></ion-refresher>
             
         <div class="hg">
-            <ul id="question" class="qs">
+            <ul id="review" class="qs">
                 
             </ul>
         </div>
@@ -21,6 +21,6 @@
 <script>
 
     la();
-    loadQuestionReviewList('question', 'account', '');
+    loadQuestionReviewList('review', 'account', '');
 
 </script>

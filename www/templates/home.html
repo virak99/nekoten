@@ -1,4 +1,4 @@
-<div class"app-header">
+<div class="app-header">
     
     <form class="search-bar" onsubmit="submitSearchForm('search-home');">
         <i class="icon ion-search"></i>
@@ -17,10 +17,12 @@
         <input id="all" type="hidden" value="0">
     
         <div class="home">            
-            <div class="map_canvas" style="width:100%;height:400px">
+            
+            <script>
+            /*
+            <div class="map_canvas" style="width:100%;height:200px">
             
             </div>
-            <script>
                 $(window).geocomplete({
                     map: ".map_canvas",
                     mapOptions: {
@@ -29,6 +31,7 @@
                     },                
                     location: [52.4078567, 16.92718339999999]                        
                 });
+                */
                 </script>
         <script>/*
             <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
@@ -47,6 +50,7 @@
                 
             </div>
             <script> 
+            
                 $.post(URL+'app/home_slider.php', {}, function(data){
                     var a = JSON.parse(data);
                     var str = '';
@@ -92,7 +96,12 @@
                 
             </div>
         </div>
-        
+        <div id="loading_more">
+            <ion-spinner icon="ios"></ion-spinner>
+        </div>
+        <div id="no_more_item" style="display:none">
+            <span class="ion-ios-more-outline"></span>
+        </div>
     </div>
 </ion-view>
 
@@ -101,11 +110,11 @@
     $('#home').scroll(function() {
         var start = parseInt($('#start').val(), 10);
         var all = parseInt($('#all').val(), 10);
-       if(($('#new_arrival').height() - $('#home').scrollTop()) < 100 && (start < all)) {
-           loadMore();
-       }
+        if(($('#new_arrival').height() - $('#home').scrollTop()) < 100 && (start < all)) {
+            loadMore();
+        }
     });
-    //window.location.href="#tab/product2/";
+    
    
     
     var size = $(window).width();        
@@ -121,7 +130,11 @@
         var all = parseInt($('#all').val(), 10);
         
         var end = start + 12;        
-        if (end >= all) end = all;
+        if (end >= all) {
+            end = all;
+            $('#no_more_item').show();
+            $('#loading_more').hide();
+        }
         
         if (start < end) {
             var size = $(window).width();
@@ -160,7 +173,7 @@
         var str = '';
         for (var i = 0; i < 4; i++){
             var c = cate[i];            
-            str += '<li>';
+            str += '<li onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\'); window.location.href = \'#tab/search_res\';">';
                 str += '<div>';
                     str += '<span class="fa '+c['fa']+'"></span>';
                 str += '</div>';
@@ -172,8 +185,12 @@
         $('#cate').html(str);
         var str = '';
         for (var i = 4; i < 8; i++){
-            var c = cate[i];            
-            str += '<li>';
+            var c = cate[i];  
+            if (c['main_id'] == 0) {
+                str += '<li onclick="window.location.href=\'#tab/all_categories\'">';
+            } else {
+                str += '<li onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\'); window.location.href = \'#tab/search_res\';">';
+            }
                 str += '<div>';
                     str += '<span class="fa '+c['fa']+'"></span>';
                 str += '</div>';

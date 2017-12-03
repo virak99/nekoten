@@ -1,4 +1,4 @@
-<div class"app-header">
+<div class="app-header">
     <div class="header-title">
         <span k="ទំនិញចង់បាន">My Wishlist</span> 
         (<span id="n_wishlist">0</span>)
@@ -11,7 +11,7 @@
     <ion-content>
         <ion-refresher on-refresh="refresh('wishlist')"></ion-refresher>
         <div class="wrap">
-            <ul id="wishlist-panel" class="cart">
+            <ul id="wishlist_panel" class="cart">
                 
             </ul>
         </div>
@@ -20,7 +20,7 @@
 <script>
 
     la();
-    loadWishlist();
+    loadWishlistViewedItem('wishlist');
     function removeWishlist(ad_id){
         var user_id = localStorage.getItem('user_id');
         alertConfirm('Remove from Wishlist?', 'លុបចេញពីទំនិញចង់បាន?');            
@@ -32,38 +32,7 @@
             });       
         });        
     }
-    function loadWishlist(){
-        var user_id = localStorage.getItem('user_id');
-        var size_l = '120';
-        $.post(URL+'app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
-            $('#wishlist-panel').html('');
-            var a = JSON.parse(data);        
-            for (var i = 0; i < a.length; i++){
-                var ad = a[i];
-                var str = '<li class="p-list">';
-                        str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">';
-                            str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
-                        str += '</div>';
-                        str += '<div class="b">';                            
-                            str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
-                                str += '<div class="cc">';
-                                    str += '<span class="ion-checkmark-round"></span>';
-                                    str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';
-                                str += '</div>';
-                            str += '<div class="ee">';
-                                str += '<div class="dd">'+ad['price']+'</div>';
-                          str += '<div class="i">';
-                                    str += '<span ontap="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
-                                str += '</div>';
-                            str += '</div>';
-                        str += '</div>';
-                    str += '</li>';
-                $('#wishlist-panel').append(str);
-            }
-            la();
-            $('#n_wishlist').text(a.length);
-        }); 
-    }
+    
     
     
 </script>

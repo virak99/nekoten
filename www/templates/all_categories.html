@@ -1,6 +1,6 @@
-<div class"app-header">
+<div class="app-header">
     <div class="header-title" k="ប្រភេទទាំងអស់">All Categories</div>
-    <div class="back" ng-click="myGoBack()">
+    <div class="back" onclick="window.location.href='#tab/search'">
         <span class="ion-ios-arrow-left"></span>
     </div>
 </div>
@@ -21,12 +21,12 @@
     </ion-content>
 </ion-view>
 <script>
-    $.post(URL+'app/category.php',{},function(data){
+    $.post(URL+'app/category.php',{no_all:1},function(data){
         var cate = JSON.parse(data);
         for (var i = 0; i < cate.length; i++){
             var c = cate[i];     
             var str = '<li class="item item-complex">';
-                str += '<a href="#tab/search_res" class="item-content">';
+                str += '<a onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\'); window.location.href = \'#tab/search_res\';" class="item-content">';
                     str += '<span class="fa '+c['fa']+'"></span> ';
                     str += '<span k="'+c['name_kh']+'">'+c['name_en']+'</span>';
                     str += '<span class="fa fa-angle-right"></span>';

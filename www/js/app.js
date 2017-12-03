@@ -86,11 +86,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+    .state('tab.viewed_item', {
+      url: '/viewed_item',
+      views: {
+        'account': {
+          templateUrl: 'templates/viewed_item.html',    
+          controller: 'NavCtrl'
+        }
+      }
+    })
     .state('tab.question', {
       url: '/question',
       views: {
         'account': {
           templateUrl: 'templates/question.html',    
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.review', {
+      url: '/review',
+      views: {
+        'account': {
+          templateUrl: 'templates/review.html',    
           controller: 'NavCtrl'
         }
       }
@@ -162,8 +180,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
     
    
-    .state('tab.product-home-1', {
-      url: '/product-home-1',
+    .state('tab.product-home', {
+      url: '/product-home',
       views: {
         'home': {
           templateUrl: 'templates/product.html',
@@ -171,26 +189,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    .state('tab.product-home-2', {
-      url: '/product-home-2',
-      views: {
-        'home': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
-    .state('tab.product-home-3', {
-      url: '/product-home-3',
-      views: {
-        'home': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
+    
     .state('tab.product-wishlist', {
       url: '/product-wishlist',
+      views: {
+        'account': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.product-question', {
+      url: '/product-question',
+      views: {
+        'account': {
+          templateUrl: 'templates/product.html',
+          controller: 'NavCtrl'
+        }
+      }
+    })
+    .state('tab.product-review', {
+      url: '/product-review',
       views: {
         'account': {
           templateUrl: 'templates/product.html',

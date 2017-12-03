@@ -1,4 +1,21 @@
-<div class"app-header">
+<div class="sm-modal" id="change_name_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសថ្ងៃនិងម៉ោង">Choose Date and Time</div>
+    <div class="back" onclick="closeModal('change_name_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body" style="padding:20px 10px">
+        <div class="list">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label" id="full_name" k="ឈ្មោះ">Full Name</span>
+            <input type="text" placeholder="John">
+          </label>
+        </div>
+        <button class="btn" k="យល់ព្រម" onclick="changeName()">Okay</button>       
+    </ion-content>
+</div>
+
+<div class="app-header">
     <div class="header-title" k="ការកំណត់របស់គណនី">Account Settings</div>
     <div class="back" ng-click="myGoBack()">
         <span class="ion-ios-arrow-left"></span>
@@ -6,16 +23,18 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
-        <ul class="mr">
-            <li>            
+    
+        <ul class="mr" id="account_setting">
+            <li class="item item-complex" style="padding:0">
+                <a class="item-content" onclick="openSmallModal('change_name_modal')">
                 <span k="ឈ្មោះ">Full Name</span>
                 <span class="fa fa-angle-right"></span>
                 <span class="a" id="full_name"></span>
+                </a>
             </li>
             <li>
                 <span k="លេខទូរស័ព្ទ">Phone Number</span>
                 <span class="fa fa-angle-right"></span>
-                <span class="a" id="phone_number"></span>
             </li>
         </ul>
         <div class="hr"></div>
@@ -27,8 +46,21 @@
 </ion-view>
 <script>
     la();
-    $('.mr #full_name').text(localStorage.getItem('full_name'));
-    $('.mr #phone_number').text(localStorage.getItem('phone_number'));
+    $('#account_setting #full_name').text(localStorage.getItem('full_name'));
+    $('#account_setting #phone_number').text(localStorage.getItem('phone_number'));
+    $('#change_name_modal #change_name_modal').val(localStorage.getItem('full_name'));
+    function changeName(){
+        var full_name = $('#change_name_modal #full_name').val();
+        $.post(URL+'app/update_data.php', {item:'full_name', data:full_name, user_id:user_id}, function(data){
+            if (data.includes('success')){
+                localStorage.setItem('full_name', full_name);
+                $('#account_setting #full_name').text(full_name);
+                closeModal('change_name_modal');
+            }
+            
+        });
+        
+    }
     function signOut(){
         if(confirm('Are you sure that you want to sign out?') == true) {
             localStorage.removeItem('user_id');

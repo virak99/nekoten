@@ -101,7 +101,7 @@
 </div>
 <!-- /Review Modal -->
 
-<div class="back" ng-click="myGoBack()" onclick="$('.tab-nav').show();">
+<div id="product_page_header" class="back" ng-click="myGoBack()" onclick="$('.tab-nav').show();">
 <script>
     /*$('.ad_image').html(''); $('#product_body').hide(); $('.ad_images').hide();     
     */
@@ -112,28 +112,39 @@
 </div>
         
 
-    <div class="no-tabs ion-content"> 
-    <script>/*
-    <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
-        <ion-slide ng-repeat="chat in chats">
-            <img ng-src="{{chat.face}}">
-        </ion-slide>
-    </ion-slide-box>
-    */</script>
+    <div class="no-tabs ion-content" id="product_page_content"> 
     
         <div class="ad_images" style="display:none">
             <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
             <div class="helper" onclick="removeFullScreen()"></div>
             
         
-            <div class="ad_image home-slider owl-carousel owl-theme ">
+            <div class="ad_image home-slider owl-carousel owl-theme">
 
             </div>
             <div class="wishlist-btn" ontap="wishlist()">
                 <span class="fa fa-heart"></span>    
-            </div>
-            
+            </div>        
         </div>
+        <script>
+            var is_header_showed = false;
+            $('#product_page_content').scroll(function(){                
+                
+                if (!is_header_showed){
+                    if(($('.ad_images').height() - $('#product_page_content').scrollTop()) < 0) {
+                        is_header_showed = true;
+                        $('#product_page_header').addClass('has-header');                        
+                    }    
+                } else {
+                    if(($('.ad_images').height() - $('#product_page_content').scrollTop()) > 0) {
+                        is_header_showed = false;
+                        $('#product_page_header').removeClass('has-header');                        
+                    }    
+                }
+                
+                
+            });
+        </script>
         
             
         <div id="product_body">        
@@ -163,23 +174,23 @@
             <div class="hr"></div>
             
             <div class="et" id="product_delivery_to">
-            <div class="a item item-complex" onclick="openModal('delivery_option_product')">
-                <a class="item-content">
-                    <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
-                    <div class="c">
-                        <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
-                        <strong id="delivery_fee">Free</strong>    
-                    </div>
-                    <div class="c">
-                        <span k="ទទួលទំនិញ">Receive Product</span>
-                        <strong id="delivery_day"></strong>
-                        <strong id="delivery_time"></strong>    
-                    </div>
-                    <div class="fa fa-angle-right"></div>                    
-                </a>
+                <div class="a item item-complex" onclick="openModal('delivery_option_product')">
+                    <a class="item-content">
+                        <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
+                        <div class="c">
+                            <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
+                            <strong id="delivery_fee">Free</strong>    
+                        </div>
+                        <div class="c">
+                            <span k="ទទួលទំនិញ">Receive Product</span>
+                            <strong id="delivery_day"></strong>
+                            <strong id="delivery_time"></strong>    
+                        </div>
+                        <div class="fa fa-angle-right"></div>                    
+                    </a>
+                </div>
             </div>
         </div>
-        
         
         
         <div class="hr"></div>

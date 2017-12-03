@@ -2,6 +2,19 @@
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     color: #ff3366;
 }
+#loading_more{
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 40px 0;
+}
+#no_more_item{
+    width: 100%;
+    text-align: center;
+    padding: 20px 0 40px 0;
+}
+#no_more_item span{
+    font-size: 32px;
+}
 .ion-content{
     -webkit-overflow-scrolling: touch;
     height: 100%;
@@ -9,6 +22,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     overflow: scroll;
     padding-bottom: 100px;   
 }
+
 .iframe{
     width: 100%; 
     height: 800px;
@@ -143,7 +157,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .fa-angle-right{
     float: right;
-    font-size: 18px;
+    font-size: 22px;
     line-height: 22px;
 }
 .fv a{
@@ -282,6 +296,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     width: 100%;
     margin-top: 15px;
 }
+.cart-footer .ff{
+    margin-bottom: 10px;
+}
 .cart-footer {
     bottom: 115px;
     position: fixed;
@@ -295,10 +312,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 10px;
     position: absolute;
     top: -5px;
+    left: 0;
 }
 .cart-footer .e {
     margin-bottom: 10px;
     border-bottom: 1px solid #eee;
+    padding: 0 20px 20px 20px;
 }
 .cart-footer .g span:last-child{
     float: right;
@@ -516,22 +535,38 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .pd .b{
     margin-top: 10px;
 }
-.qs {
-    padding: 10px;
+.qs {    
     width: 100%;
 }
+.qs .ta{
+    width: 100%;
+    display: inline-flex;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+.qs .tb{
+    width: 80px;
+}
+.qs .tb img{
+    width: 100%;
+}
+.qs .tc{
+    margin-left: 10px;
+    color: #aaa;
+}
+
 .qs .a{
     font-weight: bold;
-    padding-bottom: 10px;
+    padding: 10px;
     border-bottom: 1px solid #eee;
 }
 .qs #question{
     width: 100%;
 }
-.qs .b{
-    margin-top: 10px;
+.qs .b{    
     display: inline-flex;
     width: 100%;
+    padding: 5px 10px;
 }
 .qs .i{
     width: 100%;
@@ -550,6 +585,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     color: white;
     background-color: #ff3366;
 }
+
 .qs .c {
     width: 30px;
     display: inline-flex;
@@ -642,6 +678,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     color: #ff3366;
 }
 .wishlist-btn{
+    border: 1px solid #eee;
     position: absolute;
     right: 5px;
     bottom: 0;
@@ -905,6 +942,15 @@ ion-content.modal-body{
 ion-nav-view{
     margin-bottom: 100px;
 }
+#product_page_header.has-header{
+    background-color: white;
+    height: 65px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    border-bottom: 1px solid #eee;
+}
 
 .lg .getting-gps{
     position: relative;
@@ -929,7 +975,7 @@ ion-nav-view{
     position: absolute;
     right: 20px;
     padding: 0 10px;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 .lg .a button{
     background-color: #3b5998;
@@ -1384,7 +1430,7 @@ ion-nav-view{
     top: 25px;
     z-index: 102;
     border-radius: 50%;
-    padding: 0 6px;    
+    padding: 0 6px;        
 }
 .qw .u {
     text-align: center;

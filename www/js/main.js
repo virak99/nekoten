@@ -231,6 +231,55 @@ function openSmallModal(page){
     
 }
 
+/* Input Form Close */
+$('.input-form input').on('keyup click', function(){
+    if ($(this).val() != '') {
+        $(this).siblings('.input-close').show();
+    }
+});
+$('.input-form input').on('blur', function(){
+        $(this).siblings('.input-close').hide();
+});
+$('.input-form .input-close').on('click', function(){
+    $(this).siblings('input').focus();
+    $(this).siblings('input').val('');
+});
+    
+                  
+function signInRegister(opt){
+    var full_name = $('#'+opt+'_form #full_name').val();
+    var phone = $('#'+opt+'_form #phone_number').val();
+    var password = $('#'+opt+'_form #password').val();
+    
+    if (opt == 'register' && full_name.length == 0){
+        myAlert('Please enter your full name', 'សូមបញ្ចូលឈ្មោះរបស់អ្នក');
+    } else if (phone.length == 0) {
+        myAlert('Please enter your phone number.', 'សូមបញ្ចូលលេខទូរស័ព្ទ');
+    } else if (password.length == 0) {
+        myAlert('Please enter your phone number.', 'សូមបញ្ចូលលេខលេខសំងាត់');
+    } else {
+        $.post(URL+'app/'+opt+'.php',{full_name:full_name, phone:phone, password:password},function(data){            
+            var a = JSON.parse(data);            
+            if (a['result'] == 'success'){
+                localStorage.setItem('user_id', a['user_id']);
+                localStorage.setItem('full_name', a['full_name']);
+                localStorage.setItem('phone_number', a['phone_number']);
+                localStorage.setItem('wishlist', a['wishlist']);
+                alert('Signed in');
+            } else if (a['result'] == 'phone') {
+                if (opt == 'sign_in') {
+                    myAlert('Account does not exist.', 'លេខទូរស័ព្ទមិនត្រឹមត្រូវ');                         
+                } else if (opt == 'register') {
+                    myAlert('This phone number is already in use.', 'លេខទូរស័ព្ទនេះត្រូវបានចុះឈ្មោះរួចរាល់');     
+                }
+            }  else if (opt == 'sign_in' && a['result'] == 'password') {
+                myAlert('Password is incorrect.', 'លេខសំងាត់មិនត្រឹមត្រូវ');    
+            }
+            
+        });
+    }  
+}
+
 
 function alertConfirm(en, kh){            
     if (lang == 'en') $('#alert_confirm .ms-alert-header').text(en);
@@ -469,7 +518,7 @@ function updateDeliveryTo(name_en){
 }
 
 function loadProduct(ad_id, page){  
-    $('.product_page').html('');
+    //$('.product_page').html('');
     $('.tab-nav').hide();
     $.post(URL+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
         
@@ -564,9 +613,12 @@ function loadProduct(ad_id, page){
     
     loadQuestionReviewList('question', 'panel', ad_id);
     loadQuestionReviewList('review', 'panel', ad_id);
+    window.location.href='#tab/product-'+page;
+    /*
     nth_page ++;
     window.location.href='#tab/product-'+page+'-'+nth_page;
     if (nth_page == 3) nth_page = '0';
+    */
     
     
 }
@@ -601,17 +653,19 @@ function loadQuestionReviewList(type, opt, AD_ID){
             str += '</div>';
             $('#'+type+'_'+opt+' #'+type).append(str);
             
-            var str = '<div class="bc">';            
-            if (type == 'question'){
-                if (lang == 'en') str += 'Ask Question'; else str += 'សួរសំនួរ';
-            } else {
-                if (lang == 'en') str += 'Write a Review'; else str += 'សរសេររង្វាយតម្លៃ';
-            }            
-            str += '</div>';
-            if (opt == 'panel') $('#'+type+'_panel #'+type).append(str);
+            if (opt == 'panel') {
+                var str = '<div class="bc">';            
+                if (type == 'question'){
+                    if (lang == 'en') str += 'Ask Question'; else str += 'សួរសំនួរ';
+                } else {
+                    if (lang == 'en') str += 'Write a Review'; else str += 'សរសេររង្វាយតម្លៃ';
+                }            
+                str += '</div>';
+                $('#'+type+'_panel #'+type).append(str);
+            }
         } else {
             if (opt == 'account') {
-                $('#account_n_question').text(arr[0]['num_rows']);
+                $('#account_n_'+type).text(arr[0]['num_rows']);
             } else {
                 $('#'+type+'_'+opt+' #n_'+type).text(arr[0]['num_rows']);
             }
@@ -619,8 +673,18 @@ function loadQuestionReviewList(type, opt, AD_ID){
             if (opt == 'panel') var end = 3; else var end = arr.length;
             for (var i = 0; i < end; i++){
                 var q = arr[i];
+                var str = '';
                 
-                var str = '<div class="b">';
+                if (opt == 'account') {
+                    str += '<li class="item item-complex" onclick="loadProduct(\''+q['ad_id']+'\', \'question\')"><a class="item-content">';
+                    str += '<div class="ta">';
+                        str += '<div class="tb">';
+                            str += '<img src="'+URL+'/ads/'+q['ad_id']+'/1_m.jpg">';
+                        str += '</div>';
+                        str += '<div class="tc">'+q['title']+'</div>';
+                    str += '</div>';
+                }
+                str += '<div class="b">';
                     str += '<div class="c">';
                         str += '<img src="'+URL+'users/'+q['posted_by']+'/profile.jpg">';
                     str += '</div>';
@@ -643,8 +707,15 @@ function loadQuestionReviewList(type, opt, AD_ID){
                             if (lang == 'en') str += 'Seller: '; else str += 'អ្នកលក់: ';
                             str += '<span>'+q['answer']+'</span></div>';
                         }                    
-                    str += '</div></div>';                
-                    $('#'+type+'_'+opt+' #'+type).append(str);
+                    str += '</div>';
+                str += '</div>';                
+                  
+                if (opt == 'account') {
+                    str += '</a></li>';
+                    str += '<div class="hr"></div>';
+                }
+                
+                $('#'+type+'_'+opt+' #'+type).append(str);
             }               
         }
     });
@@ -661,6 +732,43 @@ function cancelClick(){
     $('.search-bar .cancel').hide();
     
 }
+
+function loadWishlistViewedItem(opt){
+    var user_id = localStorage.getItem('user_id');
+    var size_l = '120';
+    $.post(URL+'app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
+        $('#'+opt+'_panel').html('');
+        var a = JSON.parse(data);        
+        for (var i = 0; i < a.length; i++){
+            var ad = a[i];
+            var str = '<li class="p-list">';
+                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">';
+                        str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
+                    str += '</div>';
+                    str += '<div class="b">';                            
+                        str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
+                            str += '<div class="cc">';
+                                str += '<span class="ion-checkmark-round"></span>';
+                                str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';
+                            str += '</div>';
+                        str += '<div class="ee">';
+                            str += '<div class="dd">'+ad['price']+'</div>';
+                            if (opt == 'wishlist') { 
+                                str += '<div class="i">';
+                                    str += '<span ontap="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
+                                str += '</div>';
+                            }
+                        str += '</div>';
+                    str += '</div>';
+                str += '</li>';
+            $('#'+opt+'_panel').append(str);
+        }
+        la();
+        $('#n_'+opt).text(a.length);
+    }); 
+}
+
+
 function addSearchHistory(keyword){
     var a = localStorage.getItem('search_history');
     var c = '';
@@ -730,6 +838,7 @@ function searchProduct(keyword, opt) {
     var size_l = '120';
     var size_g = ($(window).width()-30)/2;
     $('#search_res_item').html('');
+    
     
     $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword, opt:opt},function(data){
         

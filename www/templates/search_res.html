@@ -1,6 +1,6 @@
-<div class"app-header">
+<div class="app-header">
     <form class="search-bar search-res" onsubmit="submitSearchForm('search-res');">
-        <div class="back" ng-click="myGoBack()" onclick="exitSearchResult()">
+        <div class="back" onclick="exitSearchResult()">
             <span class="ion-ios-arrow-left"></span>
         </div>
         <i class="icon ion-search"></i>
@@ -92,7 +92,7 @@
     la();
     
     function exitSearchResult(){
-        
+        window.location.href = '#tab/search';
         $('#search_res_item').html('');
         $('#no_res').hide();        
         $('.other-products').hide();

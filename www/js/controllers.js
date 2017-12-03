@@ -55,9 +55,13 @@ angular.module('starter.controllers', [])
             } else if (page == 'cart'){
                 loadCart();
             } else if (page == 'wishlist'){
-                loadWishlist();
+                loadWishlistViewedItem('wishlist');
+            } else if (page == 'viewed_item'){
+                loadWishlistViewedItem('viewed_item');
             } else if (page == 'question'){
-                loadQuestion();
+                loadQuestionReviewList('question', 'account', '');
+            } else if (page == 'review'){
+                loadQuestionReviewList('review', 'account', '');
             } else {
                 $.post(URL+'app/get_info.php',{name:page}, function(data){
                     $('#'+page).html(data);

@@ -1,4 +1,4 @@
-<div class"app-header">
+<div class="app-header">
     <div class="header-title" k="គណនីរបស់ខ្ញុំ">Account</div>    
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
@@ -44,15 +44,18 @@
                 <span k="សំនួរ ចម្លើយ">My Questions</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
-            <ion-item href="#">
+            <ion-item href="#tab/viewed_item">
                 <span class="b ion-ios-eye-outline"></span>
                 <span k="ទំនិញដែលទើបចូលមើល">Recently viewed Products</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
         </ul>
         
-        <center style="margin-top:20%"><a href="#/tab/register" id="register_click">Register</a>
-    <a href="#/tab/sign_in" id="sign_in_click">Sign In</a></center>
+        <center style="margin-top:20%"><a onclick="openModal('register_modal')" id="register_click">Register</a>
+    <a onclick="openModal('sign_in_modal')" id="sign_in_click">Sign In</a></center>
+    
+    <center style="margin-top:20%"><a href="#tab/sign_in" id="register_click">Register</a>
+    <a href="#tab/register" onclick="openModal('sign_in_modal')" id="sign_in_click">Sign In</a></center>
    
   </ion-content>
 </ion-view>

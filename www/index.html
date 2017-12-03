@@ -74,6 +74,91 @@
     </ion-content>
 </div>    
 
+
+<div id="register_modal" class="modal">
+    <div class="header-title" k="ចុះឈ្មោះ">Register</div>
+    <div class="back" onclick="closeModal('register_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <div class="modal-body">
+        <center>
+            <img src="img/nekoten.png" width="100" alt="" />            
+        </center>
+        <div class="lg">            
+            <div class="a">
+                <button><span class="fa fa-facebook-official"></span> <span k="ចុះឈ្មោះតាម Facebook">Register with Facebook</span></button>                
+            </div>
+            <div class="b">_______________OR_______________</div>
+            <div class="c">
+                <form id="register_form" class="input-form" onsubmit="signInRegister('register')">                
+                    <div class="d">
+                        <div class="e"><span class="ion-person"></span></div>
+                        <div class="f"><input k="ឈ្មោះ" id="full_name" placeholder="Full Name" type="text">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-telephone"></span></div>
+                        <div class="f"><input k="លេខទូរស័ព្ទ" id="phone_number" placeholder="Phone Number" type="numbeer" pattern="\d*">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-locked"></span></div>
+                        <div class="f"><input k="លេខសំងាត់" id="password" placeholder="Password" type="password">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="g">
+                        <button onclick="submitRegister()" type="submit" k="បង្កើតគណនី">Create my Account</button>                
+                    </div>
+                </form>
+            </div>
+            <div class="i"><span k="បានចុះឈ្មោះរួចហើយ?">Already have an account? </span><a href="#tab/sign_in" k="ចុះឈ្មោះ">Sign in</a></div>
+        </div>
+    </div>
+</div>
+
+   
+<div id="sign_in_modal" class="modal">
+    <div class="header-title" k="ចូលគណនី">Sign In</div>
+    <div class="back" onclick="closeModal('sign_in_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <div class="modal-body">
+        <center>
+            <img src="img/nekoten.png" width="100" alt="" />            
+        </center>
+        <div class="lg">
+            <div class="a">
+                <button><span class="fa fa-facebook-official"></span> <span k="ចូលគណនីតាម Facebook">Sign in with Facebook</span></button>                
+            </div>
+            <div class="b">_______________OR_______________</div>
+            <div class="c">
+                <form id="sign_in_form" class="input-form" onsubmit="signInRegister('sign_in')">
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-telephone"></span></div>
+                        <div class="f"><input id="phone_number" k="ទូរស័ព្ទ" placeholder="Phone Number" type="number" pattern="\d*">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-locked"></span></div>
+                        <div class="f"><input id="password" k="លេខសំងាត់" placeholder="Password" type="password">
+                            <span style="display:none" class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="g">
+                        <button type="submit" k="ចូលគណនីតាមលេខទូរស័ព្ទ">Sign in with Phone Number</button>
+                    </div>
+                </form>
+            </div>
+            <div class="h" k="ភ្លេចលេខទូរស័ព្ទ">Forget Password?</div>
+            <div class="i"><span k="គ្មានគណនីនៅឡើយ?">Don't have Account yet?</span><a href="#tab/register" k="ចុះឈ្មោះឥឡូវនេះ">Register now</a></div>
+        </div>
+    </div>
+</div>
+
    
    
 <div id="shipping_info_modal" class="modal">
@@ -83,7 +168,7 @@
     </div>
     <div class="lg">
         <div class="cc">
-            <form id="shipping_info_form">
+            <form id="shipping_info_form" class="input-form">
                 <div class="d">
                     <div class="e"><span class="ion-ios-person-outline"></span></div>
                     <div class="f"><input id="name" k="ឈ្មោះ" placeholder="Name" type="text">
@@ -161,22 +246,8 @@
     </div>  
 </div>
 
-    <script>
-        
-    $('#shipping_info_form input').on('keyup click', function(){
-        if ($(this).val() != '') {
-            $(this).siblings('.input-close').show();
-        }
-    });
-    $('#shipping_info_form input').on('blur', function(){
-            $(this).siblings('.input-close').hide();
-    });
-    $('#shipping_info_form .input-close').on('tap', function(){
-        $(this).hide();
-        $(this).siblings('input').focus();
-        $(this).siblings('input').val('');
-    });
-    
+<script>
+      
     /* Default values for Add an Address Tab*/
     $('.lg #name').val(localStorage.getItem('full_name'));
     $('.lg #phone_number').val(localStorage.getItem('phone_number'));
