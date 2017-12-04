@@ -27,6 +27,7 @@
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
     <script src="js/main.js"></script>
+    
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script src="js/jquery.geocomplete.min.js"></script>
     
@@ -35,12 +36,118 @@
   <body ng-app="starter">
   
     <ion-nav-bar class="bar-stable">
+    </ion-nav-bar>
     
       <ion-nav-back-button>
       </ion-nav-back-button>
     </ion-nav-bar>
    
+
+
    
+   
+   
+<!-- Shipping Info Modal -->
+<div id="delivery_option_product" class="modal">
+    <div class="header-title" k="ដឹកទៅកាន់">Delivery To</div>
+    <div class="back" onclick="closeModal('delivery_option_product')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    
+    <ion-content class="sm-modal-body">
+        <ul id="choose_location_ul">
+            
+        </ul>
+    </ion-content>    
+</div>
+<!-- /Shipping Info Modal -->
+
+
+<!-- Submit Review Modal -->
+<div id="submit_review_modal" class="modal" style="z-index:110">
+    <div class="header-title"><span k="សរសេររង្វាយតម្លៃ">Write a Review</span></div>
+    <div class="back" onclick="closeModal('submit_review_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body">
+        <div class="wr">
+            <div class="a">
+                <div class="b">
+                    <img id="rv_img">
+                </div>
+                <div class="c" id="rv_title">
+                    Vong Virak Vong Virak Vong Virak Vong Virak
+                </div>
+            </div>
+        </div>    
+        <div class="hr"></div>
+        <div class="wt">
+            <div class="a">
+                <div class="b" k="សូមវាយតម្លៃផលិតផលនេះ">Please rate this product</div>
+                <input id="review_rate" type="hidden" value="0">
+                <div class="c">
+                    <span id="r1" class="fa fa-star"></span>
+                    <span id="r2" class="fa fa-star"></span>
+                    <span id="r3" class="fa fa-star"></span>
+                    <span id="r4" class="fa fa-star"></span>
+                    <span id="r5" class="fa fa-star"></span>
+                    <span id="rate_text"></span>
+                </div>
+            </div>
+            <div class="d">
+                <textarea id="review_text" rows="6" placeholder="Write your review about product (Delivery, Packaging etc)" k="សូមសរសេរវាយតំលៃអំពីផលិតផល (ការដឹកជញ្ជូន ការវេចខ្ចប់ ល។)"></textarea>
+            </div>
+            <button class="btn" onclick="submitReview()" k="បញ្ចូនរង្វាយតម្លៃ">Submit Review</button>        
+        </div>
+    </ion-content>    
+</div>
+<!-- /Submit Review Modal -->
+
+
+
+<!-- Question Modal -->
+<div id="question_modal" class="modal">
+    <div class="header-title"><span k="សំនួរ">Question</span> (<span id="n_question">0</span>)</div>
+    <div class="back" onclick="closeModal('question_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body qs">
+        <div id="question">
+            
+        </div>        
+    </ion-content>    
+    <div class="question-footer">
+        <input id="question_body" placeholder="Ask about the product" k="សួរអំពីផលិតផល">
+        <button onclick="openModal('question_modal')" k="សួរ">Ask</button>
+    </div>
+</div>
+<!-- /Question Modal -->
+
+
+<!-- Review Modal -->
+<div id="review_modal" class="modal">
+    <div class="header-title"><span k="រង្វាយតម្លៃ">Review</span> (<span id="n_review">0</span>)</div>
+    <div class="back" onclick="closeModal('review_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body qs">
+        <div id="review">
+            
+        </div>        
+    </ion-content>    
+    <div class="question-footer" onclick="closeModal('review_modal'); openModal('submit_review_modal')">
+        <center>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+        </center>
+        <center k="សរសេររង្វាយតម្លៃរបស់អ្នក">Submit your Review</center>
+    </div>
+</div>
+<!-- /Review Modal -->
    
 <div class="sm-modal" id="choose_location_modal">
     <div class="shadow"></div>
@@ -260,7 +367,7 @@
             <div class="ms-alert-header" k="បានដាក់ក្នុងកន្ត្រកទំនិញរួចរាល់">Added to Shopping Cart</div>            
             <div class="ms-alert-buttons">                
                 <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide()" k="បិទ">OK</div>            
-                <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show(); window.location.href='#tab/cart'" k="កន្ត្រកទំនិញ">Go to Cart</div>
+                <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show(); closeModal('product_modal'); window.location.href='#tab/cart'" k="កន្ត្រកទំនិញ">Go to Cart</div>
             </div>                        
         </div>    
     </div>
@@ -308,7 +415,8 @@
         </div>    
     </div>
     
-    
+    <script src="js/product.js"></script>
+    <script src="js/footer.js"></script>    
     <ion-nav-view></ion-nav-view>
   </body>
 </html>

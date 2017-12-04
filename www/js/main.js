@@ -15,9 +15,6 @@ var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 
 
-function hi(){
-    alert('yes')   ;
-}
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
     var a = JSON.parse(data);
@@ -73,11 +70,6 @@ if (localStorage.getItem('shopping_cart') != null){
     
 }
 
-/* Fix ontap */
-$(document).on('tap', '[ontap]', function(){
-     new Function($(this).attr('ontap'))();
-});
-
 
 function selectTab(tab){
     $('.my-tab-content .a').hide();
@@ -87,6 +79,13 @@ function selectTab(tab){
 }
 
     
+    
+/* Fix ontap */
+$(document).on('tap', '[ontap]', function(){
+     new Function($(this).attr('ontap'))();
+});
+
+
 function selectLocation(name_en){
     closeSmallModal('choose_location_modal');
     updateDeliveryTo(name_en);
@@ -198,23 +197,28 @@ function isLogined(){
     return (typeof a !== 'undefined' && a !== '');
 }
 
-
-
 function closeSmallModal(page){        
     $('#'+page).css('transform', 'translateY(100%)');    
 }
 
-function openModal(page){
-    
+function openModal(page){    
     $('#'+page).height($(window).height());        
-    $('#'+page).css('transform', 'translateY(0)');
+    if (page == 'product_modal'){
+        $('#'+page).css('transform', 'translateX(0)');
+    } else {
+        $('#'+page).css('transform', 'translateY(0)');    
+    }    
     $('.header-view').hide();        
     $('.tab-nav').hide();        
-    //StatusBar.hide(); 
-    
+    //StatusBar.hide();     
 }
 function closeModal(page){        
-    $('#'+page).css('transform', 'translateY(100%)');    
+    if (page == 'product_modal'){
+        $('#'+page).css('transform', 'translateX(100%)');    
+    } else {
+        $('#'+page).css('transform', 'translateY(100%)');        
+    }
+    
     $('.header-view').show();        
     var a = window.location.href.split('/');
     var b = a[a.length-1];
@@ -270,7 +274,8 @@ function signInRegister(opt){
                 localStorage.setItem('full_name', a['full_name']);
                 localStorage.setItem('phone_number', a['phone_number']);
                 localStorage.setItem('wishlist', a['wishlist']);
-                myAlert('Hello, ', a['full_name'], 'សួស្តី '+a['full_name']);
+                myAlert('Hello, '+a['full_name'], 'សួស្តី '+a['full_name']);
+                loadMyAccount();
                 closeModal(opt+'_modal');
             } else if (a['result'] == 'phone') {
                 if (opt == 'sign_in') {
@@ -439,11 +444,11 @@ function loadCart(){
                 var ad = JSON.parse(data)[0];        
                 subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
                 var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
-                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'cart\')" style="width:'+size_l+'px;height:'+size_l+'px">';
+                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\')" style="width:'+size_l+'px;height:'+size_l+'px">';
                         str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
                     str += '</div>';
                     str += '<div class="b">';
-                        str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
+                        str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\')">'+ad['title']+'</div>';
                         str += '<div class="cc"><span class="ion-checkmark-round"></span><span k=" មានក្នុងស្តុក"> In Stock</span></div>';
                         str += '<div class="e">';
                             str += '<div class="dd">'+ad['price']+'</div>';
@@ -524,7 +529,7 @@ function updateDeliveryTo(name_en){
 }
 
 function loadProduct(ad_id, page){  
-    //$('.product_page').html('');
+    //$('.product_page').html('');    
     $('.tab-nav').hide();
     $.post(URL+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
         
@@ -533,29 +538,6 @@ function loadProduct(ad_id, page){
         $('.wr #rv_title').html(ad['title']); // Submit Review
         $('.wr #rv_img').attr('src', URL+'ads/'+ad_id+'/1_m.jpg');
         var img = ad['image'].split(',');
-        
-        /* Update product view */
-        $.post(URL+'app/update_view.php',{ad_id:ad_id});
-        
-        $('.ad_image').trigger('destroy.owl.carousel');
-        var str = '';
-        for (var i = 0; i < img.length; i++){
-            var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
-            str += '<img id="ad-img-'+(i+1)+'" src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';
-            
-        }
-        
-        $('.ad_image').html(str);
-        
-        $('.ad_image').owlCarousel({
-            responsive:{
-                0:{
-                    items:1
-                }
-            }
-        });
-        
-        
         
         /* Check Wishlist */
         var wishlist = localStorage.getItem('wishlist');
@@ -588,6 +570,27 @@ function loadProduct(ad_id, page){
         $('#product_body #seller_full_name').text(ad['seller_name_'+lang]);
         $('#product_body #seller_n_product').text(ad['seller_n_product']);
         
+        /* Update product view */
+        $.post(URL+'app/update_view.php',{ad_id:ad_id});
+        
+        /* Ad Image */
+        $('.ad_image').trigger('destroy.owl.carousel');
+        var str = '';
+        for (var i = 0; i < img.length; i++){            
+            var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
+            str += '<img style="width:100%;height:100%" id="ad-img-'+(i+1)+'" src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';            
+        }
+        
+        $('.ad_image').html(str);      
+        
+        $('.ad_image').owlCarousel({
+            responsive:{
+                0:{
+                    items:1
+                }
+            }
+        });
+                             
         /* Related Products */    
         $.post(URL+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
             var a_wh = (size-30)/2;                    
@@ -597,7 +600,7 @@ function loadProduct(ad_id, page){
                 var ad = arr[i];            
                 var ad_id = ad['ad_id'];  
                 
-                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \'home\');" class="ad-item">';
+                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
@@ -612,18 +615,45 @@ function loadProduct(ad_id, page){
                                                     
         });
 
-        $('#product_body').show();
+        //$('#product_body').show();
         $('.ad_images').show();
     });
     
+    /* Scroll to Top */
+   $('.ion-content').animate({
+        scrollTop: $(".ion-content").offset().top
+    }, 0);
+    
+    /*Record Loaded ad_id */
+    $('#loaded_ad_id').val($('#loaded_ad_id').val()+','+ad_id);
+    
+    
     loadQuestionReviewList('question', 'panel', ad_id);
-    loadQuestionReviewList('review', 'panel', ad_id);
-    window.location.href='#tab/product-'+page;
-    /*
-    nth_page ++;
-    window.location.href='#tab/product-'+page+'-'+nth_page;
-    if (nth_page == 3) nth_page = '0';
-    */
+    loadQuestionReviewList('review', 'panel', ad_id);    
+    openModal('product_modal');    
+    
+}
+
+function goBackProduct(){    
+    var a = $('#loaded_ad_id').val();    
+    var b = a.split(',');
+    var ad_id = $('#ad_id').val();
+    
+    if (b.length == 2){                    
+        $('#loaded_ad_id').val('');
+        closeModal('product_modal');    
+        alert('1');
+    } else {
+        var c = '';
+        for (var i = 1; i < (b.length-1); i++){
+            c += ',' + b[i];
+        }
+        var d = c.split(',');
+        var e = d[d.length-1];
+        $('#loaded_ad_id').val(c);
+        loadProduct(e);
+    }
+    alert(b.length+c);
     
     
 }
@@ -681,7 +711,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
                 var str = '';
                 
                 if (opt == 'account') {
-                    str += '<li class="item item-complex" onclick="loadProduct(\''+q['ad_id']+'\', \'question\')"><a class="item-content">';
+                    str += '<li class="item item-complex" onclick="loadProduct(\''+q['ad_id']+'\')"><a class="item-content">';
                     str += '<div class="ta">';
                         str += '<div class="tb">';
                             str += '<img src="'+URL+'/ads/'+q['ad_id']+'/1_m.jpg">';
@@ -747,11 +777,11 @@ function loadWishlistViewedItem(opt){
         for (var i = 0; i < a.length; i++){
             var ad = a[i];
             var str = '<li class="p-list">';
-                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">';
+                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\')">';
                         str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+';height:'+ad['h']+';margin-'+ad['margin']+':'+ad['px_l']+'">';
                     str += '</div>';
                     str += '<div class="b">';                            
-                        str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\', \'wishlist\')">'+ad['title']+'</div>';
+                        str += '<div class="c" onclick="loadProduct(\''+ad['ad_id']+'\')">'+ad['title']+'</div>';
                             str += '<div class="cc">';
                                 str += '<span class="ion-checkmark-round"></span>';
                                 str += '<span k=" មានក្នុងស្តុក"> In Stock</span>';
@@ -851,7 +881,7 @@ function searchProduct(keyword, opt) {
         for (var i = 0; i < arr.length; i++){
             var ad = arr[i];                
             var ad_id = ad['ad_id'];
-                var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
+                var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\')">';
                 str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
@@ -893,7 +923,7 @@ function loadOtherProducts(keyword){
         for (var j = 0; j < arr2.length; j++){
             var ad = arr2[j];                    
             var ad_id = ad['ad_id'];
-                var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\', \'search\');">';
+                var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\');">';
                 str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';

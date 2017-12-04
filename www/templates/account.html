@@ -1,5 +1,5 @@
 <div class="app-header">
-    <div class="header-title" k="គណនីរបស់ខ្ញុំ">Account</div>    
+    <div class="header-title" k="គណនីរបស់ខ្ញុំ">My Account</div>    
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content style="display:none" id="account_logined">  
@@ -61,22 +61,34 @@
 
 <script>
     la();
-    
-    /* Initialize login info */
-    if (user_id != 'not_login'){
-        $('#account_logined').show();
-        $('#account_not_logined').hide();
-    }
-    setTimeout(function() {
-        if (!isLogined()) {
-            $('#register_click').click();        
-        } else {
-            
+    loadMyAccount();
+    function loadMyAccount(){
+        /* Initialize login info */
+        if (user_id != 'not_login'){
+            $('#account_logined').show();
+            $('#account_not_logined').hide();
             $('.gh #full_name').text(localStorage.getItem('full_name'));
             $('.gh #phone_number').text(localStorage.getItem('phone_number'));
             $('.gh #profile_pic').attr('src', URL+'users/'+localStorage.getItem('user_id')+'/profile.jpg');
-        }   
-    }, 1);
+            
+        } else {
+            $('#account_logined').hide();
+            $('#account_not_logined').show();
+            openModal('sign_in_modal');
+        }
+        /*
+        setTimeout(function() {
+            if (!isLogined()) {
+                $('#register_click').click();        
+            } else {
+                
+                $('.gh #full_name').text(localStorage.getItem('full_name'));
+                $('.gh #phone_number').text(localStorage.getItem('phone_number'));
+                $('.gh #profile_pic').attr('src', URL+'users/'+localStorage.getItem('user_id')+'/profile.jpg');
+            }   
+        }, 1);
+        */
+    }
 </script>
 
 

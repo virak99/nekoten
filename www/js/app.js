@@ -180,8 +180,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
     
    
-    .state('tab.product-home', {
-      url: '/product-home',
+    .state('tab.product', {
+      url: '/product',
       views: {
         'home': {
           templateUrl: 'templates/product.html',
@@ -190,60 +190,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
     
-    .state('tab.product-wishlist', {
-      url: '/product-wishlist',
-      views: {
-        'account': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
-    .state('tab.product-question', {
-      url: '/product-question',
-      views: {
-        'account': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
-    .state('tab.product-review', {
-      url: '/product-review',
-      views: {
-        'account': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
-    .state('tab.product-search', {
-      url: '/product-search',
-      views: {
-        'search': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
-    .state('tab.product-cart', {
-      url: '/product-cart',
-      views: {
-        'cart': {
-          templateUrl: 'templates/product.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
-    .state('tab.product2', {
-      url: '/product2',
-      views: {
-        'home': {
-          templateUrl: 'templates/product2.html',
-          controller: 'NavCtrl'
-        }
-      }
-    })
     
   .state('tab.account', {
     url: '/account',

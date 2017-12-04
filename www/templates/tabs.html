@@ -1,3 +1,141 @@
+<!-- Product Modal -->
+<input id="loaded_ad_id" type="hidden">              
+<div class="product_page modal" id="product_modal">
+
+    <div id="product_page_header" class="back">
+        <span class="ion-ios-arrow-left" ontap="goBackProduct()"></span>
+        <span onclick="closeModal('product_modal'); window.location.href='#tab/cart'" class="ion-ios-cart-outline"></span>
+        <span onclick="closeModal('product_modal'); window.location.href='#tab/cart'" class="noti-label cart_count"></span>
+    </div>
+    
+    <div class="no-tabs ion-content" id="product_page_content">     
+        <div class="ad_images" style="display:none">
+            <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
+            <div class="helper" onclick="removeFullScreen()">
+                
+            </div>                
+            <div class="ad_image owl-carousel owl-theme" style="width:100%">
+                
+            </div>
+            
+
+
+            <div class="wishlist-btn" onclick="wishlist()">
+                <span class="fa fa-heart"></span>    
+            </div>        
+        </div>
+        
+
+        <div id="product_body">        
+            <input id="ad_id" type="text" style="display:none">
+            <div class="w" id="title"></div>
+            <div class="pp">
+                
+                <span id="price"></span>
+                <span id="normal_price"></span>
+                <span id="discount"></span>
+                <span id="quantity"></span>
+            </div>
+            <div class="ii">
+                <div class="a">
+                    <div class="b" id="rate"></div>
+                    <div class="c" id="review"></div>
+                </div>
+                <div class="a">
+                    <div class="b" id="n_order"></div>
+                    <div class="c" k="កម្មង់">Order</div>
+                </div>
+                <div class="a">
+                    <div class="b" id="view"></div>
+                    <div class="c" k="មើល">View</div>
+                </div>
+            </div>
+            <div class="hr"></div>
+            
+            <div class="et" id="product_delivery_to">
+                <div class="a item item-complex" onclick="openModal('delivery_option_product')">
+                    <a class="item-content">
+                        <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
+                        <div class="c">
+                            <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
+                            <strong id="delivery_fee">Free</strong>    
+                        </div>
+                        <div class="c">
+                            <span k="ទទួលទំនិញ">Receive Product</span>
+                            <strong id="delivery_day"></strong>
+                            <strong id="delivery_time"></strong>    
+                        </div>
+                        <div class="fa fa-angle-right"></div>                    
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="hr"></div>
+        <div class="at">
+            <div class="a">
+                <div class="b" k="បរិមាណ">Quantity</div>
+                <div class="c">
+                    <span class="d fa fa-minus" onclick="qtyMinus()"></span>
+                    <input class="e" id="qty" type="number" pattern="\d*" value="1">
+                    <span class="f fa fa-plus" onclick="qtyPlus()"></span>
+                </div>
+            </div>
+        </div>
+        <div class="bt">
+            <span class="h" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
+            <span class="i" k="ដាក់ចូលកន្ត្រក" onclick="addToCart()">Add to Cart</span>
+        </div>
+        
+        <div class="hr"></div>
+        <div class="pd">
+            <div class="a" k="ការពិពណ៌នាអំពីផលិតផល">Product Description</div>
+            <div class="b" id="desc"></div>
+        </div>
+        <div class="hr"></div>
+        <div class="qs" id="question_panel" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')">
+            <div class="a" k="សំនួរ និង ចម្លើយ">Question (<span id="n_question">0</span>)</div>
+            <div id="question">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="qs" id="review_panel" onclick="loadQuestionReviewList('review', 'modal', ''); openModal('review_modal')">
+            <div class="a" k="រង្វាយតម្លៃ">Review (<span id="n_review">0</span>)</div>
+            <div id="review">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="rb">
+            <div class="a">
+                <span class="aa" k="ដាក់លក់ដោយ">Seller Info</span>                
+            </div>
+            <div class="b">
+                <div class="c">
+                    <img id="seller_img" />
+                </div>
+                <div class="d">
+                    <span class="e" id="seller_full_name"></span> 
+                    <span class="f">
+                        (<span id="seller_n_product">0</span> 
+                        <span k="ទំនិញ">item</span>)
+                    </span>                        
+                </div>
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="ra">
+            <div class="aa" k="ផលិតផលស្រដៀងគ្នា">Related Products</div>
+            <div class="bb" id="related_products">
+            
+            </div>
+        </div>
+        
+    </div>
+</div>
+
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
     <ion-tab title="{{home}}" icon-off="ion-ios-home-outline" icon-on="ion-ios-home" href="#/tab/home">
         <ion-nav-view name="home"></ion-nav-view>

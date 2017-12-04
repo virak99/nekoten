@@ -1189,7 +1189,11 @@ ion-nav-view{
 .eq .item-content{
     padding: 10px 15px;
 }
-
+#no_img{
+    width: 100%;
+    height: 100%;
+    border:1px solid #eee;
+}
 .modal {    
     transform: translateY(100%);
     width: 100%;    
@@ -1197,8 +1201,11 @@ ion-nav-view{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9998;
+    z-index: 999;
     transition: 0.3s;
+}
+#product_modal {    
+    transform: translateX(100%);    
 }
 .sm-modal {
     transform: translateY(100%);
@@ -1463,7 +1470,7 @@ ion-nav-view{
 }
 
 .ad_images{
-    position: relative;
+    position: relative;    
 }
 .ad_images .close{
     display: none;

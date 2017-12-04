@@ -1,5 +1,4 @@
 <div class="app-header">
-    
     <form class="search-bar" onsubmit="submitSearchForm('search-home');">
         <i class="icon ion-search"></i>
         <input autocorrect="off" autocapitalize="off" id="search-home" k="ខ្ញុំកំពុងស្វែងរក ..." onkeyup="searchKeyword('home')" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
@@ -46,9 +45,12 @@
                 </ion-slide>
             </ion-slide-box>
             */</script>
+            
+            
             <div class="home-slider owl-carousel owl-theme">
                 
             </div>
+            
             <script> 
             
                 $.post(URL+'app/home_slider.php', {}, function(data){
