@@ -312,20 +312,23 @@
         
         
     function wishlist(){
-        var ad_id = $('#product_body #ad_id').val();
-        
-        $.post(URL+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+        if (user_id == 'not_login'){
+            openModal('sign_in_modal');
+        } else {
+            var ad_id = $('#product_body #ad_id').val();
             
-            if (data.includes('existed')){
-                $('.wishlist-btn').removeClass('added');                
-            } else if (data.includes('success')){                
-                myAlert('Added to Wishlist', 'បានដាក់ចូលក្នុងទំនិញចង់បានរួចរាល់');
-                $('#alert .confirm').on('click', function(){
-                    $('.wishlist-btn').addClass('added');                
-                });
-            }
-            
-        });   
+            $.post(URL+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+                
+                if (data.includes('existed')){
+                    $('.wishlist-btn').removeClass('added');                
+                } else if (data.includes('success')){                
+                    myAlert('Added to Wishlist', 'បានដាក់ចូលក្នុងទំនិញចង់បានរួចរាល់');
+                    $('#alert .confirm').on('click', function(){
+                        $('.wishlist-btn').addClass('added');                
+                    });
+                }            
+            });
+        }
     }
     
     /* Load Delivery To */        

@@ -7,8 +7,8 @@
     <ion-content class="sm-modal-body" style="padding:20px 10px">
         <div class="list">
           <label class="item item-input item-stacked-label">
-            <span class="input-label" id="full_name" k="ឈ្មោះ">Full Name</span>
-            <input type="text" placeholder="John">
+            <span class="input-label"  k="ឈ្មោះ">Full Name</span>
+            <input type="text" k="ឧ: វង្ស វីរៈ" placeholder="ex: Vong Virak" id="full_name">
           </label>
         </div>
         <button class="btn" k="យល់ព្រម" onclick="changeName()">Okay</button>       
@@ -24,17 +24,17 @@
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
     
-        <ul class="mr" id="account_setting">
+        <ul class="mr" id="account_settings">
             <li class="item item-complex" style="padding:0">
                 <a class="item-content" onclick="openSmallModal('change_name_modal')">
-                <span k="ឈ្មោះ">Full Name</span>
-                <span class="fa fa-angle-right"></span>
-                <span class="a" id="full_name"></span>
+                    <span k="ឈ្មោះ">Full Name</span>
+                    <span class="fa fa-angle-right"></span>
+                    <span class="a" id="full_name"></span>
                 </a>
             </li>
             <li>
-                <span k="លេខទូរស័ព្ទ">Phone Number</span>
-                <span class="fa fa-angle-right"></span>
+                <span k="លេខទូរស័ព្ទ">Phone Number</span>                
+                <span class="a" id="phone_number"></span>                
             </li>
         </ul>
         <div class="hr"></div>
@@ -46,29 +46,32 @@
 </ion-view>
 <script>
     la();
-    $('#account_setting #full_name').text(localStorage.getItem('full_name'));
-    $('#account_setting #phone_number').text(localStorage.getItem('phone_number'));
-    $('#change_name_modal #change_name_modal').val(localStorage.getItem('full_name'));
+    $('#account_settings #full_name').text(localStorage.getItem('full_name'));
+    $('#account_settings #phone_number').text(localStorage.getItem('phone_number'));
+    $('#change_name_modal #full_name').val(localStorage.getItem('full_name'));
+    
     function changeName(){
         var full_name = $('#change_name_modal #full_name').val();
         $.post(URL+'app/update_data.php', {item:'full_name', data:full_name, user_id:user_id}, function(data){
             if (data.includes('success')){
                 localStorage.setItem('full_name', full_name);
-                $('#account_setting #full_name').text(full_name);
+                $('#account_settings #full_name').text(full_name);
                 closeModal('change_name_modal');
             }
-            
         });
         
     }
     function signOut(){
-        if(confirm('Are you sure that you want to sign out?') == true) {
+        alertConfirm('Sign out from this account?', 'ចាកចេញពីគណនីនេះ?');
+        $('#alert_confirm .confirm').on('click', function(){
             localStorage.removeItem('user_id');
             localStorage.removeItem('full_name');
             localStorage.removeItem('phone_number');
+            localStorage.removeItem('wishlist');
             
-            window.location.href='#tab.home';
-            alert('Signed out');
-        }
+            window.location.href='index.html';
+        });
+            
+                
     }
 </script>

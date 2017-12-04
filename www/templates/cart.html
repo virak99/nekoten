@@ -73,7 +73,7 @@
             </div>
             <div class="ab"><span class="total"></span></div>
         </div>
-        <div class="d" onclick="window.location.href='#tab/review_order'"><span k="ទិញ">BUY</span> (<span class="cart_count"></span>)</div>
+        <div class="d" ontap="buy()"><span k="ទិញ">BUY</span> (<span class="cart_count"></span>)</div>
     </div>
     
 </ion-view>
@@ -89,6 +89,14 @@
         
     la();
     loadCart();
+    
+    function buy(){
+        if (user_id == 'not_login'){
+            openModal('sign_in_modal');
+        } else {
+            window.location.href='#tab/review_order';
+        }
+    }
     
     function deleteCart(ad_id){
         alertConfirm('Remove this item from your Shopping Cart?', 'ដកទំនិញនេះចេញពីកន្ត្រកទំនិញ?');            
@@ -118,7 +126,7 @@
                 } else {
                     d += c[2];
                 }
-            }            
+            }                  
             localStorage.setItem('shopping_cart', d);
             loadCart();
             

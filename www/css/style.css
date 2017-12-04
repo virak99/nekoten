@@ -7,6 +7,16 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     text-align: center;
     padding: 20px 0 40px 0;
 }
+.pw .a{
+    text-align: center;
+    margin-bottom: 40px;
+    width: 100%;
+}
+.pw{
+    width: 100%;
+    padding: 20px 15px;
+}
+
 #no_more_item{
     width: 100%;
     text-align: center;

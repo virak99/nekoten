@@ -1,3 +1,11 @@
+/* Initial */
+setDefault('language', 'en');
+setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
+setDefault('delivery_fee', '0');
+setDefault('user_id', 'not_login');
+setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
+var nth_page = 0;
+
 /* Global Variable */
 var lang = localStorage.getItem('language');
 var user_id = localStorage.getItem('user_id');
@@ -7,6 +15,9 @@ var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 
 
+function hi(){
+    alert('yes')   ;
+}
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
     var a = JSON.parse(data);
@@ -34,13 +45,6 @@ function setDefault(name, value){
     
 }
 
-/* Initial */
-setDefault('language', 'en');
-setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
-setDefault('delivery_fee', '0');
-setDefault('user_id', 'not_login');
-setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
-var nth_page = 0;
 
 
 
@@ -262,10 +266,12 @@ function signInRegister(opt){
             var a = JSON.parse(data);            
             if (a['result'] == 'success'){
                 localStorage.setItem('user_id', a['user_id']);
+                user_id = a['user_id'];
                 localStorage.setItem('full_name', a['full_name']);
                 localStorage.setItem('phone_number', a['phone_number']);
                 localStorage.setItem('wishlist', a['wishlist']);
-                alert('Signed in');
+                myAlert('Hello, ', a['full_name'], 'សួស្តី '+a['full_name']);
+                closeModal(opt+'_modal');
             } else if (a['result'] == 'phone') {
                 if (opt == 'sign_in') {
                     myAlert('Account does not exist.', 'លេខទូរស័ព្ទមិនត្រឹមត្រូវ');                         
@@ -403,7 +409,7 @@ function shippingInfoItem(a){
 
 
 function loadCart(){        
-    var shopping_cart = localStorage.getItem('shopping_cart');
+    var shopping_cart = localStorage.getItem('shopping_cart');    
     if (shopping_cart == '' || shopping_cart == null){
         $('#no_item_in_cart').show();        
         $('.cart-footer').hide(); 
@@ -540,7 +546,6 @@ function loadProduct(ad_id, page){
         }
         
         $('.ad_image').html(str);
-        
         
         $('.ad_image').owlCarousel({
             responsive:{
@@ -865,9 +870,11 @@ function searchProduct(keyword, opt) {
     });
     
 
-    setTimeout(function() {
-        $('#search-res').val(keyword);        
-        $('#search_res_keyword').val(keyword);                
+    setTimeout(function() {        
+        if (keyword.split(':')[0] != 'category'){
+            $('#search-res').val(keyword);                                
+        }
+        $('#search_res_keyword').val(keyword);
     }, 100);
 }
     

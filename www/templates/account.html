@@ -2,7 +2,7 @@
     <div class="header-title" k="គណនីរបស់ខ្ញុំ">Account</div>    
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
-    <ion-content>  
+    <ion-content style="display:none" id="account_logined">  
         <div class="gh">
             <div class="a">
                 <div class="c" id="full_name"></div>
@@ -12,7 +12,7 @@
                 <div class="e">
                     <span class="ion-ios-email-outline"></span>
                     <span class="ion-ios-bell-outline"></span>
-                    <span onclick="window.location.href='#tab/account_settings'" class="ion-ios-gear-outline"></span>
+                    <span ontap="window.location.href='#tab/account_settings'" class="ion-ios-gear-outline"></span>
                 </div>
                 <img id="profile_pic">
             </div>
@@ -49,19 +49,24 @@
                 <span k="ទំនិញដែលទើបចូលមើល">Recently viewed Products</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
-        </ul>
-        
-        <center style="margin-top:20%"><a onclick="openModal('register_modal')" id="register_click">Register</a>
-    <a onclick="openModal('sign_in_modal')" id="sign_in_click">Sign In</a></center>
-    
-    <center style="margin-top:20%"><a href="#tab/sign_in" id="register_click">Register</a>
-    <a href="#tab/register" onclick="openModal('sign_in_modal')" id="sign_in_click">Sign In</a></center>
-   
+        </ul>                  
   </ion-content>
+    <ion-content id="account_not_logined">
+        <div class="pw">
+            <div class="a" k="អ្នកមិនទាន់បានចូលគណនីនៅឡើយ។">You are not signed in yet.</div>    
+            <button class="btn" ontap="openModal('sign_in_modal')" k="ចូលគណនី / ចុះឈ្មោះ">Sign In / Register</button>
+        </div>
+    </ion-content>
 </ion-view>
 
 <script>
     la();
+    
+    /* Initialize login info */
+    if (user_id != 'not_login'){
+        $('#account_logined').show();
+        $('#account_not_logined').hide();
+    }
     setTimeout(function() {
         if (!isLogined()) {
             $('#register_click').click();        
