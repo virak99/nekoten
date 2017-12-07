@@ -1,3 +1,4 @@
+
 <div id="order_placed_modal" class="modal">
     <div class="header-title">
         <span class="ion-checkmark-circled"></span>
@@ -20,11 +21,13 @@
         </div>   
         <div class="hr"></div>
         <div class="sd">
-            <button ontap="closeModal('order_placed_modal');" k="ការកម្មង់របស់ខ្ញុំ">My Order</button>
-            <button ontap="closeModal('order_placed_modal'); window.location.href='#tab\home'" k="ទំព័រដើម">Home</button>
+            <button id="go_to_my_order" k="ការកម្មង់របស់ខ្ញុំ">My Order</button>
+            <button id="go_to_home" k="ទំព័រដើម">Home</button>
         </div>
     </div>
 </div>
+
+
 
 
 <div class="app-header">
@@ -98,19 +101,25 @@
         }
     }
     
-    function deleteCart(ad_id){
-        alertConfirm('Remove this item from your Shopping Cart?', 'ដកទំនិញនេះចេញពីកន្ត្រកទំនិញ?');            
-        $('#alert_confirm .confirm').on('click', function(){                                      
-            var a = localStorage.getItem('shopping_cart').split(',');
-            var b = '';            
-            for (var i = 1; i < a.length; i++){                
-                if (a[i].split(':')[0] == ad_id) continue;
-                b += ','+a[i];
-            }
-            localStorage.setItem('shopping_cart', b); 
-            loadCart();
+    /* Order has been placed */
+    function orderPlaced(order_id){
+        openModal('order_placed_modal');    
+        
+        $('#go_to_home').on('click', function(){
+            closeModal('order_placed_modal'); 
+            window.location.href='#tab/home';             
         });
+        $('#go_to_my_order').on('click', function(){
+            closeModal('order_placed_modal'); 
+            window.location.href='#tab/account'; 
+            window.location.href='#tab/my_order';
+            window.location.href='#tab/order_detail'; 
+            loadOrderDetail(order_id);
+        });
+        
     }
+    
+    
     function qtyPlus(ad_id){
         if ($('#cart-item-'+ad_id+' #qty').html()<10){
             //$('#cart-item-'+ad_id+' #qty').html(parseInt($('#cart-item-'+ad_id+' #qty').html(), 10) + 1);    

@@ -1,11 +1,386 @@
+
+   
+<!-- Delivery Option Modal -->
+<div id="delivery_option_product" class="modal">
+    <div class="header-title" k="ដឹកទៅកាន់">Delivery To</div>
+    <div class="back" onclick="closeModal('delivery_option_product')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    
+    <ion-content class="sm-modal-body">
+        <ul id="choose_location_ul">
+            
+        </ul>
+    </ion-content>    
+</div>
+<!-- /Delivery Option Modal -->
+
+
+<!-- Submit Review Modal -->
+<div id="submit_review_modal" class="modal" style="z-index:110">
+    <div class="header-title"><span k="សរសេររង្វាយតម្លៃ">Write a Review</span></div>
+    <div class="back" onclick="closeModal('submit_review_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body">
+        <div class="wr">
+            <div class="a">
+                <div class="b">
+                    <img id="rv_img">
+                </div>
+                <div class="c" id="rv_title">
+                    Vong Virak Vong Virak Vong Virak Vong Virak
+                </div>
+            </div>
+        </div>    
+        <div class="hr"></div>
+        <div class="wt">
+            <div class="a">
+                <div class="b" k="សូមវាយតម្លៃផលិតផលនេះ">Please rate this product</div>
+                <input id="review_rate" type="hidden" value="0">
+                <div class="c">
+                    <span id="r1" class="fa fa-star"></span>
+                    <span id="r2" class="fa fa-star"></span>
+                    <span id="r3" class="fa fa-star"></span>
+                    <span id="r4" class="fa fa-star"></span>
+                    <span id="r5" class="fa fa-star"></span>
+                    <span id="rate_text"></span>
+                </div>
+            </div>
+            <div class="d">
+                <textarea id="review_text" rows="6" placeholder="Write your review about product (Delivery, Packaging etc)" k="សូមសរសេរវាយតំលៃអំពីផលិតផល (ការដឹកជញ្ជូន ការវេចខ្ចប់ ល។)"></textarea>
+            </div>
+            <button class="btn" onclick="submitReview()" k="បញ្ចូនរង្វាយតម្លៃ">Submit Review</button>        
+        </div>
+    </ion-content>    
+</div>
+<!-- /Submit Review Modal -->
+
+
+
+<!-- Question Modal -->
+<div id="question_modal" class="modal">
+    <div class="header-title"><span k="សំនួរ">Question</span> (<span id="n_question">0</span>)</div>
+    <div class="back" onclick="closeModal('question_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body qs">
+        <div id="question">
+            
+        </div>        
+    </ion-content>    
+    <div class="question-footer">
+        <input id="question_body" placeholder="Ask about the product" k="សួរអំពីផលិតផល">
+        <button onclick="openModal('question_modal')" k="សួរ">Ask</button>
+    </div>
+</div>
+<!-- /Question Modal -->
+
+
+<!-- Review Modal -->
+<div id="review_modal" class="modal">
+    <div class="header-title"><span k="រង្វាយតម្លៃ">Review</span> (<span id="n_review">0</span>)</div>
+    <div class="back" onclick="closeModal('review_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>    
+    <ion-content class="sm-modal-body qs">
+        <div id="review">
+            
+        </div>        
+    </ion-content>    
+    <div class="question-footer" onclick="closeModal('review_modal'); openModal('submit_review_modal')">
+        <center>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+        </center>
+        <center k="សរសេររង្វាយតម្លៃរបស់អ្នក">Submit your Review</center>
+    </div>
+</div>
+<!-- /Review Modal -->
+   
+<div class="sm-modal" id="choose_location_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសខេត្តក្រុង">Choose City / Province</div>
+    <div class="back" onclick="closeSmallModal('choose_location_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body">
+        <ul id="choose_location_ul_2">
+            
+        </ul>
+    </ion-content>
+</div>    
+
+<div class="sm-modal" id="choose_day_time_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ជ្រើសរើសថ្ងៃនិងម៉ោង">Choose Date and Time</div>
+    <div class="back" onclick="closeSmallModal('choose_day_time_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body" style="padding:20px 10px">
+        <div class="yo">
+            <ul id="choose_day_ul" class="a">
+                
+            </ul>
+            <ul id="choose_time_ul" class="b">
+               
+            </ul>
+        </div>
+        <button class="c" k="យល់ព្រម" onclick="setScheduleDate()">Okay</button>       
+    </ion-content>
+</div>    
+
+
+<div id="register_modal" class="modal">
+    <div class="header-title" k="ចុះឈ្មោះ">Register</div>
+    <div class="back" onclick="closeModal('register_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <div class="modal-body">
+        <center>
+            <img src="img/nekoten.png" width="100" alt="" />            
+        </center>
+        <div class="lg">            
+            <div class="a">
+                <button><span class="fa fa-facebook-official"></span> <span k="ចុះឈ្មោះតាម Facebook">Register with Facebook</span></button>                
+            </div>
+            <div class="b">_______________OR_______________</div>
+            <div class="c">
+                <form id="register_form" class="input-form" onsubmit="signInRegister('register')">                
+                    <div class="d">
+                        <div class="e"><span class="ion-person"></span></div>
+                        <div class="f"><input k="ឈ្មោះ" id="full_name" placeholder="Full Name" type="text">
+                            <span class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-telephone"></span></div>
+                        <div class="f"><input k="លេខទូរស័ព្ទ" id="phone_number" placeholder="Phone Number" type="numbeer" pattern="\d*">
+                            <span class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-locked"></span></div>
+                        <div class="f"><input k="លេខសំងាត់" id="password" placeholder="Password" type="password">
+                            <span class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="g">
+                        <button onclick="submitRegister()" type="submit" k="បង្កើតគណនី">Create my Account</button>                
+                    </div>
+                </form>
+            </div>
+            <div class="i"><span k="បានចុះឈ្មោះរួចហើយ?">Already have an account? </span> <a onclick="closeModal('register_modal'); openModal('sign_in_modal')" k="ចូលគណនី">Sign in</a></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="sign_in_modal" class="modal">
+    <div class="header-title" k="ចូលគណនី">Sign In</div>
+    <div class="back" onclick="closeModal('sign_in_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <div class="modal-body">
+        <center>
+            <img src="img/nekoten.png" width="100" alt="" />            
+        </center>
+        <div class="lg">
+            <div class="a">
+                <button><span class="fa fa-facebook-official"></span> <span k="ចូលគណនីតាម Facebook">Sign in with Facebook</span></button>                
+            </div>
+            <div class="b">_______________OR_______________</div>
+            <div class="c">
+                <form id="sign_in_form" class="input-form" onsubmit="signInRegister('sign_in')">
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-telephone"></span></div>
+                        <div class="f"><input id="phone_number" k="ទូរស័ព្ទ" placeholder="Phone Number" type="number" pattern="\d*">
+                            <span  class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">
+                        <div class="e"><span class="ion-ios-locked"></span></div>
+                        <div class="f"><input id="password" k="លេខសំងាត់" placeholder="Password" type="password">
+                            <span  class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="g">
+                        <button type="submit" k="ចូលគណនីតាមលេខទូរស័ព្ទ">Sign in with Phone Number</button>
+                    </div>
+                </form>
+            </div>
+            <div class="h" k="ភ្លេចលេខទូរស័ព្ទ">Forget Password?</div>
+            <div class="i"><span k="គ្មានគណនីនៅឡើយ?">Don't have Account yet?</span> <a onclick="closeModal('sign_in_modal'); openModal('register_modal');" k="ចុះឈ្មោះឥឡូវនេះ">Register now</a></div>
+        </div>
+    </div>
+</div>
+
+
+   
+<!-- Shipping Info Modal -->
+<div id="shipping_info_modal" class="modal">
+    <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
+    <div class="back">
+        <span class="close ion-ios-close-empty" onclick="closeModal('shipping_info_modal')"></span>
+        <span id="delete_address" onclick="deleteAddress()">
+            <span k="លុបចេញ">Delete</span>
+        </span>
+    </div>
+    <div class="lg">
+        <div class="cc">
+            <form id="shipping_info_form" class="input-form">
+            <input type="hidden" id="addr_id">
+                <div class="d">
+                    <div class="e"><span class="ion-ios-person-outline"></span></div>
+                    <div class="f"><input id="name" k="ឈ្មោះ" placeholder="Name" type="text">
+                        <span class="input-close ion-ios-close-outline"></span>
+                    </div>
+                </div>
+                <div class="d">
+                    <div class="e"><span class="ion-ios-telephone"></span></div>
+                    <div class="f"><input id="phone_number" k="ទូរស័ព្ទ" placeholder="Phone Number" type="number" pattern="\d*">
+                        <span class="input-close ion-ios-close-outline"></span>
+                    </div>
+                </div>
+                <div class="d">
+                    <div class="e"><span class="ion-ios-location-outline"></span></div>
+                    <div class="f"><span id="location" value="Phnom Penh" k="ភ្នំពេញ" class="f2" onclick="openSmallModal('choose_location_modal')">Phnom Penh</span></div>
+                    <div class="f1"><span class="fa fa-angle-right"></span></div>                                                    
+                </div>
+                <div id="phnom_penh_tab">
+                    <div class="my-tab">
+                        <div class="a selected" id="tab-address" onclick="selectTab('tab-address')">
+                            <span k="អាស័យដ្ឋាន">ADDRESS</span>
+                        </div>
+                        <div class="a" id="tab-gps" onclick="selectTab('tab-gps'); getLocation()">
+                            <span>GPS</span>
+                        </div>
+                    </div>
+                    <div class="my-tab-content">
+                        <div class="a" id="tab-address">
+                            <div class="d">                    
+                                <div class="f">
+                                    <input id="address" k="អាស័យដ្ឋាន (ឧ: ផ្ទះលេខ 41 ផ្លូវ 126)" placeholder="Address (ex: No. 41, St. 126)">
+                                    <span class="input-close ion-ios-close-outline"></span>
+                                </div>
+                            </div>
+                            <div class="d">   
+                                <div class="f"><input id="near_by" k="នៅជិត (ឧ: នៅជិតផ្សារធំថ្មី)" placeholder="Nearby (ex: Near Phsar Thom Thmey)">
+                                    <span class="input-close ion-ios-close-outline"></span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="a hide" id="tab-gps">
+                            <div class="getting-gps">
+                                <ion-spinner icon="ios"></ion-spinner>
+                                <div  k="កំពុងទាញយកទីតាំងបច្ចុប្បន្នរបស់អ្នក ...">Getting your Current Location ...</div>
+                            </div>
+                            <iframe id="gps-map-frame" height="250" frameborder="0">                                
+                            </iframe>                                                    
+                            <input id="coordinate" type="hidden">
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="province_tab" style="display:none">
+                    <div class="d">
+                        <span class="dd" k="យើងខ្ញុំនឹងផ្ញើរទំនិញទៅតាមឡានក្រុង រឺឡានឈ្នួលទៅកាន់ខេត្តរបស់លោកអ្នក">We will send product via bus or rent car to your province.</span>
+                    </div>
+                    <div class="d">                    
+                        <div class="f">
+                            <input id="bus_name" k="ឈ្មោះឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Name of Bus, Rent Car (Optional)">
+                            <span class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                    <div class="d">                    
+                        <div class="f">
+                            <input id="bus_phone_number" pattern="\d" type="number" k="លេខទូរស័ព្ទឡានក្រុង រឺ ឡានឈ្នួល (បើមាន)" placeholder="Phone Number of Bus, Rent Car (Optional)">
+                            <span class="input-close ion-ios-close-outline"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gg">
+                    <li class="item item-toggle">
+                        <span k="ចាត់ទុកជាអាស័យដ្ឋានគោល">Set as Default Shipping Address</span>
+                        <label class="toggle toggle-assertive">
+                            <input type="hidden" id="default_address" value="1">
+                            <input type="checkbox" id="default_address_toggle" checked="checked">
+                                <div class="track">
+                                    <div class="handle"></div>
+                                </div>
+                        </label>
+                        <script>
+                            $('#default_address_toggle').on('click', function(){
+                                if ($('#default_address').val() == '1') {
+                                    $('#default_address').val(0);
+                                } else {
+                                    $('#default_address').val(1);
+                                }
+                            });
+                        </script>
+                    </li>
+                </div>
+                
+                <div class="g">
+                    <button type="submit" onclick="postAddress()" k="ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ">Deliver to this Address</button>               
+                </div>
+            </form>
+            
+        </div>            
+    </div>  
+</div>
+
+<!-- /Shipping Info Modal -->
+
+
+<!-- Payment Method Modal -->
+<div id="payment_method_modal" class="modal">
+    <div class="header-title" k="របៀបបង់ប្រាក់">Payment Method</div>
+    <div class="back" onclick="closeModal('payment_method_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <ion-content class="uu modal-body">
+        <div id="cash_on_delivery_opt" class="a item item-complex" onclick="selectPaymentMethod('cash_on_delivery')">
+            <a class="item-content">
+                <div class="b" k="បង់ប្រាក់ពេលទទួលទំនិញ" id="cash_on_delivery">Cash on Delivery</div>
+                <div class="c">
+                    <span k="បង់ប្រាក់ពេលលោកអ្នកបានទទួលទំនិញរួចរាល់">Pay when you receive the product</span>
+                </div>
+            </a>
+        </div>
+        
+        <div id="transfer_money_opt" class="a item item-complex" onclick="selectPaymentMethod('transfer_money')">
+            <a class="item-content">
+                <div class="b" k="ផ្ញើរប្រាក់តាមទូរស័ព្ទ">Transfer money</div>
+                <div class="c payment" id="transfer_money">
+                    <span k="ផ្ញើរប្រាក់តាម">Transfer money via</span>
+                    <img class="d" src="img/wing.jpg"/>
+                    <img class="e" src="img/true_money.jpg">
+                    <img class="f" src="img/emoney.jpg">
+                </div>
+            </a>
+        </div>
+    </ion-content>
+</div>
+<!-- /Payment Method Modal -->
+
+
+
+
 <!-- Product Modal -->
 <input id="loaded_ad_id" type="hidden">              
-<div class="product_page modal" id="product_modal">
+<div class="product_page modal modal2" id="product_modal">
 
     <div id="product_page_header" class="back">
-        <span class="ion-ios-arrow-left" ontap="goBackProduct()"></span>
-        <span onclick="closeModal('product_modal'); window.location.href='#tab/cart'" class="ion-ios-cart-outline"></span>
-        <span onclick="closeModal('product_modal'); window.location.href='#tab/cart'" class="noti-label cart_count"></span>
+        <span class="ion-ios-arrow-left" onclick="goBackProduct()"></span>
+        <span onclick="$('#loaded_ad_id').val(''); closeModal('product_modal'); window.location.href='#tab/cart'" class="ion-ios-cart-outline"></span>
+        <span onclick="$('#loaded_ad_id').val(''); closeModal('product_modal'); window.location.href='#tab/cart'" class="noti-label cart_count"></span>
     </div>
     
     <div class="no-tabs ion-content" id="product_page_content">     
@@ -15,9 +390,10 @@
                 
             </div>                
             <div class="ad_image owl-carousel owl-theme" style="width:100%">
-                
+                <img class="owl-lazy" src="img/no_img.jpg">
             </div>
-            
+            <div id="ad_photos" style="display:none">
+            </div>
 
 
             <div class="wishlist-btn" onclick="wishlist()">
@@ -38,8 +414,8 @@
             </div>
             <div class="ii">
                 <div class="a">
-                    <div class="b" id="rate"></div>
-                    <div class="c" id="review"></div>
+                    <div class="b" id="ad_id_txt"></div>
+                    <div class="c" k="លេខកូដ">Item ID</div>
                 </div>
                 <div class="a">
                     <div class="b" id="n_order"></div>
@@ -62,7 +438,6 @@
                         </div>
                         <div class="c">
                             <span k="ទទួលទំនិញ">Receive Product</span>
-                            <strong id="delivery_day"></strong>
                             <strong id="delivery_time"></strong>    
                         </div>
                         <div class="fa fa-angle-right"></div>                    
@@ -92,6 +467,9 @@
         <div class="pd">
             <div class="a" k="ការពិពណ៌នាអំពីផលិតផល">Product Description</div>
             <div class="b" id="desc"></div>
+            <div class="c" k="មើលលម្អិត" onclick="loadDescription()">
+                View Details
+            </div>
         </div>
         <div class="hr"></div>
         <div class="qs" id="question_panel" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')">
@@ -108,18 +486,18 @@
             </div>
         </div>
         <div class="hr"></div>
-        <div class="rb">
+        <div class="rb" id="store_info">
             <div class="a">
-                <span class="aa" k="ដាក់លក់ដោយ">Seller Info</span>                
+                <span class="aa" k="ដាក់លក់ដោយ">Store Info</span>                
             </div>
             <div class="b">
                 <div class="c">
-                    <img id="seller_img" />
+                    <img id="store_img" />
                 </div>
                 <div class="d">
-                    <span class="e" id="seller_full_name"></span> 
+                    <span class="e" id="store_full_name"></span> 
                     <span class="f">
-                        (<span id="seller_n_product">0</span> 
+                        (<span id="store_n_product">0</span> 
                         <span k="ទំនិញ">item</span>)
                     </span>                        
                 </div>
@@ -135,6 +513,147 @@
         
     </div>
 </div>
+
+<script src="js/product.js"></script>
+
+<!-- Description View All -->
+<div id="description_modal" class="modal">
+    <div class="header-title" k="ការពិពណ៌នាផលិតផល">Product Description</div>
+    <div class="back" onclick="closeModal('description_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <ion-content class="sm-modal-body">
+        <div class="nj" id="description">
+            <div class="a" k="ឈ្មោះផលិតផល">
+                Product Name
+            </div>
+            <div class="b" id="title">
+                
+            </div>
+            <div class="a" k="ការពិព័ណ៌នា">
+                Description
+            </div>
+            <div class="b" id="desc">
+                
+            </div>
+            <div class="a" k="រូបភាព">
+                Photos
+            </div>
+            
+            <div class="b" id="photo">
+                
+            </div>
+        </div>
+    </ion-content>
+</div>
+<!-- /Description View All-->
+
+
+<div class="modal modal2" id="store_modal" style="z-index:90">
+    <div class="back">
+        <span class="ion-ios-arrow-left" onclick="closeModal('store_modal')"></span>
+    </div>
+    
+    <div class="no-tabs ion-content" id="product_page_content"> 
+        <div id="store" class="st">
+            <div class="a">
+                <img id="timeline_pic" src="img/default_timeline_pic.jpg">
+            </div>
+            <div class="b">
+                <div class="c">
+                    <img id="profile_pic" src="http://nekoten.sangskrit.com/stores/aaaa/profile.jpg">
+                </div>
+                <div class="d">
+                    <div class="e" id="name"></div>
+                    <div class="f">
+                        <div class="g"><span id="n_product">0</span> <span class="h" k="ទំនិញ">Product</span></div>
+                        <div class="g"><span id="n_order">0</span> <span class="h" k="កម្មង់">Order</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="i">
+                <div class="new-arrival">
+                    <h3 k="ទំនិញក្នុងហាង">Product in this Store</h3>
+                </div>  
+                <div id="store_products">
+                
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+   
+   
+<!-- ms-alert -->
+<div class="ms-alert" id="added_to_cart_alert">
+    <div class="ms-alert-body">
+        <div class="ms-alert-header" k="បានដាក់ក្នុងកន្ត្រកទំនិញរួចរាល់">Added to Shopping Cart</div>            
+        <div class="ms-alert-buttons">                
+            <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide()" k="បិទ">OK</div>            
+            <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show(); closeModal('product_modal'); window.location.href='#tab/cart'" k="កន្ត្រកទំនិញ">Go to Cart</div>
+        </div>                        
+    </div>    
+</div>
+
+<div class="ms-alert" id="new_update_available_alert">
+    <div class="ms-alert-body">
+        <div class="ms-alert-header" style="padding:20px 0 0 0">New Update Available</div>  
+        <div class="ms-alert-content" id="change_log">qwdwqddw</div>
+        <div class="ms-alert-buttons">                
+            <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide();" k="ពេលក្រោយ">Later</div>            
+            <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); window.location.href='#tab/cart'" k="អាប់ដែតឥឡូវ">Update Now</div>
+        </div>                        
+    </div>    
+</div>
+    
+<div class="ms-alert" id="alert_confirm">
+    <div class="ms-alert-body">
+        <div class="ms-alert-header"></div>            
+        <div class="ms-alert-buttons">                
+            <div class="ms-alert-button cancel" onclick="$('.ms-alert').hide()" k="បិទ">Cancel</div>            
+            <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide()" k="យល់ព្រម">OK</div>
+        </div>                        
+    </div>    
+</div>
+
+<script>
+    /*
+    alertConfirm(en, kh);
+    $('#alert_confirm .confirm').on('click', function(){
+    
+    });
+    myAlert(en, kh);
+    $('#alert .confirm').on('click', function(){
+    
+    });
+    */
+</script>
+
+<div class="ms-alert" id="alert">
+    <div class="ms-alert-body">
+        <div class="ms-alert-header"></div>            
+        <div class="ms-alert-buttons">                            
+            <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show();" k="យល់ព្រម">OK</div>
+        </div>                        
+    </div>    
+</div>
+
+<div class="ms-alert" id="connection_error_alert">
+    <div class="ms-alert-body">
+        <div class="ms-alert-header" style="padding:20px 0 0 0">
+            <span class="ion-alert-circled"></span>
+            <span k="បណ្តាញមានបញ្ហា!">Connection Error!</span>                
+        </div>                        
+        <div class="ms-alert-content" k="សូមពិនិត្យការតភ្ជាប់ទៅនឹងអិុនធឺណេត">Please check your Internet Connection.</div>
+        <div class="ms-alert-buttons">                            
+            <div class="ms-alert-button confirm" onclick="$('.ms-alert').hide(); $('.tab-nav').show();" k="យល់ព្រម">OK</div>
+        </div>                        
+    </div>    
+</div>
+<!-- /ms-alert -->
+
+
 
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
     <ion-tab title="{{home}}" icon-off="ion-ios-home-outline" icon-on="ion-ios-home" href="#/tab/home">

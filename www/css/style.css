@@ -364,6 +364,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .cart-footer .d{
     width: 50%;
     float: right;
+    height: 40px;
     padding: 10px;
     background: #ff3366;
     text-align: center;
@@ -372,6 +373,12 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .cart-footer .d:focus{
     opacity: 0.5;
+}
+.cart-footer .d .spinner svg{
+    stroke: white;
+    fill: white;
+    height: 20px;
+    width: 20px;
 }
 #cate .i .delete {
     padding: 20px;
@@ -545,6 +552,13 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .pd .b{
     margin-top: 10px;
 }
+.pd .c{
+    width: 100%;
+    padding: 10px;
+    text-align: right;
+    color: #1b95e0;
+
+}
 .qs {    
     width: 100%;
 }
@@ -622,7 +636,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .qs .bc{
     width: 100%;
-    padding: 5px 0;
+    padding: 10px;
     text-align: right;
     color: #1b95e0;
 }
@@ -821,6 +835,16 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     line-height: 30px;
     font-size: 30px;
 }
+.back #delete_address{
+    position: absolute;
+    display: none;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    padding: 25px 20px;
+    line-height: 30px;
+    color: red;
+}
 .mr{
     font-size: 16px;
     color: black;
@@ -981,11 +1005,14 @@ ion-nav-view{
     font-size: 18px;
     margin-top: 6px;
 }
-.lg .input-close{
+.input-close{
     position: absolute;
     right: 20px;
     padding: 0 10px;
     margin-top: 10px;
+}
+.input-form .input-close{
+    display: none;
 }
 .lg .a button{
     background-color: #3b5998;
@@ -1055,11 +1082,17 @@ ion-nav-view{
     border-bottom: 1px solid #ff3366;
 }
 .lg .g {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 .lg .h{
     color: #1b95e0;
     margin-top: 10px;
+}
+.lg .gg{
+    margin-top: 20px;
+}
+.lg .gg li{
+    border: none;
 }
 .lg .g button, .my-btn{
     background-color: #ff3366;
@@ -1182,7 +1215,10 @@ ion-nav-view{
     border-bottom: 1px solid #eee;
     width: 100%;
 }
-
+/* Hide check on Shipping-item selected */
+.eq #shipping_addr .fa-check{
+    display: none;
+}
 .eq .c{
     color: #1b95e0;    
 }
@@ -1204,8 +1240,8 @@ ion-nav-view{
     z-index: 999;
     transition: 0.3s;
 }
-#product_modal {    
-    transform: translateX(100%);    
+.modal2 {    
+    transform: translateX(100%);  
 }
 .sm-modal {
     transform: translateY(100%);
@@ -1404,7 +1440,7 @@ ion-nav-view{
     border-bottom: 1px solid #aaa;
 }
 .my-tab .selected{
-    border-bottom: 2px solid #ff3366;
+    border-bottom: 3px solid #ff3366;
 }
 .eq #shipping_addr .fa{
     position: absolute;
@@ -1480,7 +1516,7 @@ ion-nav-view{
     z-index: 100;
     padding: 25px 20px;
     line-height: 30px;
-    font-size: 30px;
+    font-size: 40px;
 }
 
 .no-scroll{
@@ -1513,4 +1549,54 @@ ion-nav-view{
     z-index: 100;
     padding: 25px 10px;
     line-height: 30px;
+}
+.st .a img{
+    width: 100%;
+    height: auto; 
+}
+.st .b{
+    display: inline-flex;
+}
+.st .c img{
+    border: 2px solid white;
+    width: 100px;
+    margin-top: -40px;
+    margin-left: 10px;
+}
+.st .d{
+    margin-left: 20px;
+    margin-top: 5px;
+}
+.st .e{
+    font-size: 20px;
+    font-weight: bold
+}
+.st .f{
+    margin-top: 10px;
+    display: inline-flex;
+    font-size: 16px;
+}
+.st .h{
+    color: #aaa;
+    margin-right: 10px;
+}
+.st .i{
+    padding: 10px;
+}
+.nj{
+    padding: 15px;
+}
+.nj .a{
+    color: #aaa;
+    padding: 10px 0;
+}
+.nj .b{
+    font-size: 16px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+#description .b img{
+    width: 100%;
+    height: auto;
 }

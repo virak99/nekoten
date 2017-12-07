@@ -1,55 +1,26 @@
 
 var ad_id = $('#product_body #ad_id').val();
-var size = $(window).width();
 
 /* Auto Hide Header */
 var is_header_showed = false;
-    $('#product_page_content').scroll(function(){                
-        
-        if (!is_header_showed){
-            if(($('.ad_images').height() - $('#product_page_content').scrollTop()) < 0) {
-                is_header_showed = true;
-                $('#product_page_header').addClass('has-header');                        
-            }    
-        } else {
-            if(($('.ad_images').height() - $('#product_page_content').scrollTop()) > 0) {
-                is_header_showed = false;
-                $('#product_page_header').removeClass('has-header');                        
-            }    
-        }
-        
-        
-    });
+$('#product_page_content').scroll(function(){                
+    
+    if (!is_header_showed){
+        if(($('.ad_images').height() - $('#product_page_content').scrollTop()) < 0) {
+            is_header_showed = true;
+            $('#product_page_header').addClass('has-header');                        
+        }    
+    } else {
+        if(($('.ad_images').height() - $('#product_page_content').scrollTop()) > 0) {
+            is_header_showed = false;
+            $('#product_page_header').removeClass('has-header');                        
+        }    
+    }
     
     
-/* Related Products */    
-$.post(URL+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
-    var a_wh = (size-30)/2;                    
-    var arr = JSON.parse(data);   
-    
-    var b = window.location.href.split('/');
-    var page = b[b.length-1].split('-')[1];
-    if (page == 'wishlist') page = 'account';
-    
-    for (var i = 0; i < arr.length; i++){            
-        var ad = arr[i];            
-        var ad_id = ad['ad_id'];  
-        
-        var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \''+page+'\');" class="ad-item">';
-            str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
-            str += '</div>';
-            str += '<div class="a">';
-                str += '<span class="aa">'+ad['price']+'</span>';
-                str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
-            str += '</div>';
-        str += '</ion-item>';
-        
-        $('#related_products').append(str);
-    }  
-    la();                                               
 });
-        
+    
+    
 
 function askQuestion(){
     var body = $('#question_body').val();
@@ -211,7 +182,7 @@ $.post(URL+'app/location.php',{}, function(data){
     var arr = JSON.parse(data);
     for (var i = 0; i < arr.length; i++){
         var a = arr[i];
-        var str = '<li class="item item-complex" onclick="closeModal(\'delivery_option_product\'); updateDeliveryTo(\''+a['name_en']+'\',\''+a['name_kh']+'\',\''+a['price']+'\')">';
+        var str = '<li class="item item-complex" onclick="closeModal(\'delivery_option_product\'); updateDeliveryTo(\''+a['name_en']+'\')">';
             str += '<a class="item-content">';
             str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
             str += '<span class="price-li">$ '+a['price']+' </span>';
@@ -222,6 +193,21 @@ $.post(URL+'app/location.php',{}, function(data){
     la();
 });
 
+/* Load Provinces and Cities for Choose Location Modal */
+$.post(URL+'app/location.php',{}, function(data){
+    var arr = JSON.parse(data);        
+    for (var i = 0; i < arr.length; i++){
+        var a = arr[i];
+        var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\')">';
+            str += '<a class="item-content">';
+            str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
+            str += '<span class="price-li">$ '+a['price']+' </span>';
+        str += '</a></li>';
+        $('#choose_location_ul_2').append(str); 
+    }
+    load('delivery_to');
+    la();
+});
 
 
 /* Submit Review */

@@ -1,6 +1,6 @@
 <div class="app-header">
     <div class="header-title" k="បញ្ជាក់ការកម្មង់">Review Order</div>
-    <div class="back" id="go_back_to_cart" ng-click="myGoBack()">
+    <div class="back" ng-click="myGoBack();">
         <span class="ion-ios-arrow-left"></span>
     </div>
 </div>
@@ -12,47 +12,16 @@
     <div class="back" onclick="closeModal('shipping_address_modal')">
         <span class="close ion-ios-close-empty"></span>
     </div>        
-    <span ontap="alert('yes')" class="right-nav" k="កែប្រែ">Edit</span>
+    <span onclick="closeModal('shipping_address_modal'); window.location.href='#tab/account'; window.location.href='#tab/shipping_addr'" class="right-nav" k="កែប្រែ">Edit</span>
     <ion-content class="modal-body">        
         <div class="qw">
             <ul class="shipping_address_item">
                 
             </ul>
             <div class="t">
-                <button class="btn" onclick="openModal('shipping_info_modal')">Add new Address</button>
+                <button class="btn" onclick="addNewAddress()">Add new Address</button>
             </div>
         </div>            
-    </ion-content>
-</div>
-
-
-
-<div id="payment_method_modal" class="modal">
-    <div class="header-title" k="របៀបបង់បា្រក់">Payment Method</div>
-    <div class="back" onclick="closeModal('payment_method_modal')">
-        <span class="close ion-ios-close-empty"></span>
-    </div>
-    <ion-content class="uu modal-body">
-        <div id="cash_on_delivery_opt" class="a item item-complex" onclick="selectPaymentMethod('cash_on_delivery')">
-            <a class="item-content">
-                <div class="b" k="បង់ប្រាក់ពេលទទួលទំនិញ" id="cash_on_delivery">Cash on Delivery</div>
-                <div class="c">
-                    <span k="បង់ប្រាក់ពេលលោកអ្នកបានទទួលទំនិញរួចរាល់">Pay when you receive the product</span>
-                </div>
-            </a>
-        </div>
-        
-        <div id="transfer_money_opt" class="a item item-complex" onclick="selectPaymentMethod('transfer_money')">
-            <a class="item-content">
-                <div class="b" k="ផ្ញើរប្រាក់តាមទូរស័ព្ទ">Transfer money</div>
-                <div class="c payment" id="transfer_money">
-                    <span k="ផ្ញើរប្រាក់តាម">Transfer money via</span>
-                    <img class="d" src="img/wing.jpg"/>
-                    <img class="e" src="img/true_money.jpg">
-                    <img class="f" src="img/emoney.jpg">
-                </div>
-            </a>
-        </div>
     </ion-content>
 </div>
 
@@ -123,9 +92,8 @@
             <div class="a item item-complex" onclick="openModal('payment_method_modal')">
                 <a class="item-content" id="payment_method_panel">
                     <div class="b" k="របៀបបង់ប្រាក់">Payment Method</div>
-                    <div class="c payment">
-                        <span class="ion-cash"></span> 
-                        <span value="cash_on_delivery" id="payment_method" k="បង់ប្រាក់ពេលទទួលទំនិញ">Cash on Delivery</span>
+                    <div class="c payment" id="payment_method">
+                        
                     </div>
                     <div class="fa fa-angle-right"></div>
                 </a>
@@ -139,8 +107,8 @@
             </ul>
         </div>  
         <div class="hr"></div>
-        <div class="tp">
-            <input id="msg_seller" placeholder="Message to the seller (Optional)" k="សារសំរាប់អ្នកលក់ (មិនបំពេញក៏បាន)">
+        <div class="tp input-form">
+            <input id="msg_seller" placeholder="Message to the seller (Optional)" k="សារសំរាប់អ្នកលក់ (បើមាន)">
             <span class="input-close ion-ios-close-outline"></span>
         </div>
         <div class="hr"></div>             
@@ -189,8 +157,11 @@
             </div>
             <div class="ab"><span class="total"></span></div>
         </div>
-        <div class="d" k="បញ្ជាទិញ" ontap="placeOrder()">PLACE ORDER</div>
+        <div class="d" k="បញ្ជាទិញ" ontap="placeOrder()">
+            <ion-spinner icon="ios"></ion-spinner>
+        </div>
     </div>
+    
     
 </ion-view>
 <script>
@@ -198,6 +169,7 @@
     loadDefaultShippingInfo();
     loadCart();
     updateAvailablePaymentMethod();
+    loadDeliveryTime();
     la();         
     
     /*Fix Delivery Fee not showng */
@@ -214,14 +186,15 @@
         var user_id = localStorage.getItem('user_id');        
         $.post(URL+'app/shipping_info.php',{user_id:user_id}, function(data){
             var a = JSON.parse(data)[0]; 
+            name_en = a['location'].split(',')[0];
+            updateDeliveryTo(name_en);
             str = shippingInfoItem(a);
             str += '<span class="fa fa-angle-right"></span>';
             $('.eq #shipping_addr').html(str);
             $('.eq #shipping_addr_id').val(a['id']);
             
             $('.eq #shipping_addr .shipping-item').on('click', function(){
-                loadShippingAddr(a['id']); // arg : selected_id
-                //window.location.href = "#tab/shipping_addr_cart";            
+                loadShippingAddr(a['id']); // selected_id
                 openModal('shipping_address_modal');
             });
         });
@@ -241,22 +214,13 @@
     switchLocationTab();
     
     
-    /* Default Delivery Time for Express Delivery */
-    var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
-    $.post(URL+'module/delivery_time.php',{lang:lang, location:delivery_to}, function(data){
-        var a = JSON.parse(data);
-        $('.uu #express_delivery_time').text(a['text']);
-        $('.et #delivery_time').text(a['text']); 
-        $('.uu #express_delivery_time').attr('value', a['value']);
-        $('.et #delivery_time').attr('value', a['value']); 
-        
-    });        
+    
     
     function placeOrder(){
         var cart = localStorage.getItem('shopping_cart');
-        var delivery_fee = localStorage.getItem('delivery_fee');
-        var total_price = $('#order .total').text();
-        total_price = total_price.substring(2);
+        var subtotal = $('#order .subtotal').text().substring(2);
+        var delivery_fee = $('#order .delivery_fee').text().substring(2);
+        var total = $('#order .total').text().substring(2);
         var ordered_by = localStorage.getItem('user_id');
         var location = localStorage.getItem('delivery_to').split(',')[0];
         var message = $('#order #msg_seller').val();
@@ -264,27 +228,33 @@
         var payment_method = $('#order #payment_method').attr('value');
         var delivery_time = $('#order #delivery_time').attr('value');
         
-        
+                
         $.post(URL+'app/place_order.php', 
-        {cart:cart, delivery_fee:delivery_fee, total_price:total_price,ordered_by:ordered_by,
+        {cart:cart, subtotal:subtotal, delivery_fee:delivery_fee, total:total, ordered_by:ordered_by,
         location:location, message:message, shipping_addr_id:shipping_addr_id,
         payment_method:payment_method, delivery_time:delivery_time},
-        function(data){
-            if (data == 'success'){
-                openModal('order_placed_modal');    
+        function(data){                        
+            var a = JSON.parse(data);
+            if (a['result'] == 'success'){
+                orderPlaced(a['order_id']);                
                 localStorage.removeItem('shopping_cart');                
                 loadCart();
-                $('#go_back_to_cart').click();                                
+                window.location.href='#tab/cart';
             } else {
                 alert(data);
             }
             
-        });
+        });    
         
     }
     
+    
+    
+    
+    /* Load Date Select */    
     $.post(URL+'module/date_select.php',{lang:lang}, function(data){        
         a = JSON.parse(data);
+        
         for (var i = 0; i < a.length; i++){
             var str = '<li value="'+a[i]['val']+'"';
             if (i == 0) str += ' class="selected" ';
@@ -297,6 +267,7 @@
     
     
     loadSelectTime('default');
+    
     function loadSelectTime(chosen_date){        
         $.post(URL+'module/time_select.php',{lang:lang, chosen_date:chosen_date}, function(data){
             a = JSON.parse(data);
@@ -322,11 +293,7 @@
         
     }
     
-    function selectPaymentMethod(type){
-        closeModal('payment_method_modal');
-        $('#order #payment_method').html($('#payment_method_modal #'+type).html());
-        $('#order #payment_method').attr('value', type);
-    }
+    
             
     function selectDayTime(type, val){
         $('#choose_'+type+'_ul li').removeClass('selected');

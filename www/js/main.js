@@ -4,16 +4,19 @@ setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
 setDefault('delivery_fee', '0');
 setDefault('user_id', 'not_login');
 setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
-var nth_page = 0;
 
+
+   
 /* Global Variable */
 var lang = localStorage.getItem('language');
 var user_id = localStorage.getItem('user_id');
 var URL = 'http://www.nekoten.sangskrit.com/';
 var SIZE_L = '120';
+var SIZE_G = ($(window).width()-30)/2;
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
-
+var href = window.location.href.split(',');
+var current_page = href[href.lenght-1];
 
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
@@ -34,42 +37,26 @@ $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data
     }
 });
 
+
+
+/* Load Shopping Cart Label */
+loadCart();
+
+/* Load Delivery Time */
+loadDeliveryTime(); 
+   
+function connectionError(){
+    $('#connection_error_alert').css('display', 'flex');   
+}
+
+
 function setDefault(name, value){
     var a = localStorage.getItem(name);
     if (a == null){
         localStorage.setItem(name, value);                 
     }
     
-}
-
-
-
-
-
-
-/* Load Shopping Cart Label */
-
-if (localStorage.getItem('shopping_cart') != null){
-    var cart = localStorage.getItem('shopping_cart').split(',');
-    var n_cart = 0;
-    for (var i = 1; i < cart.length; i++){
-        n_cart += parseInt(cart[i].split(':')[2]);
-    }
-    
-    setTimeout(function() {
-        
-        $('.badge').text(n_cart);
-      
-    }, 500);
-} else {
-    setTimeout(function() {
-    
-        $('.badge').hide();
-        
-    }, 500);
-    
-}
-
+}     
 
 function selectTab(tab){
     $('.my-tab-content .a').hide();
@@ -86,25 +73,13 @@ $(document).on('tap', '[ontap]', function(){
 });
 
 
+
 function selectLocation(name_en){
     closeSmallModal('choose_location_modal');
     updateDeliveryTo(name_en);
 }
 
-$.post(URL+'app/location.php',{}, function(data){
-    var arr = JSON.parse(data);        
-    for (var i = 0; i < arr.length; i++){
-        var a = arr[i];
-        var str = '<li class="item item-complex" onclick="selectLocation(\''+a['name_en']+'\')">';
-            str += '<a class="item-content">';
-            str += '<span k="'+a['name_kh']+'">'+a['name_en']+'</span>';
-            str += '<span class="price-li">$ '+a['price']+' </span>';
-        str += '</a></li>';
-        $('#choose_location_ul_2').append(str); 
-    }
-    load('delivery_to');
-    la();
-});
+
 
 function postAddress(){
     var user_id = localStorage.getItem('user_id');
@@ -115,6 +90,8 @@ function postAddress(){
     var near_by = $('#shipping_info_form #near_by').val();
     var bus_name = $('#shipping_info_form #bus_name').val();
     var bus_phone_number = $('#shipping_info_form #bus_phone_number').val();
+    var default_address = $('#shipping_info_form #default_address').val();
+    
     
     var addr_selected = $('.my-tab #tab-address').hasClass('selected');
    
@@ -124,27 +101,76 @@ function postAddress(){
         var coordinate = $('#shipping_info_form #coordinate').val();
     }
     
-    $.post(URL+'app/post_address.php', {user_id:user_id, name: name, phone_number:phone_number, location:location, 
+    $.post(URL+'app/post_address.php', {user_id:user_id, default_address:default_address, name: name, phone_number:phone_number, location:location, 
         address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
         function(data){
-            if (data == 'success'){               
-                loadDefaultShippingInfo();                    
-                $('#add_address').hide();
+            if (data == 'success'){ 
+                var a = window.location.href.split('/');
+                var b = a[a.length-1];
+                if (b == 'review_order') {
+                    loadDefaultShippingInfo();                    
+                    $('#add_address').hide();
+                    closeModal('shipping_address_modal'); 
+                }
                 closeModal('shipping_info_modal');
-                closeModal('shipping_address_modal');                
+                               
             }
     });                
 }
 
-function loadOrderDetail(order_id){
+
+function loadStore(store_id){
+    openModal('store_modal');
+    $.post(URL+'app/store.php', {store_id:store_id, size_g:SIZE_G}, function(data){
+        
+        var a = JSON.parse(data)[0];
+        $('#store #name').text(a['name']);
+        $('#store #n_order').text(a['n_order']);
+        $('#store #n_product').text(a['n_product']);
+        if (a['timeline_pic'] == 'exist'){
+            $('#store #timeline_pic').attr('src', URL+'stores/'+store_id+'/timeline.jpg');
+        }
+        if (a['profile_pic'] == 'exist'){
+            $('#store #profile_pic').attr('src', URL+'stores/'+store_id+'/profile.jpg');
+        }
+        
+                                      
+                           
+        var arr = a['ads'];   
+        
+        for (var i = 0; i < arr.length; i++){            
+            var ad = arr[i];            
+            
+            var str = '<ion-item onclick="loadProduct(\''+ad['ad_id']+'\');" class="ad-item">';
+                str += '<div class="b" style="width:'+SIZE_G+'px;height:'+SIZE_G+'px">';
+                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
+                str += '</div>';
+                str += '<div class="a">';
+                    str += '<span class="aa">'+ad['price']+'</span>';
+                    str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
+                str += '</div>';
+            str += '</ion-item>';
+            
+            $('#store_products').append(str);
+        }  
+        
+        
+                                                    
+     
+        
+    })
+    
+}
+
+function loadOrderDetail(order_id){    
     $.post(URL+'app/order.php', {order_id:order_id}, function(data){
         var a = JSON.parse(data)[0];
         $('#order_detail #order_date').text(a['ordered_date']);
         $('#order_detail #order_id').text(a['id']);
-        var src = URL+'sellers/'+a['seller_id']+'/profile.jpg';
-        $('#order_detail #seller_img').attr('src', src);
-        $('#order_detail #seller_full_name').text(a['seller_name_'+lang]);
-        $('#order_detail #seller_n_product').text(a['seller_n_product']);
+        var src = URL+'stores/'+a['store_id']+'/profile.jpg';
+        $('#order_detail #store_img').attr('src', src);
+        $('#order_detail #store_full_name').text(a['store_name']);
+        $('#order_detail #store_n_product').text(a['store_n_product']);
         
         var c = a['ads'];
         var str = '';
@@ -203,7 +229,7 @@ function closeSmallModal(page){
 
 function openModal(page){    
     $('#'+page).height($(window).height());        
-    if (page == 'product_modal'){
+    if (page == 'product_modal' || page == 'store_modal'){
         $('#'+page).css('transform', 'translateX(0)');
     } else {
         $('#'+page).css('transform', 'translateY(0)');    
@@ -213,7 +239,7 @@ function openModal(page){
     //StatusBar.hide();     
 }
 function closeModal(page){        
-    if (page == 'product_modal'){
+    if (page == 'product_modal' || page == 'store_modal'){
         $('#'+page).css('transform', 'translateX(100%)');    
     } else {
         $('#'+page).css('transform', 'translateY(100%)');        
@@ -229,6 +255,7 @@ function closeModal(page){
 }
 
 
+
 function openSmallModal(page){
     
     $('#'+page).height($(window).height());
@@ -238,21 +265,7 @@ function openSmallModal(page){
     //StatusBar.hide();
     
 }
-
-/* Input Form Close */
-$('.input-form input').on('keyup click', function(){
-    if ($(this).val() != '') {
-        $(this).siblings('.input-close').show();
-    }
-});
-$('.input-form input').on('blur', function(){
-        $(this).siblings('.input-close').hide();
-});
-$('.input-form .input-close').on('click', function(){
-    $(this).siblings('input').focus();
-    $(this).siblings('input').val('');
-});
-    
+   
                   
 function signInRegister(opt){
     var full_name = $('#'+opt+'_form #full_name').val();
@@ -316,9 +329,10 @@ function loadShippingAddr(selected_id){
             str += '</div>';
             $('.qw .shipping_address_item').html(str);
         } else {
-            for (var i = 0; i < a.length; i++){
-                var abc = window.location.href.split('/');
-                var current_page = abc[abc.length-1];
+            var abc = window.location.href.split('/');
+            var current_page = abc[abc.length-1];
+            
+            for (var i = 0; i < a.length; i++){            
                 var b = a[i];
                 var str = '<li class="item item-complex">';
                 str += shippingInfoItem(b);                                            
@@ -333,24 +347,26 @@ function loadShippingAddr(selected_id){
                 str += '</li>';
                 $('.qw .shipping_address_item').append(str);                                    
             }
-            $('.qw .shipping_address_item .shipping-item').on('tap', function(){
+            $('.qw .shipping_address_item .shipping-item').on('click', function(){
                 
-                if (current_page == 'review_order'){     
-                    var id = $(this).attr('value');
-                    var str = '<a onclick="onclick="updateDeliveryTo(\''+a['name_en']+'\');" class="item-content shipping-item" value="'+id+'">';
+                if (current_page == 'review_order'){                         
+                    var id = $(this).attr('value');                    
+                    var str = '<a class="item-content shipping-item" value="'+id+'">';
                     str += $(this).html();
                     str += '<span class="fa fa-angle-right"></span></a>';                                        
                     $('.eq #shipping_addr').html(str);
-                    $('.eq #shipping_addr_id').val(id);                    
-                    $('.eq #shipping_addr .shipping-item').on('click', function(){
+                    $('.eq #shipping_addr_id').val(id);   
+                    updateDeliveryTo(a['name_en']);
+                    $('.eq #shipping_addr .shipping-item').on('click', function(){                        
                         loadShippingAddr(id);
                         openModal('shipping_address_modal');
                     });
                     closeModal('shipping_address_modal');                    
                 } else if (current_page == 'shipping_addr'){     
                     var id = $(this).attr('value');
+                    
+                    openModal('shipping_info_modal');  
                     editAddress(id);
-                    openModal('shipping_info_modal');                    
                 }
             });
         }            
@@ -358,16 +374,48 @@ function loadShippingAddr(selected_id){
     });
 }
 
+
+function addNewAddress(){
+ 
+    /* Default values for Add an Address Tab*/
+    $('.lg #name').val(localStorage.getItem('full_name'));
+    $('.lg #phone_number').val(localStorage.getItem('phone_number'));
+    
+    openModal('shipping_info_modal');
+ }
+ 
+function deleteAddress(){
+    var id = $('#shipping_info_form #addr_id').val();
+    alertConfirm('Delete this shipping Address', 'លុបអាស័យដ្ឋានដឹកជញ្ជូននេះចេញ');
+    $('#alert_confirm .confirm').on('click', function(){
+        $.post(URL+'app/delete_address.php', {id:id}, function(data){
+            if (data.includes('success')){
+                closeModal('shipping_info_modal');
+                loadShippingAddr(0);
+            }
+        });
+    });
+}
+ 
 function editAddress(id){
     $.post(URL+'app/shipping_address.php', {id:id}, function(data){
-        var a = JSON.parse(data);
-        $('#shipping_info_modal #name').val(a['name']);
-        $('#shipping_info_modal #phone_number').val(a['phone_number']);
-        $('#shipping_info_modal #address').val(a['address']);
-        $('#shipping_info_modal #near_by').val(a['near_by']);
-        $('#shipping_info_modal #bus_name').val(a['bus_name']);
-        $('#shipping_info_modal #bus_phone_number').val(a['bus_phone_number']);
+        var a = JSON.parse(data)[0];
+        $('.back #delete_address').show();
+        $('#shipping_info_form #addr_id').val(id);
+        $('#shipping_info_form #name').val(a['name']);
+        $('#shipping_info_form #phone_number').val(a['phone_number']);
+        $('#shipping_info_form #address').val(a['address']);
+        $('#shipping_info_form #near_by').val(a['near_by']);
+        $('#shipping_info_form #bus_name').val(a['bus_name']);
+        $('#shipping_info_form #bus_phone_number').val(a['bus_phone_number']);
+        var en = a['location'].split(',')[0];
+        var kh = a['location'].split(',')[1];
+        if (lang == 'en') $('#shipping_info_form #location').text(en); 
+        else $('#shipping_info_form #location').text(kh);
+        switchLocationTab(en);
+        
     });
+    
 }
 
 
@@ -414,37 +462,38 @@ function shippingInfoItem(a){
 
 
 function loadCart(){        
-    var shopping_cart = localStorage.getItem('shopping_cart');    
+    var shopping_cart = localStorage.getItem('shopping_cart');        
     if (shopping_cart == '' || shopping_cart == null){
         $('#no_item_in_cart').show();        
         $('.cart-footer').hide(); 
         $('.badge').hide();
         $('#cart-cart').html('');
         $('#cart-review').html('');
-    } else {                
+        $('.cart_count').text('0');
+        $('.noti-label').hide();        
+    } else {                     
         $('#no_item_in_cart').hide();            
         $('.cart-footer').show();        
-        var cart = shopping_cart.split(',');
-        var size_l = '120';       
+        var cart = shopping_cart.split(',');        
         var subtotal = 0;
         var cart_count = 0;
         var delivery_fee = localStorage.getItem('delivery_fee');
         $('.delivery_fee').text('$ '+delivery_fee);
         $('#cart-cart').html('');
         $('#cart-review').html('');
-            
+        
         for (var j = 1; j < cart.length; j++){
             var ad_id = cart[j].split(':')[0];
             var opt = cart[j].split(':')[1];
             var qty = cart[j].split(':')[2];                
             cart_count += parseInt(qty);
             
-            $.post(URL+'app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
+            $.post(URL+'app/product_item.php',{qty:qty, size_l:SIZE_L, ad_id:ad_id},function(data){
                 
                 var ad = JSON.parse(data)[0];        
                 subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
                 var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
-                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\')" style="width:'+size_l+'px;height:'+size_l+'px">';
+                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\')" style="width:'+SIZE_L+'px;height:'+SIZE_L+'px">';
                         str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
                     str += '</div>';
                     str += '<div class="b">';
@@ -468,17 +517,32 @@ function loadCart(){
                 $('.total').text('$ '+(parseFloat(subtotal)+parseFloat(delivery_fee)));
             });                 
         }
+        $('.noti-label').show();
         $('.cart_count').text(cart_count);
-        
         $('.badge').text(cart_count);
         $('.badge').show();
         
     }
 }
 
-function switchLocationTab(){
+function deleteCart(ad_id){
+    alertConfirm('Remove this item from your Shopping Cart?', 'ដកទំនិញនេះចេញពីកន្ត្រកទំនិញ?');            
+    $('#alert_confirm .confirm').on('tap', function(){                                      
+        var a = localStorage.getItem('shopping_cart').split(',');
+        var b = '';            
+        for (var i = 1; i < a.length; i++){                
+            if (a[i].split(':')[0] != ad_id) {                
+                b += ','+a[i];            
+            }        
+        }
+        localStorage.setItem('shopping_cart', b);                         
+        loadCart();
+    });
+}
+
+function switchLocationTab(name_en){
     /* For Add an Address of Review Order */
-    if (localStorage.getItem('delivery_to') != 'Phnom Penh,ភ្នំពេញ'){
+    if (name_en != 'Phnom Penh'){
         $('#shipping_info_form #phnom_penh_tab').hide();
         $('#shipping_info_form #province_tab').show();                
     } else {
@@ -490,6 +554,7 @@ function switchLocationTab(){
 function updateAvailablePaymentMethod(){
     var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
     if (delivery_to == 'Phnom Penh'){
+        selectPaymentMethod('cash_on_delivery');
         $('.uu #cash_on_delivery_opt').show();
     } else {
         selectPaymentMethod('transfer_money');
@@ -497,7 +562,27 @@ function updateAvailablePaymentMethod(){
     }
 }
 
-function updateDeliveryTo(name_en){
+function selectPaymentMethod(type){        
+    closeModal('payment_method_modal');
+    $('#order #payment_method').html($('#payment_method_modal #'+type).html());
+    $('#order #payment_method').attr('value', type);
+}
+
+/* Load Delivery Time for Express Delivery */
+function loadDeliveryTime(){
+    var delivery_to = localStorage.getItem('delivery_to').split(',')[0];
+    $.post(URL+'module/delivery_time.php',{lang:lang, location:delivery_to}, function(data){
+
+        var a = JSON.parse(data);
+        $('.uu #express_delivery_time').text(a['text']);
+        $('.et #delivery_time').text(a['text']); 
+        $('.uu #express_delivery_time').attr('value', a['value']);
+        $('.et #delivery_time').attr('value', a['value']);   
+        
+    });    
+}
+
+function updateDeliveryTo(name_en){    
     $.post(URL+'app/location.php', {name_en:name_en}, function(data){
         var name_kh = JSON.parse(data)[0]['name_kh'];
         var fee = JSON.parse(data)[0]['price'];
@@ -505,23 +590,25 @@ function updateDeliveryTo(name_en){
         localStorage.setItem('delivery_fee', fee);
         if (fee == 0) var fee2 = 'Free'; else var fee2 = '$ '+fee;
         if (lang == 'en'){        
-            $('#shipping_info_form #location').text(name_en); // Shipping Info Page
+            $('#shipping_info_form #location').text(name_en); // Add an address
+            $('#shipping_info_form #location').attr('value', name_en); // Add an address
             $('.mr #delivery_to').text(name_en); // More Page
             $('#product_delivery_to #delivery_to').text(name_en); // Product Page  
             $('.lg #location').text(name_en); // Add an address  
             $('.delivery_fee').text('$ '+ fee); // Cart & Review Order Page
             $('#product_delivery_to #delivery_fee').text(fee2); // Product Page        
-            switchLocationTab();
+            switchLocationTab(name_en);
         } else {
-            $('#shipping_info_form #location').text(name_kh);
+            $('#shipping_info_form #location').text(name_kh); // Add an address
+            $('#shipping_info_form #location').attr('value', name_en); // Add an address
             $('.mr #delivery_to').text(name_kh);
             $('#product_delivery_to #delivery_to').text(name_kh); // Product Page        
             $('#product_delivery_to #delivery_fee').text(fee2); // Product Page
-            $('.lg #location').text(name_kh); // Add an address
             $('.delivery_fee').text('$ '+ fee); // Cart & Review Order Page
-            switchLocationTab();
+            switchLocationTab(name_en);
         }  
         updateAvailablePaymentMethod();
+        loadDeliveryTime();
         $('.lg #location').attr('value', name_en+','+name_kh); // Add an address
         loadCart();
         
@@ -529,10 +616,10 @@ function updateDeliveryTo(name_en){
 }
 
 function loadProduct(ad_id, page){  
+    openModal('product_modal');    
     //$('.product_page').html('');    
     $('.tab-nav').hide();
     $.post(URL+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
-        
         var ad = JSON.parse(data)[0];
         $('#title').html(ad['title']);
         $('.wr #rv_title').html(ad['title']); // Submit Review
@@ -556,44 +643,60 @@ function loadProduct(ad_id, page){
         var qty = ad['quantity'];
         $('.pp #quantity').html(qty);
         
+        /* Cart Count */
+        if ($('.badge').text() > 0){
+            $('.cart_count').text($('.badge').text());
+            $('.noti-label').show();
+        }
         
+        /* Default Quantity Text Value */
+        $('.at #qty').val(1);
         
-        $('.ii #rate').html(ad['rate']);
-        $('.ii #review').html(ad['review']);
+        $('.ii #ad_id_txt').html(ad['ad_id']);
         $('.ii #view').html(ad['view']);
         $('.ii #n_order').html(ad['n_order']);
         $('.pd #desc').html(ad['description']);
         
         
-        var src = URL+'sellers/'+ad['seller_id']+'/profile.jpg';
-        $('#product_body #seller_img').attr('src', src);
-        $('#product_body #seller_full_name').text(ad['seller_name_'+lang]);
-        $('#product_body #seller_n_product').text(ad['seller_n_product']);
+        var src = URL+'stores/'+ad['store_id']+'/profile.jpg';
+        $('#store_info #store_img').attr('src', src);
+        $('#store_info #store_full_name').text(ad['store_name']);
+        $('#store_info #store_n_product').text(ad['store_n_product']);
         
+        $('#store_info').on('click', function(){
+            loadStore(ad['store_id']);
+        })
         /* Update product view */
-        $.post(URL+'app/update_view.php',{ad_id:ad_id});
+        $.post(URL+'app/update_view.php',{ad_id:ad_id, user_id:user_id});
+        
+        
         
         /* Ad Image */
         $('.ad_image').trigger('destroy.owl.carousel');
+        $('#ad_photos').text('');
+        
         var str = '';
+        var str2 = '';
         for (var i = 0; i < img.length; i++){            
             var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
-            str += '<img style="width:100%;height:100%" id="ad-img-'+(i+1)+'" src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';            
+            str += '<img class="owl-lazy" style="width:100%; height:100%" id="ad-img-'+(i+1)+'" data-src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';            
+            str2 += '<img src="'+img_URL+'">';
         }
+        $('#ad_photos').text(str2); // For Description Details
         
         $('.ad_image').html(str);      
-        
         $('.ad_image').owlCarousel({
             responsive:{
                 0:{
                     items:1
                 }
-            }
+            },
+            lazyLoad: true
         });
                              
         /* Related Products */    
-        $.post(URL+'app/related_products.php',{size:size, ad_id:ad_id},function(data){                                
-            var a_wh = (size-30)/2;                    
+        $.post(URL+'app/related_products.php',{size_g:SIZE_G, ad_id:ad_id},function(data){                                
+                             
             var arr = JSON.parse(data);   
             
             for (var i = 0; i < arr.length; i++){            
@@ -601,7 +704,7 @@ function loadProduct(ad_id, page){
                 var ad_id = ad['ad_id'];  
                 
                 var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
-                    str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
+                    str += '<div class="b" style="width:'+SIZE_G+'px;height:'+SIZE_G+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="a">';
@@ -617,6 +720,8 @@ function loadProduct(ad_id, page){
 
         //$('#product_body').show();
         $('.ad_images').show();
+    }).error(function(){
+        connectionError();
     });
     
     /* Scroll to Top */
@@ -630,7 +735,7 @@ function loadProduct(ad_id, page){
     
     loadQuestionReviewList('question', 'panel', ad_id);
     loadQuestionReviewList('review', 'panel', ad_id);    
-    openModal('product_modal');    
+    
     
 }
 
@@ -641,21 +746,16 @@ function goBackProduct(){
     
     if (b.length == 2){                    
         $('#loaded_ad_id').val('');
-        closeModal('product_modal');    
-        alert('1');
-    } else {
+        closeModal('product_modal');            
+    } else {        
         var c = '';
-        for (var i = 1; i < (b.length-1); i++){
+        for (var i = 1; i < (b.length-2); i++){
             c += ',' + b[i];
-        }
-        var d = c.split(',');
-        var e = d[d.length-1];
+        }        
+        var e = b[b.length-2];
         $('#loaded_ad_id').val(c);
         loadProduct(e);
-    }
-    alert(b.length+c);
-    
-    
+    }    
 }
 
 
@@ -739,7 +839,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
                         
                         if (type == 'question' && q['answer'] != ''){
                             str += '<div class="i">';
-                            if (lang == 'en') str += 'Seller: '; else str += 'អ្នកលក់: ';
+                            if (lang == 'en') str += 'Store: '; else str += 'ហាង: ';
                             str += '<span>'+q['answer']+'</span></div>';
                         }                    
                     str += '</div>';
@@ -757,6 +857,17 @@ function loadQuestionReviewList(type, opt, AD_ID){
 }
 
 
+function loadDescription(){
+    $('#description #title').html($('#product_body #title').html());
+    $('#description #desc').html($('.pd #desc').html());
+    $('#description #photo').html($('#ad_photos').text());
+    openModal('description_modal');
+    /* Scroll to Top */
+    $('#description').animate({
+        scrollTop: $(".ion-content").offset().top
+    }, 0);
+}
+
 function searchClick(){ 
     $('.cancel').show();    
 }
@@ -770,8 +881,8 @@ function cancelClick(){
 
 function loadWishlistViewedItem(opt){
     var user_id = localStorage.getItem('user_id');
-    var size_l = '120';
-    $.post(URL+'app/wishlist.php', {user_id:user_id, size_l:size_l}, function (data){        
+    var SIZE_L = '120';
+    $.post(URL+'app/wishlist_viewed_item.php', {user_id:user_id, size_l:SIZE_L, opt:opt}, function (data){        
         $('#'+opt+'_panel').html('');
         var a = JSON.parse(data);        
         for (var i = 0; i < a.length; i++){
@@ -829,7 +940,8 @@ function addSearchHistory(keyword){
 function search(keyword){    
     $('#search_res_item').html('');
     cancelClick();
-    searchProduct(keyword, 'best_match'); 
+    searchProduct(keyword, 'best_match');
+    window.location.href = '#tab/search';
     window.location.href = '#tab/search_res';
 }
 
@@ -837,7 +949,6 @@ function search(keyword){
 
 function searchKeyword(tab){
     var q = $('#search-'+tab).val();
-    //alert(q);
     if (q == ''){
         $('.search-form').html('');
         $('.search-form').height('0');
@@ -861,28 +972,28 @@ function searchKeyword(tab){
 function submitSearchForm(tab){
     var keyword = $('#'+tab).val();        
     if (keyword != ''){
-        window.location.href = '#tab/search_res';    
         searchProduct(keyword, 'best_match');            
         addSearchHistory(keyword);    
         cancelClick();
+        window.location.href = '#tab/search';  
+        window.location.href = '#tab/search_res';    
     }
 }
 
 function searchProduct(keyword, opt) {
     
-    var size_l = '120';
-    var size_g = ($(window).width()-30)/2;
+    
     $('#search_res_item').html('');
     
     
-    $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword, opt:opt},function(data){
+    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:SIZE_L, keyword:keyword, opt:opt},function(data){
         
         var arr = JSON.parse(data);            
         for (var i = 0; i < arr.length; i++){
             var ad = arr[i];                
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\')">';
-                str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
+                str += '<div class="a" style="width:'+SIZE_L+'px;height:'+SIZE_L+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';
@@ -909,22 +1020,20 @@ function searchProduct(keyword, opt) {
 }
     
 function loadOtherProducts(keyword){
-    
-    var size_l = '120';
-    var size_g = ($(window).width()-30)/2;
+
     
     $('#no_res_keyword').text("'"+keyword+"'");
     $('#no_res').show();
     $('.other-products').show();
 
     /* Other Products */                    
-    $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
+    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:SIZE_L, keyword:'$other$'},function(data2){        
         var arr2 = JSON.parse(data2);        
         for (var j = 0; j < arr2.length; j++){
             var ad = arr2[j];                    
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\');">';
-                str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
+                str += '<div class="a" style="width:'+SIZE_L+'px;height:'+SIZE_L+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';
