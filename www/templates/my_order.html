@@ -61,7 +61,7 @@
     }
     function loadMyOrder(){
         var user_id = localStorage.getItem('user_id');
-        $.post(URL+'app/my_order.php', {user_id:user_id, size_l:SIZE_L}, function (data){        
+        $.post(URL+'app/my_order.php', {user_id:user_id, size_l:size_l}, function (data){        
             $('#my-order-panel').html('');
             var a = JSON.parse(data);                 
             for (var i = 0; i < a.length; i++){

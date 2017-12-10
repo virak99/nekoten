@@ -1,5 +1,8 @@
 <div class="app-header">
-    <div class="header-title">Order Detail</div>
+    <div class="header-title">
+        <span k="ការកម្មង់">Order</span>
+        <span id="order_id_title"></span>        
+    </div>
     <div class="back" ng-click="myGoBack()">
         <span class="ion-ios-arrow-left"></span>
     </div>
@@ -8,6 +11,10 @@
     <ion-content id="order_detail">
         
         <div class="uj">
+            <div class="a">
+                <span class="b" k="ស្ថានភាព: ">Status: </span>
+                <span id="status">Product Delivered</span>
+            </div>
             <div class="a">
                 <span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>
                 <span id="order_date"></span>
@@ -18,12 +25,40 @@
             </div>
         </div>
         <div class="hr"></div>
+        <div class="yl" id="status_bar">
+            
+        </div>
+    
+        <div class="hr"></div>
         <div class="xv">
             <div class="a" k="អាស័យដ្ឋានដឹកជញ្ជូន">
                 Shipping Address
             </div>
             <div id="shipping_addr">
             
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="uy">
+            <div class="a">
+                <div class="b" k="ម៉ោងដឹកជញ្ជូន">Delivery Time</div>
+                <div class="c">
+                    <span k="ទទួលទំនិញ">Receive Product</span>                        
+                    <strong id="delivery_time"></strong>    
+                </div>
+            </div>
+            <div class="a">
+                <div class="b" k="របៀបបង់ប្រាក់">Payment Method</div>
+                <div class="c" id="payment_method">
+                    <span style="display:none" id="cash_on_delivery" k="បង់ប្រាក់ពេលទទួលទំនិញ">Cash on Delivery</span>
+                    <div style="display:none" class="payment" id="transfer_money">
+                        <span k="ផ្ញើរប្រាក់តាម">Transfer money via</span>
+                        <img class="d" src="img/wing.jpg"/>
+                        <img class="e" src="img/true_money.jpg">
+                        <img class="f" src="img/emoney.jpg">
+                    </div>
+                    
+                </div>
             </div>
         </div>
         <div class="hr"></div>

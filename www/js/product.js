@@ -8,12 +8,14 @@ $('#product_page_content').scroll(function(){
     if (!is_header_showed){
         if(($('.ad_images').height() - $('#product_page_content').scrollTop()) < 0) {
             is_header_showed = true;
-            $('#product_page_header').addClass('has-header');                        
+            $('#product_page_header').addClass('has-header');
+            $('.go-to-top').show();
         }    
     } else {
         if(($('.ad_images').height() - $('#product_page_content').scrollTop()) > 0) {
             is_header_showed = false;
-            $('#product_page_header').removeClass('has-header');                        
+            $('#product_page_header').removeClass('has-header');  
+            $('.go-to-top').hide();
         }    
     }
     

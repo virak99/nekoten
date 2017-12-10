@@ -4,19 +4,22 @@ setDefault('delivery_to', 'Phnom Penh,ភ្នំពេញ');
 setDefault('delivery_fee', '0');
 setDefault('user_id', 'not_login');
 setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
-
-
    
+localStorage.setItem('user_id', 'fhtv');
+
+
 /* Global Variable */
 var lang = localStorage.getItem('language');
 var user_id = localStorage.getItem('user_id');
 var URL = 'http://www.nekoten.sangskrit.com/';
-var SIZE_L = '120';
+var size_l = '120';
 var SIZE_G = ($(window).width()-30)/2;
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 var href = window.location.href.split(',');
 var current_page = href[href.lenght-1];
+
+  
 
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
@@ -163,21 +166,41 @@ function loadStore(store_id){
 }
 
 function loadOrderDetail(order_id){    
-    $.post(URL+'app/order.php', {order_id:order_id}, function(data){
+    $.post(URL+'app/order.php', {order_id:order_id, lang:lang}, function(data){
         var a = JSON.parse(data)[0];
         $('#order_detail #order_date').text(a['ordered_date']);
         $('#order_detail #order_id').text(a['id']);
-        var src = URL+'stores/'+a['store_id']+'/profile.jpg';
-        $('#order_detail #store_img').attr('src', src);
-        $('#order_detail #store_full_name').text(a['store_name']);
-        $('#order_detail #store_n_product').text(a['store_n_product']);
+        $('#order_id_title').text('#'+a['id']);
+        $('#order_detail #delivery_time').text(a['delivery_time']);
+        $('#order_detail #'+a['payment_method']).show();
+        
+        
+        var str = '';
+        for (var i = 0; i < 3; i++) {
+            str += '<div class="a">';
+                str += '<div class="b">';
+                    str += '<div class="ba"></div>';
+                    str += '<div class="bb"></div>';
+                str += '</div>';
+                str += '<div class="c">';
+                    str += '<div class="ca">';
+                        str += '09-21-2017 09:45';
+                    str += '</div>';
+                    str += '<div class="cb">';
+                        str += 'Order Received';
+                    str += '</div>';
+                str += '</div>';
+            str += '</div>';
+        }
+        $('#status_bar').html(str);
+
         
         var c = a['ads'];
         var str = '';
         for (j = 0; j < c.length; j++){
             var d = c[j];
 
-            var str2 = '<li class="p-list">';                    
+            var str2 = '<li class="p-list" ontap="loadProduct(\''+d['ad_id']+'\')">';                    
                 str2 += '<div class="a">';
                     str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
                 str2 += '</div>';
@@ -231,6 +254,7 @@ function openModal(page){
     $('#'+page).height($(window).height());        
     if (page == 'product_modal' || page == 'store_modal'){
         $('#'+page).css('transform', 'translateX(0)');
+        //$('#'+page).css('z-index', parseInt($('#'+page).css('z-index'), 10)+2);
     } else {
         $('#'+page).css('transform', 'translateY(0)');    
     }    
@@ -462,15 +486,17 @@ function shippingInfoItem(a){
 
 
 function loadCart(){        
-    var shopping_cart = localStorage.getItem('shopping_cart');        
+    var shopping_cart = localStorage.getItem('shopping_cart');   
     if (shopping_cart == '' || shopping_cart == null){
         $('#no_item_in_cart').show();        
         $('.cart-footer').hide(); 
-        $('.badge').hide();
         $('#cart-cart').html('');
         $('#cart-review').html('');
-        $('.cart_count').text('0');
-        $('.noti-label').hide();        
+        $('.cart_count').html('0');
+        $('.noti-label').hide();    
+        setTimeout(function() {        
+            $('.badge').hide();
+        }, 100);
     } else {                     
         $('#no_item_in_cart').hide();            
         $('.cart-footer').show();        
@@ -488,12 +514,12 @@ function loadCart(){
             var qty = cart[j].split(':')[2];                
             cart_count += parseInt(qty);
             
-            $.post(URL+'app/product_item.php',{qty:qty, size_l:SIZE_L, ad_id:ad_id},function(data){
+            $.post(URL+'app/product_item.php',{qty:qty, size_l:size_l, ad_id:ad_id},function(data){
                 
                 var ad = JSON.parse(data)[0];        
                 subtotal += parseFloat(ad['price'].replace('$ ', '').replace(',', ''))*parseInt(qty);                     
                 var str = '<li class="p-list" id="cart-item-'+ad['ad_id']+'">';
-                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\')" style="width:'+SIZE_L+'px;height:'+SIZE_L+'px">';
+                    str += '<div class="a" onclick="loadProduct(\''+ad['ad_id']+'\')" style="width:'+size_l+'px;height:'+size_l+'px">';
                         str += '<img src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg" style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px">';
                     str += '</div>';
                     str += '<div class="b">';
@@ -615,7 +641,8 @@ function updateDeliveryTo(name_en){
     });   
 }
 
-function loadProduct(ad_id, page){  
+
+function loadProduct(ad_id){  
     openModal('product_modal');    
     //$('.product_page').html('');    
     $('.tab-nav').hide();
@@ -643,11 +670,6 @@ function loadProduct(ad_id, page){
         var qty = ad['quantity'];
         $('.pp #quantity').html(qty);
         
-        /* Cart Count */
-        if ($('.badge').text() > 0){
-            $('.cart_count').text($('.badge').text());
-            $('.noti-label').show();
-        }
         
         /* Default Quantity Text Value */
         $('.at #qty').val(1);
@@ -725,9 +747,7 @@ function loadProduct(ad_id, page){
     });
     
     /* Scroll to Top */
-   $('.ion-content').animate({
-        scrollTop: $(".ion-content").offset().top
-    }, 0);
+    scrollToTop(0);
     
     /*Record Loaded ad_id */
     $('#loaded_ad_id').val($('#loaded_ad_id').val()+','+ad_id);
@@ -737,6 +757,13 @@ function loadProduct(ad_id, page){
     loadQuestionReviewList('review', 'panel', ad_id);    
     
     
+}
+
+/* Scroll to Top */
+function scrollToTop(delay){
+    $('.ion-content').animate({
+        scrollTop: $(".ion-content").offset().top
+    }, delay);
 }
 
 function goBackProduct(){    
@@ -881,8 +908,8 @@ function cancelClick(){
 
 function loadWishlistViewedItem(opt){
     var user_id = localStorage.getItem('user_id');
-    var SIZE_L = '120';
-    $.post(URL+'app/wishlist_viewed_item.php', {user_id:user_id, size_l:SIZE_L, opt:opt}, function (data){        
+    var size_l = '120';
+    $.post(URL+'app/wishlist_viewed_item.php', {user_id:user_id, size_l:size_l, opt:opt}, function (data){        
         $('#'+opt+'_panel').html('');
         var a = JSON.parse(data);        
         for (var i = 0; i < a.length; i++){
@@ -986,14 +1013,14 @@ function searchProduct(keyword, opt) {
     $('#search_res_item').html('');
     
     
-    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:SIZE_L, keyword:keyword, opt:opt},function(data){
+    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:size_l, keyword:keyword, opt:opt},function(data){
         
         var arr = JSON.parse(data);            
         for (var i = 0; i < arr.length; i++){
             var ad = arr[i];                
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\')">';
-                str += '<div class="a" style="width:'+SIZE_L+'px;height:'+SIZE_L+'px">';
+                str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';
@@ -1027,13 +1054,13 @@ function loadOtherProducts(keyword){
     $('.other-products').show();
 
     /* Other Products */                    
-    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:SIZE_L, keyword:'$other$'},function(data2){        
+    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:size_l, keyword:'$other$'},function(data2){        
         var arr2 = JSON.parse(data2);        
         for (var j = 0; j < arr2.length; j++){
             var ad = arr2[j];                    
             var ad_id = ad['ad_id'];
                 var str = '<li class="p-list" px_l="'+ad['px_l']+'" px_g="'+ad['px_g']+'" margin="'+ad['margin']+'" onclick="loadProduct(\''+ad_id+'\');">';
-                str += '<div class="a" style="width:'+SIZE_L+'px;height:'+SIZE_L+'px">';
+                str += '<div class="a" style="width:'+size_l+'px;height:'+size_l+'px">';
                     str += '<img style="width:'+ad['w']+'; height:'+ad['h']+'; margin-'+ad['margin']+':'+ad['px_l']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1.jpg">';
                 str += '</div>';
                 str += '<div class="b">';

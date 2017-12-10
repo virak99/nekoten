@@ -247,6 +247,10 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .uj .a{
     width: 100%;
 }
+.uj #status{
+    font-weight: bold;
+    color: limegreen;
+}
 .uj .b{
     color: #aaa;
 }
@@ -702,7 +706,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     color: #ff3366;
 }
 .wishlist-btn{
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
     position: absolute;
     right: 5px;
     bottom: 0;
@@ -710,8 +714,24 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     background-color: white;
     border-radius: 50%;
     color: #aaa;
-    font-size: 20px;
-    padding: 9px 8px 6px 8px;
+    width: 45px;
+    height: 45px;
+    font-size: 22px;
+    padding: 12px 0 0 11px;
+}
+.go-to-top{
+    background: white;
+    width: 45px;
+    height: 45px;
+    border: 1px solid #ddd;
+    padding: 10px 0 0 15px;
+    font-size: 1.5em;
+    border-radius: 50%;
+    position: fixed;
+    right: 10px;
+    color: #aaa;
+    bottom: 25px;
+    display: none;
 }
 .owl-dots .owl-dot{
     height: 8px;
@@ -1237,12 +1257,14 @@ ion-nav-view{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999;
+    z-index: 901;
     transition: 0.3s;
 }
 .modal2 {    
+    z-index: 900;
     transform: translateX(100%);  
 }
+
 .sm-modal {
     transform: translateY(100%);
     width: 100%;    
@@ -1325,8 +1347,25 @@ ion-nav-view{
     border-bottom: 1px solid #eee;
     border-radius: initial;
 }
-
-
+.uy .a{
+    padding: 10px 15px;
+    font-size: 16px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+.uy .b{
+    margin-bottom: 5px;
+}
+.uy .c{
+    font-size: 14px;
+    color: limegreen;
+}
+.uy .payment img{
+    margin-bottom: -9px;
+}
+.uy .payment{
+    position: relative;
+}
 .et .a .fa{
     position: absolute;
     top: 22px;
@@ -1475,6 +1514,9 @@ ion-nav-view{
 .wrap2{
     padding: 20px;
 }
+#ad_id_txt{
+    text-transform: uppercase;
+}
 .noti-label{
     color: white;
     background: #ff3366;
@@ -1483,7 +1525,7 @@ ion-nav-view{
     top: 25px;
     z-index: 102;
     border-radius: 50%;
-    padding: 0 6px;        
+    padding: 0 7px;        
 }
 .qw .u {
     text-align: center;
@@ -1599,4 +1641,40 @@ ion-nav-view{
 #description .b img{
     width: 100%;
     height: auto;
+}
+.yl{
+    padding: 10px 0;
+}
+.yl .a{
+    display: inline-flex;;
+}
+.yl .b{
+    margin-left: 50px;
+}
+.yl .ba{
+    width: 10px;
+    height: 10px;
+    background: #111;
+    border-radius: 10px;
+}
+.yl .bb{
+    height: 50px;
+    margin: 5px 0 5px 5px;
+    border-left: 1px dashed #aaa;
+}
+.yl .c{
+    margin-left: 15px;
+    margin-top: -20px;
+}
+.yl .a:first-child .c{
+    margin-top: 0;
+}
+.yl .a:first-child .b{
+    margin-top: 20px
+}
+.yl .a:last-child .bb{
+    display: none;
+}
+.yl .ca{
+    color: #aaa;
 }

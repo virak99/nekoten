@@ -157,8 +157,9 @@
             </div>
             <div class="ab"><span class="total"></span></div>
         </div>
-        <div class="d" k="បញ្ជាទិញ" ontap="placeOrder()">
-            <ion-spinner icon="ios"></ion-spinner>
+        <div class="d" id="place_order" ontap="placeOrder()">
+            <span k="បញ្ជាទិញ">PLACE ORDER</span>
+            <ion-spinner style="display:none" icon="ios"></ion-spinner>
         </div>
     </div>
     
@@ -228,7 +229,8 @@
         var payment_method = $('#order #payment_method').attr('value');
         var delivery_time = $('#order #delivery_time').attr('value');
         
-                
+        $('.cart-footer #place_order span').hide();
+        $('.cart-footer #place_order ion-spinner').show();
         $.post(URL+'app/place_order.php', 
         {cart:cart, subtotal:subtotal, delivery_fee:delivery_fee, total:total, ordered_by:ordered_by,
         location:location, message:message, shipping_addr_id:shipping_addr_id,
@@ -240,6 +242,8 @@
                 localStorage.removeItem('shopping_cart');                
                 loadCart();
                 window.location.href='#tab/cart';
+                $('.cart-footer #place_order span').show();
+                $('.cart-footer #place_order ion-spinner').hide();
             } else {
                 alert(data);
             }

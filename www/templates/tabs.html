@@ -71,7 +71,7 @@
     </ion-content>    
     <div class="question-footer">
         <input id="question_body" placeholder="Ask about the product" k="សួរអំពីផលិតផល">
-        <button onclick="openModal('question_modal')" k="សួរ">Ask</button>
+        <button onclick="askQuestion()" k="សួរ">Ask</button>
     </div>
 </div>
 <!-- /Question Modal -->
@@ -510,7 +510,9 @@
             
             </div>
         </div>
-        
+    </div>
+    <div class="go-to-top" ontap="scrollToTop(500)">
+        <span class="ion-ios-arrow-up"></span>
     </div>
 </div>
 
@@ -549,9 +551,9 @@
 <!-- /Description View All-->
 
 
-<div class="modal modal2" id="store_modal" style="z-index:90">
+<div class="modal modal2" id="store_modal">
     <div class="back">
-        <span class="ion-ios-arrow-left" onclick="closeModal('store_modal')"></span>
+        <span class="ion-ios-arrow-left" ontap="closeModal('store_modal')"></span>
     </div>
     
     <div class="no-tabs ion-content" id="product_page_content"> 

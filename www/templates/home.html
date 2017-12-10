@@ -11,12 +11,11 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <div class="ion-content" id="home" on-scroll-complete="onComplete()">
-        <input id="data" type="hidden">
-        <input id="start" type="hidden" value="0">
-        <input id="all" type="hidden" value="0">
-    
-        <div class="home">            
-            
+        <span id="data" style="display:none"></span>
+        <span id="start" style="display:none">0</span>
+        <span id="all" style="display:none">0</span>
+        
+        <div class="home">                
             <script>
             /*
             <div class="map_canvas" style="width:100%;height:200px">
@@ -45,6 +44,7 @@
                 </ion-slide>
             </ion-slide-box>
             */</script>
+            
             
             
             <div class="home-slider owl-carousel owl-theme">
@@ -84,9 +84,36 @@
             <ul class="cate owl-carousel owl-theme" id="cate-2">
                 
             </ul>
-            
-            
-            
+            <div class="hr"></div>
+            <div class="yl">
+                <div class="a">
+                    <div class="b">
+                        <div class="ba"></div>
+                        <div class="bb"></div>
+                    </div>
+                    <div class="c">
+                        <div class="ca">
+                            09-21-2017 09:45
+                        </div>
+                        <div class="cb">
+                            Order Received
+                        </div>
+                    </div>
+                </div>
+                <div class="a">
+                    <div class="b">
+                        <span class="ion-ios-checkmark"></span>
+                    </div>
+                    <div class="c">
+                        <div class="ca">
+                            09-21-2017 09:45
+                        </div>
+                        <div class="cb">
+                            Order Received
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="hr"></div>
             <div class="wrap">
                 <div class="new-arrival">
@@ -108,10 +135,12 @@
 </ion-view>
 
 
-<script>    
+<script> 
+    //loadProduct('np5t');
+    //openModal('store_modal');
     $('#home').scroll(function() {
-        var start = parseInt($('#start').val(), 10);
-        var all = parseInt($('#all').val(), 10);
+        var start = parseInt($('#start').html(), 10);
+        var all = parseInt($('#all').html(), 10);
         if(($('#new_arrival').height() - $('#home').scrollTop()) < 100 && (start < all)) {
             loadMore();
         }
@@ -121,15 +150,15 @@
     
     var size = $(window).width();        
     $.post(URL+'app/new_arrival.php',{size:size},function(data){
-        $('#data').val(data);  
-        $('#all').val(JSON.parse(data).length);
+        $('#data').text(data);  
+        $('#all').text(JSON.parse(data).length);
         loadMore();
     });
     
     function loadMore(){        
-                
-        var start = parseInt($('#start').val(), 10);
-        var all = parseInt($('#all').val(), 10);
+        
+        var start = parseInt($('#start').html(), 10);
+        var all = parseInt($('#all').html(), 10);
         
         var end = start + 12;        
         if (end >= all) {
@@ -141,14 +170,14 @@
         if (start < end) {
             var size = $(window).width();
             var a_wh = (size-30)/2;        
-            var data = $('#data').val();                
+            var data = $('#data').text();                
             var arr = JSON.parse(data);   
             
             for (var i = start; i < end; i++){            
                 var ad = arr[i];            
                 var ad_id = ad['ad_id'];  
                 
-                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\', \'home\');" class="ad-item">';
+                var str = '<li ontap="loadProduct(\''+ad_id+'\')" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
@@ -156,12 +185,12 @@
                         str += '<span class="aa">'+ad['price']+'</span>';
                         str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
                     str += '</div>';
-                str += '</ion-item>';
+                str += '</li>';
                 
                 $('#new_arrival').append(str);
             }  
             la();                           
-            $('#start').val(end);
+            $('#start').text(end);
         }
     }
 
@@ -215,9 +244,7 @@
             */
         la();
             
-    }).error(function(){
-        connectionError();
-    });
+    })
     la();
 
 </script>
