@@ -199,7 +199,7 @@
                     <div class="d">
                         <div class="e"><span class="ion-ios-telephone"></span></div>
                         <div class="f"><input id="phone_number" k="ទូរស័ព្ទ" placeholder="Phone Number" type="number" pattern="\d*">
-                            <span  class="input-close ion-ios-close-outline"></span>
+                            <span class="input-close ion-ios-close-outline"></span>
                         </div>
                     </div>
                     <div class="d">
@@ -219,6 +219,21 @@
     </div>
 </div>
 
+<script>
+    /* Input Form Close */
+$('.input-form input').on('keyup click', function(){
+    if ($(this).val() != '') {
+        $(this).siblings('.input-close').show();
+    }    
+});
+$('.input-form input').on('blur', function(){
+        $(this).siblings('.input-close').hide();
+});
+$('.input-form .input-close').on('click', function(){
+    $(this).siblings('input').val('');
+    $(this).siblings('input').focus();    
+});
+</script>
 
    
 <!-- Shipping Info Modal -->
@@ -328,14 +343,13 @@
                 </div>
                 
                 <div class="g">
-                    <button type="submit" onclick="postAddress()" k="ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ">Deliver to this Address</button>               
+                    <button id="submit_shipping_info_form" type="submit" onclick="postAddress()" k="ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ">Deliver to this Address</button>               
                 </div>
             </form>
             
         </div>            
     </div>  
 </div>
-
 <!-- /Shipping Info Modal -->
 
 

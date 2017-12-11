@@ -19,7 +19,7 @@
                 
             </ul>
             <div class="t">
-                <button class="btn" onclick="addNewAddress()">Add new Address</button>
+                <button class="btn" onclick="addNewAddress(1)">Add new Address</button>
             </div>
         </div>            
     </ion-content>
@@ -186,18 +186,23 @@
     function loadDefaultShippingInfo(){
         var user_id = localStorage.getItem('user_id');        
         $.post(URL+'app/shipping_info.php',{user_id:user_id}, function(data){
-            var a = JSON.parse(data)[0]; 
-            name_en = a['location'].split(',')[0];
-            updateDeliveryTo(name_en);
-            str = shippingInfoItem(a);
-            str += '<span class="fa fa-angle-right"></span>';
-            $('.eq #shipping_addr').html(str);
-            $('.eq #shipping_addr_id').val(a['id']);
-            
-            $('.eq #shipping_addr .shipping-item').on('click', function(){
-                loadShippingAddr(a['id']); // selected_id
-                openModal('shipping_address_modal');
-            });
+            if (data == '[]'){
+                myAlert('Please enter a Shipping Address first', 'សូមបញ្ចូលអាស័យដ្ឋានដឹកជញ្ជូនជាមុនសិន');
+                addNewAddress(1);
+            } else {
+                var a = JSON.parse(data)[0]; 
+                name_en = a['location'].split(',')[0];
+                updateDeliveryTo(name_en);
+                str = shippingInfoItem(a);
+                str += '<span class="fa fa-angle-right"></span>';
+                $('.eq #shipping_addr').html(str);
+                $('.eq #shipping_addr_id').val(a['id']);
+                
+                $('.eq #shipping_addr .shipping-item').on('click', function(){
+                    loadShippingAddr(a['id']); // selected_id
+                    openModal('shipping_address_modal');
+                });
+            }
         });
     }
     
@@ -229,27 +234,30 @@
         var payment_method = $('#order #payment_method').attr('value');
         var delivery_time = $('#order #delivery_time').attr('value');
         
-        $('.cart-footer #place_order span').hide();
-        $('.cart-footer #place_order ion-spinner').show();
-        $.post(URL+'app/place_order.php', 
-        {cart:cart, subtotal:subtotal, delivery_fee:delivery_fee, total:total, ordered_by:ordered_by,
-        location:location, message:message, shipping_addr_id:shipping_addr_id,
-        payment_method:payment_method, delivery_time:delivery_time},
-        function(data){                        
-            var a = JSON.parse(data);
-            if (a['result'] == 'success'){
-                orderPlaced(a['order_id']);                
-                localStorage.removeItem('shopping_cart');                
-                loadCart();
-                window.location.href='#tab/cart';
-                $('.cart-footer #place_order span').show();
-                $('.cart-footer #place_order ion-spinner').hide();
-            } else {
-                alert(data);
-            }
-            
-        });    
-        
+        if (shipping_addr_id == '') {
+            addNewAddress(1);
+        } else {
+            $('.cart-footer #place_order span').hide();
+            $('.cart-footer #place_order ion-spinner').show();
+            $.post(URL+'app/place_order.php', 
+            {cart:cart, subtotal:subtotal, delivery_fee:delivery_fee, total:total, ordered_by:ordered_by,
+            location:location, message:message, shipping_addr_id:shipping_addr_id,
+            payment_method:payment_method, delivery_time:delivery_time},
+            function(data){                        
+                var a = JSON.parse(data);
+                if (a['result'] == 'success'){
+                    orderPlaced(a['order_id']);                
+                    localStorage.removeItem('shopping_cart');                
+                    loadCart();
+                    window.location.href='#tab/cart';
+                    $('.cart-footer #place_order span').show();
+                    $('.cart-footer #place_order ion-spinner').hide();
+                } else {
+                    alert(data);
+                }
+                
+            });    
+        }        
     }
     
     

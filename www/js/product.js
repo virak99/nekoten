@@ -191,7 +191,6 @@ $.post(URL+'app/location.php',{}, function(data){
         str += '</a></li>';
         $('#choose_location_ul').append(str); 
     }
-    load('delivery_to');
     la();
 });
 
@@ -207,7 +206,6 @@ $.post(URL+'app/location.php',{}, function(data){
         str += '</a></li>';
         $('#choose_location_ul_2').append(str); 
     }
-    load('delivery_to');
     la();
 });
 

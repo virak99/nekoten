@@ -6,14 +6,15 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
-        <div class="wrap2" id="about_us">
-        
+        <ion-refresher on-refresh="refresh('contact_us')"></ion-refresher>
+        <div class="wrap2" id="about_us">        
+            <div class="spin">
+                <ion-spinner icon="ios"></ion-spinner>
+            </div>
         </div>
     </ion-content>
 </ion-view>
 <script>
-    $.post(URL+'app/get_info.php',{name:'about_us'}, function(data){       
-        $('#about_us').html(JSON.parse(data)['value']);
-        la();
-    });
+    la();
+    getInfo('about_us');
 </script>

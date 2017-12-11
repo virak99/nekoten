@@ -5,7 +5,6 @@ setDefault('delivery_fee', '0');
 setDefault('user_id', 'not_login');
 setDefault('remind_update_left', REMIND_UPDATE_FOR_N_TIMES);
    
-localStorage.setItem('user_id', 'fhtv');
 
 
 /* Global Variable */
@@ -16,8 +15,7 @@ var size_l = '120';
 var SIZE_G = ($(window).width()-30)/2;
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
-var href = window.location.href.split(',');
-var current_page = href[href.lenght-1];
+
 
   
 
@@ -93,32 +91,33 @@ function postAddress(){
     var near_by = $('#shipping_info_form #near_by').val();
     var bus_name = $('#shipping_info_form #bus_name').val();
     var bus_phone_number = $('#shipping_info_form #bus_phone_number').val();
-    var default_address = $('#shipping_info_form #default_address').val();
-    
-    
+    var default_address = $('#shipping_info_form #default_address').val();    
     var addr_selected = $('.my-tab #tab-address').hasClass('selected');
-   
-    if (addr_selected) {
-        var coordinate = '';
-    } else {
-        var coordinate = $('#shipping_info_form #coordinate').val();
-    }
+    var coordinate = $('#shipping_info_form #coordinate').val();
     
-    $.post(URL+'app/post_address.php', {user_id:user_id, default_address:default_address, name: name, phone_number:phone_number, location:location, 
-        address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
-        function(data){
-            if (data == 'success'){ 
-                var a = window.location.href.split('/');
-                var b = a[a.length-1];
-                if (b == 'review_order') {
-                    loadDefaultShippingInfo();                    
-                    $('#add_address').hide();
-                    closeModal('shipping_address_modal'); 
+    if (name == ''){
+        myAlert('Please enter the Name', 'សូមបញ្ចូលឈ្មោះ');
+    } else if (phone_number == ''){
+        myAlert('Please enter the Phone Number', 'សូមបញ្ចូលលេខទូរស័ព្ទ');
+    } else if (location == 'Phnom Penh' && addr_selected && address == '') {        
+        myAlert('Please enter the Address', 'សូមបញ្ចូលអាស័យដ្ឋាន');    
+    } else {
+                
+        $.post(URL+'app/post_address.php', {user_id:user_id, default_address:default_address, name: name, phone_number:phone_number, location:location, 
+            address:address, near_by:near_by, coordinate:coordinate, bus_name:bus_name, bus_phone_number:bus_phone_number},
+            function(data){
+                if (data == 'success'){ 
+                    var a = window.location.href.split('/');
+                    var b = a[a.length-1];
+                    if (b == 'review_order') {
+                        loadDefaultShippingInfo();                    
+                        $('#add_address').hide();
+                        closeModal('shipping_address_modal'); 
+                    }
+                    closeModal('shipping_info_modal');                                  
                 }
-                closeModal('shipping_info_modal');
-                               
-            }
-    });                
+        });    
+    }
 }
 
 
@@ -168,11 +167,16 @@ function loadStore(store_id){
 function loadOrderDetail(order_id){    
     $.post(URL+'app/order.php', {order_id:order_id, lang:lang}, function(data){
         var a = JSON.parse(data)[0];
+        
         $('#order_detail #order_date').text(a['ordered_date']);
         $('#order_detail #order_id').text(a['id']);
         $('#order_id_title').text('#'+a['id']);
         $('#order_detail #delivery_time').text(a['delivery_time']);
         $('#order_detail #'+a['payment_method']).show();
+        $('#order_detail #subtotal').text('$ '+a['subtotal']);
+        $('#order_detail #delivery_fee').text('$ '+a['delivery_fee']);
+        $('#order_detail #total').text('$ '+a['total']);
+        $('#order_detail #item_count').text(a['item_count']);        
         
         
         var str = '';
@@ -210,8 +214,8 @@ function loadOrderDetail(order_id){
                     str2 += '</div>';    
                     str2 += '<div class="ee">';
                         str2 += '<div class="dd">';
-                            str2 += '<span>$ 3</span> ';
-                            str2 += '<span style="color:black">x 5</span>';
+                            str2 += '<span>$ '+d['unit_price']+'</span> ';
+                            str2 += '<span style="color:black">x '+d['quantity']+'</span>';
                         str2 += '</div>';
                     str2 += '</div>';
                 str2 += '</div>';
@@ -257,7 +261,9 @@ function openModal(page){
         //$('#'+page).css('z-index', parseInt($('#'+page).css('z-index'), 10)+2);
     } else {
         $('#'+page).css('transform', 'translateY(0)');    
-    }    
+    } 
+    
+    
     $('.header-view').hide();        
     $('.tab-nav').hide();        
     //StatusBar.hide();     
@@ -387,8 +393,7 @@ function loadShippingAddr(selected_id){
                     });
                     closeModal('shipping_address_modal');                    
                 } else if (current_page == 'shipping_addr'){     
-                    var id = $(this).attr('value');
-                    
+                    var id = $(this).attr('value');                    
                     openModal('shipping_info_modal');  
                     editAddress(id);
                 }
@@ -399,18 +404,25 @@ function loadShippingAddr(selected_id){
 }
 
 
-function addNewAddress(){
+function addNewAddress(direct_form_review_tab){
  
-    /* Default values for Add an Address Tab*/
+    /* Default values for Add an Address Tab*/    
     $('.lg #name').val(localStorage.getItem('full_name'));
-    $('.lg #phone_number').val(localStorage.getItem('phone_number'));
+    $('.lg #phone_number').val(localStorage.getItem('phone_number'));    
     
+    if (direct_form_review_tab) {
+        if (lang == 'en') $('#submit_shipping_info_form').text('Delivery to this Address');
+        else $('#submit_shipping_info_form').text('ផ្ញើរមកកាន់អាស័យដ្ឋាននេះ');        
+    } else {
+        if (lang == 'en') $('#submit_shipping_info_form').text('Save Address');
+        else $('#submit_shipping_info_form').text('រក្សាទុកអាស័យដ្ឋាន');        
+    }
     openModal('shipping_info_modal');
  }
  
 function deleteAddress(){
     var id = $('#shipping_info_form #addr_id').val();
-    alertConfirm('Delete this shipping Address', 'លុបអាស័យដ្ឋានដឹកជញ្ជូននេះចេញ');
+    alertConfirm('Delete this shipping Address?', 'លុបអាស័យដ្ឋានដឹកជញ្ជូននេះចេញ?');
     $('#alert_confirm .confirm').on('click', function(){
         $.post(URL+'app/delete_address.php', {id:id}, function(data){
             if (data.includes('success')){
@@ -495,8 +507,8 @@ function loadCart(){
         $('.cart_count').html('0');
         $('.noti-label').hide();    
         setTimeout(function() {        
-            $('.badge').hide();
-        }, 100);
+            $('.badge').hide();            
+        }, 500);
     } else {                     
         $('#no_item_in_cart').hide();            
         $('.cart-footer').show();        
@@ -906,6 +918,7 @@ function cancelClick(){
     
 }
 
+
 function loadWishlistViewedItem(opt){
     var user_id = localStorage.getItem('user_id');
     var size_l = '120';
@@ -1075,7 +1088,13 @@ function loadOtherProducts(keyword){
         }      
     });
 }
-        
+   
+function getInfo(name){
+    $.post(URL+'app/get_info.php',{name:name}, function(data){       
+        $('#'+name).html(JSON.parse(data)[0]['value']);
+        la();
+    });   
+}    
     
 
 function la(){

@@ -63,14 +63,13 @@
     la();
     loadMyAccount();
     function loadMyAccount(){
-        /* Initialize login info */
+        /* Initialize login info */        
         if (user_id != 'not_login'){
             $('#account_logined').show();
             $('#account_not_logined').hide();
             $('.gh #full_name').text(localStorage.getItem('full_name'));
             $('.gh #phone_number').text(localStorage.getItem('phone_number'));
-            $('.gh #profile_pic').attr('src', URL+'users/'+localStorage.getItem('user_id')+'/profile.jpg');
-            
+            $('.gh #profile_pic').attr('src', URL+'users/'+localStorage.getItem('user_id')+'/profile.jpg');            
         } else {
             $('#account_logined').hide();
             $('#account_not_logined').show();

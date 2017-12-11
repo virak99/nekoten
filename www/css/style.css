@@ -384,6 +384,10 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     height: 20px;
     width: 20px;
 }
+.spin {
+    width: 100%;
+    text-align: center;
+}
 #cate .i .delete {
     padding: 20px;
 }

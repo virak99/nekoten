@@ -62,11 +62,13 @@ angular.module('starter.controllers', [])
                 loadQuestionReviewList('question', 'account', '');
             } else if (page == 'review'){
                 loadQuestionReviewList('review', 'account', '');
-            } else {
-                $.post(URL+'app/get_info.php',{name:page}, function(data){
-                    $('#'+page).html(data);
-                    la();                    
-                });                
+            } else if (page == 'order_detail'){
+                var order_id = $('#order_detail #order_id').text();                
+                loadOrderDetail(order_id);                
+            } else if (page == 'about_us'){
+                getInfo('about_us');
+            } else if (page == 'contact_us'){
+                getInfo('contact_us');
             }
             $scope.$broadcast('scroll.refreshComplete');
         }

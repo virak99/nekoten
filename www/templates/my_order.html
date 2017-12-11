@@ -92,8 +92,8 @@
                                 str2 += '</div>';    
                                 str2 += '<div class="ee">';
                                     str2 += '<div class="dd">';
-                                        str2 += '<span>$ 3</span> ';
-                                        str2 += '<span style="color:black">x 5</span>';
+                                        str2 += '<span>$ '+d['unit_price']+'</span> ';
+                                        str2 += '<span style="color:black">x '+d['quantity']+'</span>';
                                     str2 += '</div>';
                                 str2 += '</div>';
                             str2 += '</div>';
@@ -105,9 +105,10 @@
                     str += '<div class="uk">';
                         str += '<div class="a">';                        
                             str += '<span class="b">';
-                                str += '<span k="សរុបទំនិញ">Subtotal</span> (0 ';                                                        
-                                if (lang == 'en') str += 'item)'; else str += 'មុខ)';
-                            str += '</span>';
+                                str += '<span k="សរុបទំនិញ">Subtotal</span> (';
+                                str += b['item_count'];                 
+                                str += '<span k=" មុខ"> item</span>';
+                            str += ')</span>';
                             str += '<span class="c">$ '+b['subtotal']+'</span>';                                                        
                         str += '</div>';
                         str += '<div class="a">';                        

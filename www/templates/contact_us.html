@@ -8,13 +8,13 @@
     <ion-content>
      <ion-refresher on-refresh="refresh('contact_us')"></ion-refresher>
         <div class="wrap2" id="contact_us">
-        
+            <div class="spin">
+                <ion-spinner icon="ios"></ion-spinner>
+            </div>
         </div>
     </ion-content>
 </ion-view>
 <script>
-    $.post(URL+'app/get_info.php',{name:'contact_us'}, function(data){       
-        $('#contact_us').html(JSON.parse(data)['value']);
-    });   
-    
+    la();
+    getInfo('contact_us');
 </script>

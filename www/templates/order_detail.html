@@ -9,7 +9,7 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content id="order_detail">
-        
+        <ion-refresher on-refresh="refresh('order_detail')"></ion-refresher>
         <div class="uj">
             <div class="a">
                 <span class="b" k="ស្ថានភាព: ">Status: </span>
@@ -72,17 +72,17 @@
             </div>
             <div class="a">                        
                 <span class="b">
-                    <span k="សរុបទំនិញ">Subtotal</span> (0 item)
+                    <span k="សរុបទំនិញ">Subtotal</span> (<span id="item_count">0 </span> <span k="មុខ">item</span>)
                 </span>
-                <span class="c"></span>                                                        
+                <span class="c" id="subtotal"></span>                                                        
             </div>
             <div class="a">                        
                 <span class="b" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>                                                        
-                <span class="c"></span>                                                        
+                <span class="c" id="delivery_fee"></span>                                                        
             </div>                                                                    
             <div class="a">                        
                 <span class="b" k="សរុប">Total</span>
-                <span class="d"></span>
+                <span style="font-size:large; color: #ff3366" class="d" id="total"></span>
             </div>
         </div>   
         
