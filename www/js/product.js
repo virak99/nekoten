@@ -254,7 +254,7 @@ function submitReview(){
 function addToCart(){
     
     var ad_id = $('#product_body #ad_id').val();
-    var qty = parseInt($('.at #qty').val(), 10);
+    var qty = parseInt($('.at #qty').text(), 10);
     var opt = 0;
 
     var a = localStorage.getItem('shopping_cart');
@@ -281,12 +281,12 @@ function addToCart(){
 }
     
 function qtyPlus(){
-    if ($('#qty').val() < 10) {
-        $('#qty').val(parseInt($('#qty').val(), 10)+1);
+    if ($('#qty').text() < 10) {
+        $('#qty').text(parseInt($('#qty').text(), 10)+1);
     }
 }
 function qtyMinus(){
-    if ($('#qty').val() > 1) {
-        $('#qty').val(parseInt($('#qty').val(), 10)-1);
+    if ($('#qty').text() > 1) {
+        $('#qty').text(parseInt($('#qty').text(), 10)-1);
     }
 }

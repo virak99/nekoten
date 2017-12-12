@@ -213,7 +213,7 @@
                     </div>
                 </form>
             </div>
-            <div class="h" k="ភ្លេចលេខទូរស័ព្ទ">Forget Password?</div>
+            <div class="h" ontap="closeModal('sign_in_modal'); openModal('forget_password_modal');" k="ភ្លេចលេខសំងាត់">Forget Password?</div>
             <div class="i"><span k="គ្មានគណនីនៅឡើយ?">Don't have Account yet?</span> <a onclick="closeModal('sign_in_modal'); openModal('register_modal');" k="ចុះឈ្មោះឥឡូវនេះ">Register now</a></div>
         </div>
     </div>
@@ -235,7 +235,64 @@ $('.input-form .input-close').on('click', function(){
 });
 </script>
 
-   
+
+
+<!-- Forget Password -->
+<div id="forget_password_modal" class="modal">
+    <div class="header-title" k="ភេ្លចលេខសំងាត់">Forget Password</div>
+    <div class="back" onclick="closeModal('forget_password_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>
+    <div class="modal-body">
+        <div class="rg">
+            <div class="a" k="យើងខ្ញុំនឹងផ្ញើរសារលេខកូដបញ្ជាក់ទៅកាន់លេខទូរស័ព្ទរបស់លោកអ្នក">
+                We will send verification code to your phone number.
+            </div>
+            <div class="list" id="forget_password">
+              <label class="item item-input item-stacked-label">
+                <span class="input-label"  k="លេខទូរស័ព្ទ">Phone Number</span>
+                <input type="number" pattern="\d*" type="text" k="ឧ: 011123456" placeholder="ex: 011123456" id="phone_number">
+              </label>
+            </div>
+            <button class="btn" k="ផ្ញើរសារលេខកូដ" onclick="sendVerificationCode()">Send Verify Code</button> 
+        </div>
+        <div class="rh">
+            <div class="a">
+                <span k="យើងបានផ្ញើរសារលេខកូដបញ្ជាក់ទៅកាន់លេខទូរស័ព្ទរួចរាល់">
+                    We have sent a SMS to your phone number
+                </span>
+                <div>
+                    <span k="លេខទូរស័ព្ទ: ">Phone Number: </span>
+                    <span id="phone_number"></span>
+                </div>
+            </div>
+            <div class="b" id="v_code">
+                <div class="c">
+                    <input type="number" pattern="\d*" val="1" id="c1">
+                </div>
+                <div class="c">
+                    <input type="number" pattern="\d*" val="2" id="c2">
+                </div>
+                <div class="c">
+                    <input type="number" pattern="\d*" val="3" id="c3">
+                </div>
+                <div class="c">
+                    <input type="number" pattern="\d*" val="4" id="c4">
+                </div>
+            </div>
+            <script>
+                $('#v_code input').on('click', function(){
+                    $(this).val('');
+                });
+            </script>
+            <button class="btn" k="បញ្ចូន">Submit</button>
+        </div>
+    </div>
+</div>
+<!-- Forget Password -->
+
+
+
 <!-- Shipping Info Modal -->
 <div id="shipping_info_modal" class="modal">
     <div class="header-title" k="អាស័យដ្ឋានដឹកជញ្ជូន">Delivery Address</div>
@@ -410,13 +467,13 @@ $('.input-form .input-close').on('click', function(){
             </div>
 
 
-            <div class="wishlist-btn" onclick="wishlist()">
+            <div class="wishlist-btn" ontap="wishlist()">
                 <span class="fa fa-heart"></span>    
             </div>        
         </div>
         
 
-        <div id="product_body">        
+        <div id="product_body">
             <input id="ad_id" type="text" style="display:none">
             <div class="w" id="title"></div>
             <div class="pp">
@@ -467,7 +524,7 @@ $('.input-form .input-close').on('click', function(){
                 <div class="b" k="បរិមាណ">Quantity</div>
                 <div class="c">
                     <span class="d fa fa-minus" onclick="qtyMinus()"></span>
-                    <input class="e" id="qty" type="number" pattern="\d*" value="1">
+                    <span class="e" id="qty">1</span>
                     <span class="f fa fa-plus" onclick="qtyPlus()"></span>
                 </div>
             </div>

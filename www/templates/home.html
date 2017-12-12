@@ -2,8 +2,7 @@
     <form class="search-bar" onsubmit="submitSearchForm('search-home');">
         <i class="icon ion-search"></i>
         <input autocorrect="off" autocapitalize="off" id="search-home" k="ខ្ញុំកំពុងស្វែងរក ..." onkeyup="searchKeyword('home')" onclick="searchClick()" placeholder="I'm shopping for ..." class="search">
-    
-        <span ontap="cancelClick()" class="cancel" k="បិទ">Cancel</span>
+        <span onclick="cancelClick()" class="cancel" k="បិទ">Cancel</span>
     </form>
     <ul class="search-form">
         
@@ -15,7 +14,8 @@
         <span id="start" style="display:none">0</span>
         <span id="all" style="display:none">0</span>
         
-        <div class="home">                
+        <div class="home"> 
+        
             <script>
             /*
             <div class="map_canvas" style="width:100%;height:200px">

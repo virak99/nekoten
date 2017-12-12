@@ -265,8 +265,13 @@ function openModal(page){
     
     
     $('.header-view').hide();        
-    $('.tab-nav').hide();        
-    //StatusBar.hide();     
+    $('.tab-nav').hide();  
+    //StatusBar.hide(); 
+    
+    /* Fix Pop Up Keyboard */
+    $('.search-bar .search').prop('disabled', true);
+    
+        
 }
 function closeModal(page){        
     if (page == 'product_modal' || page == 'store_modal'){
@@ -668,10 +673,12 @@ function loadProduct(ad_id){
         /* Check Wishlist */
         var wishlist = localStorage.getItem('wishlist');
         
-        if (wishlist.includes(','+ad_id)){
-            $('.wishlist-btn').addClass('added');            
-        } else {            
-            $('.wishlist-btn').removeClass('added');
+        if (wishlist != '' && wishlist != null){
+            if (wishlist.includes(','+ad_id)){
+                $('.wishlist-btn').addClass('added');            
+            } else {            
+                $('.wishlist-btn').removeClass('added');
+            }
         }
         
         
@@ -684,7 +691,7 @@ function loadProduct(ad_id){
         
         
         /* Default Quantity Text Value */
-        $('.at #qty').val(1);
+        $('.at #qty').text(1);
         
         $('.ii #ad_id_txt').html(ad['ad_id']);
         $('.ii #view').html(ad['view']);
@@ -701,7 +708,8 @@ function loadProduct(ad_id){
             loadStore(ad['store_id']);
         })
         /* Update product view */
-        $.post(URL+'app/update_view.php',{ad_id:ad_id, user_id:user_id});
+        if (user_id != 'not_login')
+            $.post(URL+'app/update_view.php',{ad_id:ad_id, user_id:user_id});
         
         
         
@@ -785,7 +793,12 @@ function goBackProduct(){
     
     if (b.length == 2){                    
         $('#loaded_ad_id').val('');
-        closeModal('product_modal');            
+        closeModal('product_modal'); 
+        
+        /* Fix Pop Up Keyboard */
+        setTimeout(function() {        
+            $('.search-bar .search').prop('disabled', false);       
+        }, 500);
     } else {        
         var c = '';
         for (var i = 1; i < (b.length-2); i++){
@@ -794,9 +807,26 @@ function goBackProduct(){
         var e = b[b.length-2];
         $('#loaded_ad_id').val(c);
         loadProduct(e);
-    }    
+    }  
+    
 }
 
+
+
+function sendVerificationCode(){
+    var phone = $('.rg #phone_number').val();
+    if (phone == ''){
+        myAlert('Please enter your phone number.', 'សូមបញ្ចូលលេខទូរស័ព្ទ។');
+    } else {
+        $.post(URL+'app/forget_password.php', {phone:phone}, function(data){
+            if (data.includes('not_match')){
+                myAlert('Phone number is incorrect.', 'លេខទូរស័ព្ទមិនត្រឹមត្រូវ។');
+            } else if (data.includes('success')){
+                alert(1);
+            }
+        });
+    }
+}
 
 function loadQuestionReviewList(type, opt, AD_ID){
     var ad_id = '';
@@ -910,12 +940,17 @@ function loadDescription(){
 function searchClick(){ 
     $('.cancel').show();    
 }
-function cancelClick(){       
+function cancelClick(){ 
     $('.search-bar .search').val('');
     $('.search-form').html('');
     $('.search-form').height('0');
     $('.search-bar .cancel').hide();
     
+    /* Fix Keyboard Pop Up */
+    $('.search-bar .search').prop('disabled', true);
+     setTimeout(function() {        
+        $('.search-bar .search').prop('disabled', false);       
+    }, 500);
 }
 
 

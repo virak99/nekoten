@@ -1682,3 +1682,32 @@ ion-nav-view{
 .yl .ca{
     color: #aaa;
 }
+.rg{
+    padding: 20px 15px;
+}
+.rg .a{
+    margin-bottom: 20px;
+}
+.rh {
+    padding: 20px 15px;
+}
+.rh .a{
+    margin-bottom: 20px;
+}
+.rh .b{
+    padding: 20px 0;
+    display: inline-flex;
+    width: 100%;
+}
+.rh .c{
+    width: 25%;
+}
+.rh .c input {
+    padding-left: 15%;
+    text-align: center;
+    font-size: 24px;
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #bbb;
+}
