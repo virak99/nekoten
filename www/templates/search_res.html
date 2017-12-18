@@ -1,6 +1,6 @@
 <div class="app-header">
     <form class="search-bar search-res" onsubmit="submitSearchForm('search-res');">
-        <div class="back" ng-click="myGoBack()" onclick="exitSearchResult()">
+        <div class="back" ng-click="myGoBack()">
             <span class="ion-ios-arrow-left"></span>
         </div>
         <i class="icon ion-search"></i>
@@ -91,15 +91,7 @@
 <script>
     la();
     
-    function exitSearchResult(){
-        //window.location.href = '#tab/search';
-        $('#search_res_item').html('');
-        $('#no_res').hide();        
-        $('.other-products').hide();
-        $('#other_products').html('');
-        
-    }
-    
+  
     function changeViewMode(){
         var size_l = '120';
         var size_g = ($(window).width()-30)/2;

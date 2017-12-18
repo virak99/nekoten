@@ -83,8 +83,47 @@
     <div class="back" onclick="closeModal('review_modal')">
         <span class="close ion-ios-close-empty"></span>
     </div>    
-    <ion-content class="sm-modal-body qs">
-        <div id="review">
+    <ion-content class="sm-modal-body">
+        <div class="lu">
+            <div class="a">
+                <div class="c">
+                    <span class="d" id="avg_rate">0</span>
+                    <span class="e">/5</span>
+                </div>
+                <div class="f" id="total_rate_star">
+                    
+                </div>
+                <div class="g">
+                    <span id="total_review">0</span> <span k="រង្វាយតម្លៃ">Reviews</span>
+                </div>
+            </div>
+            <div class="b" id="rate_panel">
+                
+            </div>
+            <script>
+                var str = '';
+                for (var i = 5; i >= 1; i--){
+                    str += '<div class="h">';
+                        str += '<div class="i">';
+                            for (var j = 1; j <= i; j++){
+                                str += '<span class="fa fa-star rated-2"></span>';                            
+                            }
+                            for (var j = (i+1); j <= 5; j++){
+                                str += '<span class="fa fa-star unrated-2"></span>';                            
+                            }
+                        str += '</div>';
+                        str += '<div class="j">';
+                            str += '<div class="k" id="rate_bar_'+i+'" style="width: 0px"></div>';
+                            str += '<div class="l" id="unrate_bar_'+i+'" style="width: 100px"></div>';
+                        str += '</div>';
+                        str += '<div class="m" id="rate_count_'+i+'">0</div>';
+                    str += '</div>';
+                }
+                $('#rate_panel').html(str);
+            </script>
+        </div>
+        <div class="hr"></div>
+        <div id="review" class="qs">
             
         </div>        
     </ion-content>    
@@ -213,7 +252,7 @@
                     </div>
                 </form>
             </div>
-            <div class="h" ontap="closeModal('sign_in_modal'); openModal('forget_password_modal');" k="ភ្លេចលេខសំងាត់">Forget Password?</div>
+            <div class="h" ontouchstart="closeModal('sign_in_modal'); openModal('forget_password_modal');" k="ភ្លេចលេខសំងាត់">Forget Password?</div>
             <div class="i"><span k="គ្មានគណនីនៅឡើយ?">Don't have Account yet?</span> <a onclick="closeModal('sign_in_modal'); openModal('register_modal');" k="ចុះឈ្មោះឥឡូវនេះ">Register now</a></div>
         </div>
     </div>
@@ -302,7 +341,7 @@ $('.input-form .input-close').on('click', function(){
             <span k="លុបចេញ">Delete</span>
         </span>
     </div>
-    <div class="lg">
+    <div class="lg ion-content">
         <div class="cc">
             <form id="shipping_info_form" class="input-form">
             <input type="hidden" id="addr_id">
@@ -347,14 +386,17 @@ $('.input-form .input-close').on('click', function(){
                             </div>
                             
                         </div>
-                        <div class="a hide" id="tab-gps">
-                            <div class="getting-gps">
-                                <ion-spinner icon="ios"></ion-spinner>
-                                <div  k="កំពុងទាញយកទីតាំងបច្ចុប្បន្នរបស់អ្នក ...">Getting your Current Location ...</div>
-                            </div>
-                            <iframe id="gps-map-frame" height="250" frameborder="0">                                
-                            </iframe>                                                    
+                        <div class="a" id="tab-gps" style="display:none">
+                            
+                            <div class="map_canvas" id="gps_map">
+                                <div class="getting-gps">
+                                    <ion-spinner icon="ios"></ion-spinner>
+                                    <div k="កំពុងទាញយកទីតាំងបច្ចុប្បន្នរបស់អ្នក">     
+                                    </div>
+                                </div>
+                            </div>                            
                             <input id="coordinate" type="hidden">
+                            <span id="coordinate_text"></span>
                         </div>
                     </div>
                 </div>
@@ -467,7 +509,7 @@ $('.input-form .input-close').on('click', function(){
             </div>
 
 
-            <div class="wishlist-btn" ontap="wishlist()">
+            <div class="wishlist-btn" ontouchstart="wishlist()">
                 <span class="fa fa-heart"></span>    
             </div>        
         </div>
@@ -582,7 +624,7 @@ $('.input-form .input-close').on('click', function(){
             </div>
         </div>
     </div>
-    <div class="go-to-top" ontap="scrollToTop(500)">
+    <div class="go-to-top" ontouchstart="scrollToTop(500)">
         <span class="ion-ios-arrow-up"></span>
     </div>
 </div>
@@ -621,10 +663,10 @@ $('.input-form .input-close').on('click', function(){
 </div>
 <!-- /Description View All-->
 
-
+<!-- Store Modal -->
 <div class="modal modal2" id="store_modal">
     <div class="back">
-        <span class="ion-ios-arrow-left" ontap="closeModal('store_modal')"></span>
+        <span class="ion-ios-arrow-left" ontouchstart="closeModal('store_modal')"></span>
     </div>
     
     <div class="no-tabs ion-content" id="product_page_content"> 
@@ -656,7 +698,8 @@ $('.input-form .input-close').on('click', function(){
         </div>
     </div>
 </div>
-   
+<!-- Store Modal -->
+
    
 <!-- ms-alert -->
 <div class="ms-alert" id="added_to_cart_alert">

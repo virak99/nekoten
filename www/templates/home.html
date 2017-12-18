@@ -16,22 +16,10 @@
         
         <div class="home"> 
         
+            
+            
             <script>
             /*
-            <div class="map_canvas" style="width:100%;height:200px">
-            
-            </div>
-                $(window).geocomplete({
-                    map: ".map_canvas",
-                    mapOptions: {
-                        draggable: false,
-                        zoom: 16
-                    },                
-                    location: [52.4078567, 16.92718339999999]                        
-                });
-                */
-                </script>
-        <script>/*
             <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
                 <ion-slide onclick="window.location.href='#tab/iframe'">
                     <img ng-src="img/slide-1.jpg">
@@ -178,7 +166,7 @@
                 var ad = arr[i];            
                 var ad_id = ad['ad_id'];  
                 
-                var str = '<li ontap="loadProduct(\''+ad_id+'\')" class="ad-item">';
+                var str = '<li onclick="loadProduct(\''+ad_id+'\')" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';

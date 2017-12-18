@@ -651,6 +651,14 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .qs .g{
     width: 100%;
 }
+.fa-star.rated{
+    color: #ff3366;
+    font-size: 11px;
+}
+.fa-star.unrated{
+    color: #eee;
+    font-size: 11px;
+}
 .qs .h{
     width: 100%;
 }
@@ -1015,11 +1023,15 @@ ion-nav-view{
     top: 100px;    
     text-align: center;
     z-index: 9;
+    width: 100%;
 }
-.gps-map-frame{
-    width: 100%;     
-    position: relative;
+.map_canvas{
+    width: 100%;
+    height: 200px;   
     z-index: 10;
+}
+.lg #coordinate_text{
+    margin-top: 10px;
 }
 .lg {
     padding: 20px;
@@ -1710,4 +1722,71 @@ ion-nav-view{
     width: 50px;
     height: 50px;
     border: 1px solid #bbb;
+}
+.lu{
+    padding: 20px;
+    display: inline-flex;
+    width: 100%;
+}
+.lu .a{
+    width: 30%;
+    text-align: center;
+}
+.lu .b{
+    width: 70%;    
+}
+.lu .c{
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+.lu .d{
+    font-size: 32px;
+    font-weight: bold;
+}
+.lu .e{
+    color: #aaa;
+}
+.lu .f{
+    width: 100%;   
+    margin-top: 15px;
+}
+.lu .g{
+    margin-top: 15px;
+    color: #aaa;
+}
+.fa-star.unrated-2{
+    color: #eee;
+}
+.fa-star.rated-2{
+    color: #A9A9A9;
+}
+.lu .h{
+    float: right;
+    display: inline-flex;
+}
+.lu .i{
+    font-size: 9px;
+    color: #a9a9a9;
+}
+.lu .m{
+    color: #aaa;
+    font-size: 11px;   
+    width: 20px;
+}
+.lu .j{
+    display: inline-flex;        
+    width: 100px;    
+}
+.lu .k{
+    height: 4px;
+    border-radius: 4px 0 0 4px;    
+    background: #a9a9a9;
+    margin: 8px 0 8px 15px;
+}
+.lu .l{
+    height: 4px;
+    border-radius: 0 4px 4px 0;    
+    background: #eee;
+    margin: 8px 15px 8px 0;
 }

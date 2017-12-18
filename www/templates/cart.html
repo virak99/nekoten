@@ -5,7 +5,7 @@
         <span k="បញ្ជាកម្មង់ទិញរួចរាល់">Order Complete </span>        
     </div>
     <div class="modal-body">
-        <div class="sk">
+        <div class="sk" id="order_complete">
             <div class="a">
                 <img src="img/nekoten.png">
             </div>
@@ -15,14 +15,13 @@
                 </div>
                 <div class="d">                                    
                     <span class="e" k="តម្លៃ: ">Amount: </span> 
-                    <span class="f">$ 123</span>
+                    <span class="f" id="total"></span>
                 </div>
             </div>
         </div>   
         <div class="hr"></div>
         <div class="sd">
             <button id="go_to_my_order" k="ការកម្មង់របស់ខ្ញុំ">My Order</button>
-            <button id="go_to_home" k="ទំព័រដើម">Home</button>
         </div>
     </div>
 </div>
@@ -76,7 +75,7 @@
             </div>
             <div class="ab"><span class="total"></span></div>
         </div>
-        <div class="d" ontap="buy()"><span k="ទិញ">BUY</span> (<span class="cart_count"></span>)</div>
+        <div class="d" onclick="buy()"><span k="ទិញ">BUY</span> (<span class="cart_count"></span>)</div>
     </div>
     
 </ion-view>
@@ -105,10 +104,6 @@
     function orderPlaced(order_id){
         openModal('order_placed_modal');    
         
-        $('#go_to_home').on('click', function(){
-            closeModal('order_placed_modal'); 
-            window.location.href='#tab/home';             
-        });
         $('#go_to_my_order').on('click', function(){
             closeModal('order_placed_modal'); 
             window.location.href='#tab/account'; 

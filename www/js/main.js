@@ -12,7 +12,7 @@ var lang = localStorage.getItem('language');
 var user_id = localStorage.getItem('user_id');
 var URL = 'http://www.nekoten.sangskrit.com/';
 var size_l = '120';
-var SIZE_G = ($(window).width()-30)/2;
+var size_g = ($(window).width()-30)/2;
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 
@@ -70,7 +70,7 @@ function selectTab(tab){
     
 /* Fix ontap */
 $(document).on('tap', '[ontap]', function(){
-     new Function($(this).attr('ontap'))();
+     new Function($(this).attr('onclick'))();
 });
 
 
@@ -123,7 +123,7 @@ function postAddress(){
 
 function loadStore(store_id){
     openModal('store_modal');
-    $.post(URL+'app/store.php', {store_id:store_id, size_g:SIZE_G}, function(data){
+    $.post(URL+'app/store.php', {store_id:store_id, size_g:size_g}, function(data){
         
         var a = JSON.parse(data)[0];
         $('#store #name').text(a['name']);
@@ -139,28 +139,23 @@ function loadStore(store_id){
                                       
                            
         var arr = a['ads'];   
-        
+        var str = '';
         for (var i = 0; i < arr.length; i++){            
             var ad = arr[i];            
             
             var str = '<ion-item onclick="loadProduct(\''+ad['ad_id']+'\');" class="ad-item">';
-                str += '<div class="b" style="width:'+SIZE_G+'px;height:'+SIZE_G+'px">';
+                str = '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
                     str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                 str += '</div>';
                 str += '<div class="a">';
                     str += '<span class="aa">'+ad['price']+'</span>';
                     str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
                 str += '</div>';
-            str += '</ion-item>';
-            
-            $('#store_products').append(str);
+            str += '</ion-item>';                        
         }  
+        $('#store_products').html(str);
         
-        
-                                                    
-     
-        
-    })
+    });
     
 }
 
@@ -204,7 +199,7 @@ function loadOrderDetail(order_id){
         for (j = 0; j < c.length; j++){
             var d = c[j];
 
-            var str2 = '<li class="p-list" ontap="loadProduct(\''+d['ad_id']+'\')">';                    
+            var str2 = '<li class="p-list" onclick="loadProduct(\''+d['ad_id']+'\')">';                    
                 str2 += '<div class="a">';
                     str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
                 str2 += '</div>';
@@ -233,17 +228,27 @@ function loadOrderDetail(order_id){
     });
 }
 
+
 function getLocation(){
+    
     var onSuccess = function(position) {
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
-        var str = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyDocD-TtjQMfFFWBrBVUnl9BzBrhmX-AdA&q='+lat+','+lng;
-        $('#gps-map-frame').attr('src', str);
-        $('#coordinate').val(lat+','+lng);
+        $('#gps_map').geocomplete({
+            map: "#gps_map",
+            mapOptions: {
+                draggable: false,
+                zoom: 16
+            },                
+            location: [lat, lng]                        
+        });
+        $('.lg #coordinate').val(lat+','+lng);
+        $('.lg #coordinate_text').text(lat+', '+lng);
         
     };
     navigator.geolocation.getCurrentPosition(onSuccess);
 }
+
 
 function isLogined(){
     var a = localStorage.getItem('user_id');
@@ -476,14 +481,22 @@ function shippingInfoItem(a){
         if (a['coordinate'] != '') {            
             var lat = a['coordinate'].split(',')[0].substr(0,9);
             var lng = a['coordinate'].split(',')[1].substr(0,9);
-            str += 'GPS: '+lat+', '+lng;
+            if (lang == 'en') str += 'Coordinate: '; else str += 'កូអេដោនេ: ';
+            str += lat+', '+lng;
             
+            str += '<div id="map-'+a['id']+'" class="map_canvas">Loading map ...</div>';
             
+            setTimeout(function() {        
+                $("#map-"+a['id']).geocomplete({
+                    map: "#map-"+a['id'],
+                    mapOptions: {
+                        draggable: false,
+                        zoom: 16
+                    },                
+                    location: [lat, lng]                        
+                });       
+            }, 1);
             
-            //str += '<div class="gps-map-frame" height="200"></div>';
-            
-            var src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC62zOchEdNGLWgfZmgQqzmsVgyZrmQeZo&zoom=18&q='+a['coordinate'];            
-            str += '<iframe class="gps-map-frame" height="200" frameborder="0" src="'+src+'"></iframe>';            
         }
         if (a['bus_name'] != ''){
             str += '<div class="send-by-bus"></div>';                
@@ -549,7 +562,7 @@ function loadCart(){
                                 str += '<span id="qty">'+ad['qty']+'</span>';
                                 str += '<span class="jj" onclick="qtyPlus(\''+ad['ad_id']+'\')"><span class="j ion-ios-plus-empty"></span></span>';
                             str += '</div>';
-                            str += '<div class="i"><span class="delete ion-ios-trash-outline" ontap="deleteCart(\''+ad['ad_id']+'\')"></span></div>';
+                            str += '<div class="i"><span class="delete ion-ios-trash-outline" onclick="deleteCart(\''+ad['ad_id']+'\')"></span></div>';
                         str += '</div>';
                     str += '</div>';
                 str += '</li>';
@@ -737,7 +750,7 @@ function loadProduct(ad_id){
         });
                              
         /* Related Products */    
-        $.post(URL+'app/related_products.php',{size_g:SIZE_G, ad_id:ad_id},function(data){                                
+        $.post(URL+'app/related_products.php',{size_g:size_g, ad_id:ad_id},function(data){                                
                              
             var arr = JSON.parse(data);   
             
@@ -746,7 +759,7 @@ function loadProduct(ad_id){
                 var ad_id = ad['ad_id'];  
                 
                 var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
-                    str += '<div class="b" style="width:'+SIZE_G+'px;height:'+SIZE_G+'px">';
+                    str += '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="a">';
@@ -768,6 +781,7 @@ function loadProduct(ad_id){
     
     /* Scroll to Top */
     scrollToTop(0);
+    
     
     /*Record Loaded ad_id */
     $('#loaded_ad_id').val($('#loaded_ad_id').val()+','+ad_id);
@@ -835,6 +849,51 @@ function loadQuestionReviewList(type, opt, AD_ID){
         else var ad_id = AD_ID;
     }
     
+    if (type == 'review' && opt == 'modal'){
+        $.post(URL+'app/review_modal.php', {ad_id:ad_id}, function(data){
+            //alert(data);
+            var a = JSON.parse(data);
+            var total_rate = 0;
+            var count = 0;
+            
+            for (var i = 0; i < a.length; i++){
+                var b = a[i];
+                $('.lu #rate_count_'+b['rate']).text(b['count']);
+                count += parseInt(b['count']);
+                total_rate += parseInt(b['rate']*count);
+            }
+            
+            
+            $('.lu #total_review').text(count);
+            var rate2 = (total_rate/count).toFixed(1).replace('.0', '');
+            $('.lu #avg_rate').text(rate2);
+            
+            
+            for (var i = 0; i < a.length; i++){
+                var b = a[i];
+                var each_count = parseInt(b['count'])/count;
+                
+                $('.lu #rate_bar_'+b['rate']).css('width', each_count*100);
+                $('.lu #unrate_bar_'+b['rate']).css('width', (1-each_count)*100);                
+                
+            }
+            
+                    
+            var str = '';
+            var rate = (total_rate/count).toFixed(0);            
+            for (var k = 1; k <= rate; k++){
+                str += '<span class="fa fa-star rated"></span>';
+            }
+            for (var k = (rate+1); k <= 5; k++){
+                str += '<span class="fa fa-star unrated"></span>';
+            }
+            $('.lu #total_rate_star').html(str);
+            
+                    
+        });
+    }
+    
+    
     $.post(URL+'app/question_review.php',{type:type, opt:opt, ad_id:ad_id, user_id:user_id},function(data){ 
         
         var arr = JSON.parse(data);        
@@ -898,8 +957,13 @@ function loadQuestionReviewList(type, opt, AD_ID){
                             str += '<span class="ee">'+q['full_name']+'</span>';
                             if (type == 'review'){
                                 if (lang == 'en') str += ' rated '; else str += ' បានវាយតម្លៃ ';
-                                str += '<span class="fa fa-star"></span> ';
-                                str += q['rate'];
+                                var rate = parseInt(q['rate'], 10);
+                                for (var j = 1; j <= rate; j++){
+                                    str += '<span class="fa fa-star rated"></span>';
+                                }
+                                for (var j = (rate+1); j <= 5; j++){
+                                    str += '<span class="fa fa-star unrated"></span>';
+                                }                                
                             }
                             str += '</span>';
                             str += '<span class="f">'+q['posted_date']+'</span>';
@@ -976,7 +1040,7 @@ function loadWishlistViewedItem(opt){
                             str += '<div class="dd">'+ad['price']+'</div>';
                             if (opt == 'wishlist') { 
                                 str += '<div class="i">';
-                                    str += '<span ontap="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
+                                    str += '<span onclick="removeWishlist(\''+ad['ad_id']+'\')"class="delete ion-ios-trash-outline"></span>';
                                 str += '</div>';
                             }
                         str += '</div>';
@@ -1047,6 +1111,7 @@ function searchKeyword(tab){
 function submitSearchForm(tab){
     var keyword = $('#'+tab).val();        
     if (keyword != ''){
+        $('#search-home').focus();
         searchProduct(keyword, 'best_match');            
         addSearchHistory(keyword);    
         cancelClick();
@@ -1061,7 +1126,7 @@ function searchProduct(keyword, opt) {
     $('#search_res_item').html('');
     
     
-    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:size_l, keyword:keyword, opt:opt},function(data){
+    $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:keyword, opt:opt},function(data){
         
         var arr = JSON.parse(data);            
         for (var i = 0; i < arr.length; i++){
@@ -1102,7 +1167,7 @@ function loadOtherProducts(keyword){
     $('.other-products').show();
 
     /* Other Products */                    
-    $.post(URL+'app/search_result.php',{size_g:SIZE_G, size_l:size_l, keyword:'$other$'},function(data2){        
+    $.post(URL+'app/search_result.php',{size_g:size_g, size_l:size_l, keyword:'$other$'},function(data2){        
         var arr2 = JSON.parse(data2);        
         for (var j = 0; j < arr2.length; j++){
             var ad = arr2[j];                    
@@ -1137,16 +1202,6 @@ function la(){
         $('[k]').each(function(){
             $(this).text($(this).attr('k'));
             $(this).attr('placeholder', $(this).attr('k'));
-        });
-    }
-}
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position){
-            var coordinate = position.coords.latitude+','+position.coords.longitude;
-            var src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC62zOchEdNGLWgfZmgQqzmsVgyZrmQeZo&q='+coordinate;
-            $('#gps-map-frame').attr('src', src);
-            $('.lg #coordinate').val(coordinate);
         });
     }
 }
