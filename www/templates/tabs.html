@@ -1,5 +1,159 @@
 
    
+
+<!-- Product Modal -->
+<input id="loaded_ad_id" type="hidden">              
+<div class="product_page modal modal2" id="product_modal">
+
+    <div id="product_page_header" class="back">
+        <span class="ion-ios-arrow-left" onclick="goBackProduct()"></span>
+        <span onclick="gotoCart()" class="ion-ios-cart-outline"></span>
+        <span onclick="gotoCart()" class="noti-label cart_count"></span>
+    </div>
+    
+    <div class="bt hide" id="add_to_cart_pop_up">
+        <span class="j ion-ios-box-outline store_info_btn"></span>
+        <span class="h" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
+        <span class="i" k="ដាក់ចូលកន្ត្រក" onclick="addToCart()">Add to Cart</span>
+    </div>
+    
+    <div class="no-tabs ion-content" id="product_page_content">     
+        <div class="ad_images" style="display:none">
+            <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
+            <div class="helper" onclick="removeFullScreen()">
+                
+            </div>                
+            <div class="ad_image owl-carousel owl-theme" style="width:100%">
+                <img class="owl-lazy" src="img/no_img.jpg">
+            </div>
+            <div id="ad_photos" style="display:none">
+            </div>
+
+
+            <div class="wishlist-btn" onclick="wishlist()">
+                <span class="fa fa-heart"></span>    
+            </div>        
+        </div>
+        
+        
+        <div id="product_body">
+            <input id="ad_id" type="text" style="display:none">
+            <div class="w" id="title"></div>
+            <div class="pp">
+                
+                <span id="price"></span>
+                <span id="normal_price"></span>
+                <span id="discount"></span>
+                <span id="quantity"></span>
+            </div>
+            <div class="ii">
+                <div class="a">
+                    <div class="b" id="ad_id_txt"></div>
+                    <div class="c" k="លេខកូដ">Item ID</div>
+                </div>
+                <div class="a">
+                    <div class="b" id="n_order"></div>
+                    <div class="c" k="កម្មង់">Order</div>
+                </div>
+                <div class="a">
+                    <div class="b" id="view"></div>
+                    <div class="c" k="មើល">View</div>
+                </div>
+            </div>
+            <div class="hr"></div>
+            
+            <div class="et" id="product_delivery_to">
+                <div class="a item item-complex" onclick="openModal('delivery_option_product')">
+                    <a class="item-content">
+                        <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
+                        <div class="c">
+                            <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
+                            <strong id="delivery_fee">Free</strong>    
+                        </div>
+                        <div class="c">
+                            <span k="ទទួលទំនិញ">Receive Product</span>
+                            <strong id="delivery_time"></strong>    
+                        </div>
+                        <div class="fa fa-angle-right"></div>                    
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="hr"></div>
+        <div class="at">
+            <div class="a">
+                <div class="b" k="បរិមាណ">Quantity</div>
+                <div class="c">
+                    <span class="d fa fa-minus" onclick="qtyMinus()"></span>
+                    <span class="e" id="qty">1</span>
+                    <span class="f fa fa-plus" onclick="qtyPlus()"></span>
+                </div>
+            </div>
+        </div>
+        <div class="bt" id="add_to_cart_panel">
+            <span class="j ion-ios-box-outline store_info_btn"></span>
+            <span class="h" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
+            <span class="i" k="ដាក់ចូលកន្ត្រក" onclick="addToCart()">Add to Cart</span>
+        </div>
+        
+        <div class="hr"></div>
+        <div class="pd">
+            <div class="a" k="ការពិពណ៌នាអំពីផលិតផល">Product Description</div>
+            <div class="b" id="desc"></div>
+            <div class="c" k="មើលលម្អិត" onclick="loadDescription()">
+                View Details
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="qs" id="question_panel" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')">
+            <div class="a" k="សំនួរ និង ចម្លើយ">Question (<span id="n_question">0</span>)</div>
+            <div id="question">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="qs" id="review_panel" onclick="loadQuestionReviewList('review', 'modal', ''); openModal('review_modal')">
+            <div class="a" k="រង្វាយតម្លៃ">Review (<span id="n_review">0</span>)</div>
+            <div id="review">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="rb" id="store_info">
+            <div class="a">
+                <span class="aa" k="ដាក់លក់ដោយ">Store Info</span>                
+            </div>
+            <div class="b">
+                <div class="c">
+                    <img id="store_img" />
+                </div>
+                <div class="d">
+                    <span class="e" id="store_full_name"></span> 
+                    <span class="f">
+                        (<span id="store_n_product">0</span> 
+                        <span k="ទំនិញ">item</span>)
+                    </span>                        
+                </div>
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="ra">
+            <div class="aa" k="ផលិតផលស្រដៀងគ្នា">Related Products</div>
+            <div class="bb" id="related_products">
+            
+            </div>
+        </div>
+    </div>
+    <div class="go-to-top" onclick="scrollToTop(500)">
+        <span class="ion-ios-arrow-up"></span>
+    </div>
+</div>
+
+<script src="js/product.js"></script>
+
+
 <!-- Delivery Option Modal -->
 <div id="delivery_option_product" class="modal">
     <div class="header-title" k="ដឹកទៅកាន់">Delivery To</div>
@@ -17,7 +171,7 @@
 
 
 <!-- Submit Review Modal -->
-<div id="submit_review_modal" class="modal" style="z-index:110">
+<div id="submit_review_modal" class="modal">
     <div class="header-title"><span k="សរសេររង្វាយតម្លៃ">Write a Review</span></div>
     <div class="back" onclick="closeModal('submit_review_modal')">
         <span class="close ion-ios-close-empty"></span>
@@ -29,7 +183,7 @@
                     <img id="rv_img">
                 </div>
                 <div class="c" id="rv_title">
-                    Vong Virak Vong Virak Vong Virak Vong Virak
+                    
                 </div>
             </div>
         </div>    
@@ -84,7 +238,7 @@
         <span class="close ion-ios-close-empty"></span>
     </div>    
     <ion-content class="sm-modal-body">
-        <div class="lu">
+        <div class="lu" id="review_header">
             <div class="a">
                 <div class="c">
                     <span class="d" id="avg_rate">0</span>
@@ -252,7 +406,7 @@
                     </div>
                 </form>
             </div>
-            <div class="h" ontouchstart="closeModal('sign_in_modal'); openModal('forget_password_modal');" k="ភ្លេចលេខសំងាត់">Forget Password?</div>
+            <div class="h" onclick="closeModal('sign_in_modal'); openModal('forget_password_modal');" k="ភ្លេចលេខសំងាត់">Forget Password?</div>
             <div class="i"><span k="គ្មានគណនីនៅឡើយ?">Don't have Account yet?</span> <a onclick="closeModal('sign_in_modal'); openModal('register_modal');" k="ចុះឈ្មោះឥឡូវនេះ">Register now</a></div>
         </div>
     </div>
@@ -283,53 +437,72 @@ $('.input-form .input-close').on('click', function(){
         <span class="close ion-ios-close-empty"></span>
     </div>
     <div class="modal-body">
-        <div class="rg">
+        <div class="rg" id="forget_1">
             <div class="a" k="យើងខ្ញុំនឹងផ្ញើរសារលេខកូដបញ្ជាក់ទៅកាន់លេខទូរស័ព្ទរបស់លោកអ្នក">
                 We will send verification code to your phone number.
             </div>
-            <div class="list" id="forget_password">
-              <label class="item item-input item-stacked-label">
-                <span class="input-label"  k="លេខទូរស័ព្ទ">Phone Number</span>
-                <input type="number" pattern="\d*" type="text" k="ឧ: 011123456" placeholder="ex: 011123456" id="phone_number">
-              </label>
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label"  k="លេខទូរស័ព្ទ">Phone Number</span>
+                    <input type="number" pattern="\d*" type="text" k="ឧ: 011123456" placeholder="ex: 011123456" id="phone_number">
+                </label>
             </div>
             <button class="btn" k="ផ្ញើរសារលេខកូដ" onclick="sendVerificationCode()">Send Verify Code</button> 
         </div>
-        <div class="rh">
+        <div class="rg hide" id="forget_2">
             <div class="a">
-                <span k="យើងបានផ្ញើរសារលេខកូដបញ្ជាក់ទៅកាន់លេខទូរស័ព្ទរួចរាល់">
-                    We have sent a SMS to your phone number
-                </span>
+                <p k="វាអាចចំនាយពេលដល់ ១នាទីសំរាប់ការទទួលសារ ក្នុងករណីមានការកកស្ទះសេវាទូរស័ព្ទ ។">
+                    It may take up to 1 minute until you receive the SMS due to Network Congestion.
+                </p>
+                
                 <div>
                     <span k="លេខទូរស័ព្ទ: ">Phone Number: </span>
-                    <span id="phone_number"></span>
+                    <span id="phone_number_text"></span>
                 </div>
             </div>
-            <div class="b" id="v_code">
-                <div class="c">
-                    <input type="number" pattern="\d*" val="1" id="c1">
-                </div>
-                <div class="c">
-                    <input type="number" pattern="\d*" val="2" id="c2">
-                </div>
-                <div class="c">
-                    <input type="number" pattern="\d*" val="3" id="c3">
-                </div>
-                <div class="c">
-                    <input type="number" pattern="\d*" val="4" id="c4">
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label"  k="លេខកូដ: ">Code: </span>
+                    <input type="number" pattern="\d*" type="text" k="ឧ: 1234" placeholder="ex: 1234" id="code">
+                </label>
+            </div>
+        
+            <button class="btn" onclick="submitVerificationCode()" k="បញ្ចូន">Submit</button>
+            <p style="margin-top: 20px">
+                <span k="ប្រសិនបើអ្នកនៅតែមិនទាន់បានទទួលសារទៀត សូមចុច ">
+                    If you still don't receive the SMS, please click 
+                </span>
+                <a onclick="resendVerificationCode()" k="ផ្ញើរសារម្តងទៀត">Resend Verification SMS</a>
+            </p>
+        </div>
+        
+        <div class="rg hide" id="forget_3">
+            <div class="a">
+                <p k="សូមបញ្ចូលលេខសំងាត់ថ្មី">
+                    Please enter your new password
+                </p>
+                <div>
+                    <span k="លេខទូរស័ព្ទ: ">Phone Number: </span>
+                    <span id="phone_number_text"></span>
                 </div>
             </div>
-            <script>
-                $('#v_code input').on('click', function(){
-                    $(this).val('');
-                });
-            </script>
-            <button class="btn" k="បញ្ចូន">Submit</button>
+            <div class="list" id="forget_password">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label"  k="លេខសំងាត់ថ្មី: ">New Password: </span>
+                    <input type="password" type="text" id="new_pwd">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label"  k="បញ្ជាក់លេខសំងាត់ថ្មី: ">Confirm New Password: </span>
+                    <input type="password" type="text" id="confirm_pwd">
+                </label>
+            </div>
+        
+            <button class="btn" onclick="submitNewPassword()" k="បញ្ចូន">Submit</button>
+            
         </div>
     </div>
 </div>
 <!-- Forget Password -->
-
 
 
 <!-- Shipping Info Modal -->
@@ -486,150 +659,6 @@ $('.input-form .input-close').on('click', function(){
 
 
 
-<!-- Product Modal -->
-<input id="loaded_ad_id" type="hidden">              
-<div class="product_page modal modal2" id="product_modal">
-
-    <div id="product_page_header" class="back">
-        <span class="ion-ios-arrow-left" onclick="goBackProduct()"></span>
-        <span onclick="$('#loaded_ad_id').val(''); closeModal('product_modal'); window.location.href='#tab/cart'" class="ion-ios-cart-outline"></span>
-        <span onclick="$('#loaded_ad_id').val(''); closeModal('product_modal'); window.location.href='#tab/cart'" class="noti-label cart_count"></span>
-    </div>
-    
-    <div class="no-tabs ion-content" id="product_page_content">     
-        <div class="ad_images" style="display:none">
-            <span class="close ion-ios-close-empty" onclick="removeFullScreen()"></span>
-            <div class="helper" onclick="removeFullScreen()">
-                
-            </div>                
-            <div class="ad_image owl-carousel owl-theme" style="width:100%">
-                <img class="owl-lazy" src="img/no_img.jpg">
-            </div>
-            <div id="ad_photos" style="display:none">
-            </div>
-
-
-            <div class="wishlist-btn" ontouchstart="wishlist()">
-                <span class="fa fa-heart"></span>    
-            </div>        
-        </div>
-        
-
-        <div id="product_body">
-            <input id="ad_id" type="text" style="display:none">
-            <div class="w" id="title"></div>
-            <div class="pp">
-                
-                <span id="price"></span>
-                <span id="normal_price"></span>
-                <span id="discount"></span>
-                <span id="quantity"></span>
-            </div>
-            <div class="ii">
-                <div class="a">
-                    <div class="b" id="ad_id_txt"></div>
-                    <div class="c" k="លេខកូដ">Item ID</div>
-                </div>
-                <div class="a">
-                    <div class="b" id="n_order"></div>
-                    <div class="c" k="កម្មង់">Order</div>
-                </div>
-                <div class="a">
-                    <div class="b" id="view"></div>
-                    <div class="c" k="មើល">View</div>
-                </div>
-            </div>
-            <div class="hr"></div>
-            
-            <div class="et" id="product_delivery_to">
-                <div class="a item item-complex" onclick="openModal('delivery_option_product')">
-                    <a class="item-content">
-                        <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
-                        <div class="c">
-                            <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
-                            <strong id="delivery_fee">Free</strong>    
-                        </div>
-                        <div class="c">
-                            <span k="ទទួលទំនិញ">Receive Product</span>
-                            <strong id="delivery_time"></strong>    
-                        </div>
-                        <div class="fa fa-angle-right"></div>                    
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        
-        <div class="hr"></div>
-        <div class="at">
-            <div class="a">
-                <div class="b" k="បរិមាណ">Quantity</div>
-                <div class="c">
-                    <span class="d fa fa-minus" onclick="qtyMinus()"></span>
-                    <span class="e" id="qty">1</span>
-                    <span class="f fa fa-plus" onclick="qtyPlus()"></span>
-                </div>
-            </div>
-        </div>
-        <div class="bt">
-            <span class="h" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')" k="សួរសំនួរ">Ask Question</span>
-            <span class="i" k="ដាក់ចូលកន្ត្រក" onclick="addToCart()">Add to Cart</span>
-        </div>
-        
-        <div class="hr"></div>
-        <div class="pd">
-            <div class="a" k="ការពិពណ៌នាអំពីផលិតផល">Product Description</div>
-            <div class="b" id="desc"></div>
-            <div class="c" k="មើលលម្អិត" onclick="loadDescription()">
-                View Details
-            </div>
-        </div>
-        <div class="hr"></div>
-        <div class="qs" id="question_panel" onclick="loadQuestionReviewList('question', 'modal', ''); openModal('question_modal')">
-            <div class="a" k="សំនួរ និង ចម្លើយ">Question (<span id="n_question">0</span>)</div>
-            <div id="question">
-            
-            </div>
-        </div>
-        <div class="hr"></div>
-        <div class="qs" id="review_panel" onclick="loadQuestionReviewList('review', 'modal', ''); openModal('review_modal')">
-            <div class="a" k="រង្វាយតម្លៃ">Review (<span id="n_review">0</span>)</div>
-            <div id="review">
-            
-            </div>
-        </div>
-        <div class="hr"></div>
-        <div class="rb" id="store_info">
-            <div class="a">
-                <span class="aa" k="ដាក់លក់ដោយ">Store Info</span>                
-            </div>
-            <div class="b">
-                <div class="c">
-                    <img id="store_img" />
-                </div>
-                <div class="d">
-                    <span class="e" id="store_full_name"></span> 
-                    <span class="f">
-                        (<span id="store_n_product">0</span> 
-                        <span k="ទំនិញ">item</span>)
-                    </span>                        
-                </div>
-            </div>
-        </div>
-        <div class="hr"></div>
-        <div class="ra">
-            <div class="aa" k="ផលិតផលស្រដៀងគ្នា">Related Products</div>
-            <div class="bb" id="related_products">
-            
-            </div>
-        </div>
-    </div>
-    <div class="go-to-top" ontouchstart="scrollToTop(500)">
-        <span class="ion-ios-arrow-up"></span>
-    </div>
-</div>
-
-<script src="js/product.js"></script>
 
 <!-- Description View All -->
 <div id="description_modal" class="modal">
@@ -666,7 +695,7 @@ $('.input-form .input-close').on('click', function(){
 <!-- Store Modal -->
 <div class="modal modal2" id="store_modal">
     <div class="back">
-        <span class="ion-ios-arrow-left" ontouchstart="closeModal('store_modal')"></span>
+        <span class="ion-ios-arrow-left" onclick="closeStore()"></span>
     </div>
     
     <div class="no-tabs ion-content" id="product_page_content"> 
@@ -789,3 +818,4 @@ $('.input-form .input-close').on('click', function(){
         <ion-nav-view name="more"></ion-nav-view>
       </ion-tab>
 </ion-tabs>
+

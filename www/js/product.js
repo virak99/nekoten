@@ -3,27 +3,52 @@ var ad_id = $('#product_body #ad_id').val();
 
 /* Auto Hide Header */
 var is_header_showed = false;
+var is_add_to_cart_showed = false;
+
 $('#product_page_content').scroll(function(){                
     
     if (!is_header_showed){
-        if(($('.ad_images').height() - $('#product_page_content').scrollTop()) < 0) {
+        if($('#product_body').offset().top < 0) {
             is_header_showed = true;
             $('#product_page_header').addClass('has-header');
             $('.go-to-top').show();
         }    
     } else {
-        if(($('.ad_images').height() - $('#product_page_content').scrollTop()) > 0) {
+        if($('#product_body').offset().top > 0) {
             is_header_showed = false;
             $('#product_page_header').removeClass('has-header');  
             $('.go-to-top').hide();
         }    
     }
     
+    if (!is_add_to_cart_showed){
+        if ($('#add_to_cart_panel').offset().top < 0){
+            is_add_to_cart_showed = true;
+            $('#add_to_cart_pop_up').show();
+        }
+    } else {
+        if ($('#add_to_cart_panel').offset().top > 0){
+            is_add_to_cart_showed = false;
+            $('#add_to_cart_pop_up').hide();
+        }
+    }
+    /*
+    if(($('#add_to_cart_panel').height() - $('#product_page_content').scrollTop()) < 0) {
+        alert(1);
+    } 
     
+    if (!is_add_to_cart_showed){
+        if(($('#add_to_cart_panel').height() - $('#product_page_content').scrollTop()) < 0) {
+            is_add_to_cart_showed = true;
+        }    
+    } else {
+        if(($('#add_to_cart_panel').height() - $('#product_page_content').scrollTop()) > 0) {
+            is_add_to_cart_showed = false;
+        }    
+    }
+    */
 });
     
-    
-
 function askQuestion(){
     var body = $('#question_body').val();
     var ad_id = $('#product_body #ad_id').val();

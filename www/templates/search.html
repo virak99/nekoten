@@ -40,7 +40,7 @@
             var a = search_history.split(',');
             if (a.length > 0) $('.sh .c').show();
             for (var i = 1; i < a.length; i++){       
-                var str = '<ion-item class="item item-complex" onclick="searchProduct(\''+a[i]+'\', \'best_match\');">';
+                var str = '<ion-item class="item item-complex" onclick="addSearchHistory(\''+a[i]+'\'); searchProduct(\''+a[i]+'\', \'best_match\');">';
                 str += '<a class="item-content" href="#tab/search_res">';
                 str += a[i];
                 str += '</a></ion_item>';

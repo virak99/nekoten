@@ -17,8 +17,6 @@ var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 
 
-  
-
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
     var a = JSON.parse(data);
@@ -46,6 +44,17 @@ loadCart();
 /* Load Delivery Time */
 loadDeliveryTime(); 
    
+   
+/* On Click Home Button Scroll to Top */
+setTimeout(function() {        
+    $('.ion-ios-home').on('click', function(){
+        $('.ion-content').animate({
+            scrollTop: $(".ion-content").offset().top
+        }, 300);
+    })    
+}, 500);
+
+
 function connectionError(){
     $('#connection_error_alert').css('display', 'flex');   
 }
@@ -70,7 +79,7 @@ function selectTab(tab){
     
 /* Fix ontap */
 $(document).on('tap', '[ontap]', function(){
-     new Function($(this).attr('onclick'))();
+     new Function($(this).attr('ontap'))();
 });
 
 
@@ -143,8 +152,8 @@ function loadStore(store_id){
         for (var i = 0; i < arr.length; i++){            
             var ad = arr[i];            
             
-            var str = '<ion-item onclick="loadProduct(\''+ad['ad_id']+'\');" class="ad-item">';
-                str = '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
+             str += '<ion-item onclick="loadProduct(\''+ad['ad_id']+'\');" class="ad-item">';
+                str += '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
                     str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                 str += '</div>';
                 str += '<div class="a">';
@@ -717,9 +726,14 @@ function loadProduct(ad_id){
         $('#store_info #store_full_name').text(ad['store_name']);
         $('#store_info #store_n_product').text(ad['store_n_product']);
         
+        /* Load Store */
         $('#store_info').on('click', function(){
             loadStore(ad['store_id']);
+        });
+        $('.store_info_btn').on('click', function(){
+            loadStore(ad['store_id']);
         })
+        
         /* Update product view */
         if (user_id != 'not_login')
             $.post(URL+'app/update_view.php',{ad_id:ad_id, user_id:user_id});
@@ -800,6 +814,26 @@ function scrollToTop(delay){
     }, delay);
 }
 
+function gotoCart(){
+    $('#loaded_ad_id').val(''); 
+    closeModal('product_modal'); 
+    
+    window.location.href='#tab/cart';
+    /* Fix Pop Up Keyboard */
+    setTimeout(function() {        
+        $('.search-bar .search').prop('disabled', false);       
+    }, 500);
+    
+}
+
+function closeStore(){
+    closeModal('store_modal');
+    /* Fix Pop Up Keyboard */
+    setTimeout(function() {        
+        $('.search-bar .search').prop('disabled', false);       
+    }, 500);
+}
+
 function goBackProduct(){    
     var a = $('#loaded_ad_id').val();    
     var b = a.split(',');
@@ -832,14 +866,68 @@ function sendVerificationCode(){
     if (phone == ''){
         myAlert('Please enter your phone number.', 'សូមបញ្ចូលលេខទូរស័ព្ទ។');
     } else {
-        $.post(URL+'app/forget_password.php', {phone:phone}, function(data){
+        $.post(URL+'app/forget_password.php', {phone:phone, code:'first'}, function(data){
             if (data.includes('not_match')){
-                myAlert('Phone number is incorrect.', 'លេខទូរស័ព្ទមិនត្រឹមត្រូវ។');
+                myAlert('Phone number doesn\'t exist in our system.', 'លេខទូរស័ព្ទនេះមិនមាននៅក្នុងប្រព័ន្ធយើងខ្ញុំទេ ។');
             } else if (data.includes('success')){
-                alert(1);
+                myAlert('We have sent a SMS with a Verification Code to your phone number.', 'យើងបានផ្ញើរសារលេខកូដបញ្ជាក់ទៅកាន់លេខទូរស័ព្ទរួចរាល់ ។');
+                $('#forget_1').hide();
+                $('#forget_2').show();
+                $('#forget_2 #phone_number_text').text(phone);
             }
         });
     }
+}
+
+
+function resendVerificationCode(){
+    var phone = $('#forget_2 #phone_number_text').text();
+    
+    $.post(URL+'app/forget_password.php', {phone:phone, code:'resend'}, function(data){
+        if (data.includes('wait')){
+            myAlert('Please wait for 1 minute to request a new SMS.', 'សូមរង់ចាំ១នាទីដើម្បីស្នើសុំសារលេខកូដសារជាថ្មី ។');
+        } else if (data.includes('success')){
+            myAlert('We have resent the SMS.', 'យើងខ្ញុំបានផ្ញើរសារថ្មីរួចរាល់ ។');
+        }
+    });
+}
+
+function submitNewPassword(){
+    var phone = $('#forget_3 #phone_number_text').text();
+    var new_pwd = $('#forget_3 #new_pwd').val();
+    var confirm_pwd = $('#forget_3 #confirm_pwd').val();
+    
+    if (new_pwd == '') {
+        myAlert('Please enter new password.', 'សូមបញ្ចូលលេខសំងាត់ថ្មី');
+    } else if (confirm_pwd == '') {
+        myAlert('Please enter new password again to confirm', 'សូមបញ្ចូលលេខសំងាត់ម្តងទៀតដើម្បីបញ្ជាក់');
+    } else if (new_pwd != confirm_pwd) {
+        myAlert('Confirm password is not matched', 'បញ្ជាក់លេខសំងាត់ថ្មីមិនត្រឹមត្រូវ');
+    } else {
+        $.post(URL+'app/forget_password.php', {phone:phone, code:'password', password:new_pwd},
+        function(data){
+            if (data.includes('success')){
+                myAlert('Password has been changed successfully.', 'លេខសំងាត់ត្រូវបានប្តូររួចរាល់');
+                closeModal('forget_password_modal');
+                openModal('sign_in_modal');
+            }
+        });
+    }
+}
+
+function submitVerificationCode(){
+    var phone = $('#forget_2 #phone_number_text').text();
+    var code = $('#forget_2 #code').val();
+    
+    $.post(URL+'app/forget_password.php', {phone:phone, code:code}, function(data){
+        if (data.includes('wrong_code')){
+            myAlert('The Verification Code is not valid.', 'លេខកូដបញ្ជាក់មិនត្រឹមត្រូវ ។');
+        } else if (data.includes('success')){
+            $('#forget_2').hide();
+            $('#forget_3').show();
+            $('#forget_3 #phone_number_text').text(phone);
+        }
+    });
 }
 
 function loadQuestionReviewList(type, opt, AD_ID){
@@ -901,11 +989,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
         $('#'+type+'_'+opt+' #'+type).html('');
             
         if (arr.length == 0){
-            if (opt == 'account') {
-                $('#account_n_question').text(0);
-            } else {
-                $('#'+type+'_'+opt+' #n_'+type).text(0);
-            }
+            
             
             var str = '<div class="bb">';
             if (type == 'question'){
@@ -925,12 +1009,21 @@ function loadQuestionReviewList(type, opt, AD_ID){
                 }            
                 str += '</div>';
                 $('#'+type+'_panel #'+type).append(str);
+            } else if (opt == 'account') {
+                $('#account_n_'+type).text(0);
+            } else if (opt == 'modal') {
+                if (type == 'review') $('#review_header').hide();
+                $('#'+type+'_'+opt+' #n_'+type).text(0);
             }
         } else {
             if (opt == 'account') {
                 $('#account_n_'+type).text(arr[0]['num_rows']);
             } else {
                 $('#'+type+'_'+opt+' #n_'+type).text(arr[0]['num_rows']);
+            }
+            
+            if (opt == 'modal'){
+                if (type == 'review') $('#review_header').show();
             }
             
             if (opt == 'panel') var end = 3; else var end = arr.length;
@@ -1059,16 +1152,14 @@ function addSearchHistory(keyword){
     var c = '';
     if (a == null){
         c = ','+keyword;
-    } else if (!a.includes(','+keyword)){
-        c = ','+keyword + a;        
     } else {        
+        c = ','+keyword;
         b = a.split(',');        
         var d = b.length;
         if (d > 9) d = 9;
         for (var i = 1; i < d; i++){
             if (b[i] != keyword) c += ',' + b[i];
         }
-        c += ',' + c;
     }
     
     localStorage.setItem('search_history', c);
@@ -1080,6 +1171,7 @@ function search(keyword){
     $('#search_res_item').html('');
     cancelClick();
     searchProduct(keyword, 'best_match');
+    addSearchHistory(keyword);
     window.location.href = '#tab/search';
     window.location.href = '#tab/search_res';
 }
@@ -1111,12 +1203,13 @@ function searchKeyword(tab){
 function submitSearchForm(tab){
     var keyword = $('#'+tab).val();        
     if (keyword != ''){
-        $('#search-home').focus();
+        $('#hide_keyboard').focus();  // Hide Keyboard on Search Submit
         searchProduct(keyword, 'best_match');            
         addSearchHistory(keyword);    
         cancelClick();
         window.location.href = '#tab/search';  
-        window.location.href = '#tab/search_res';    
+        window.location.href = '#tab/search_res'; 
+        
     }
 }
 
@@ -1147,7 +1240,12 @@ function searchProduct(keyword, opt) {
             $('#search_res_item').append(str);            
         }   
         
-        if (arr.length < 2) loadOtherProducts(keyword);
+        if (arr.length < 2) {
+            loadOtherProducts(keyword);
+        } else {
+            $('#no_res').hide();
+            $('.other-products').hide();
+        }
     });
     
 

@@ -40,6 +40,54 @@
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
+    
+    <!-- Hide Keyboard Input -->
+    <input id="hide_keyboard" type="input">
+
+
+<!-- Store Modal -->
+<div class="modal" id="select_lang_modal">
+    <div class="back">
+        <span class="close ion-ios-close-empty" onclick="closeModal('select_lang_modal')"></span>
+    </div>
+    
+    <ion-content class="sm-modal-body">
+        <div class="sl">
+            <img class="c" src="img/nekoten.png">
+            <div class="a">
+                NEKOTEN
+            </div>
+            <div class="b">
+                The best Online Shopping Website in Cambodia
+            </div>
+            <div class="d">
+                Select language:
+            </div>
+            <div class="e">
+                <div class="f" onclick="localStorage.setItem('lang_selected', 'true'); closeModal('select_lang_modal')">
+                    <img src="img/english.png">
+                    <div class="g">
+                        English
+                    </div>
+                </div>
+                <div class="f" onclick="localStorage.setItem('language', 'kh'); localStorage.setItem('lang_selected', 'true'); window.location.href='index.html'">
+                    <img src="img/khmer.png">
+                    <div class="g">
+                        ភាសាខ្មែរ
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</div>
+
+
+<script>   
+/* Check if Default Language is Selected */
+if (localStorage.getItem('lang_selected') == null){
+    openModal('select_lang_modal');    
+}
+</script>
 
     <script src="js/footer.js"></script>    
     <ion-nav-view></ion-nav-view>
