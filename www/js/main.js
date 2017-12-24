@@ -55,6 +55,21 @@ setTimeout(function() {
 }, 500);
 
 
+
+function openUrl(url){
+    window.open(url, '_system', 'location=no');   
+    //cordova.InAppBrowser.open(url);
+}
+function reportToMe(){
+    var url= 'fb://user-thread/100001442709860';    
+    cordova.InAppBrowser.open(url);
+}
+    
+function call(number) {
+    var url= 'tel://'+number;    
+    cordova.InAppBrowser.open(url);    
+}
+
 function connectionError(){
     $('#connection_error_alert').css('display', 'flex');   
 }
@@ -169,6 +184,8 @@ function loadStore(store_id){
 }
 
 function loadOrderDetail(order_id){    
+    
+    window.location.href = "#tab/order_detail";
     $.post(URL+'app/order.php', {order_id:order_id, lang:lang}, function(data){
         var a = JSON.parse(data)[0];
         
@@ -767,12 +784,12 @@ function loadProduct(ad_id){
         $.post(URL+'app/related_products.php',{size_g:size_g, ad_id:ad_id},function(data){                                
                              
             var arr = JSON.parse(data);   
-            
+            var str = '';
             for (var i = 0; i < arr.length; i++){            
                 var ad = arr[i];            
                 var ad_id = ad['ad_id'];  
                 
-                var str = '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
+                str += '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
                     str += '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
@@ -782,8 +799,8 @@ function loadProduct(ad_id){
                     str += '</div>';
                 str += '</ion-item>';
                 
-                $('#related_products').append(str);
             }  
+            $('#related_products').html(str);
                                                     
         });
 
@@ -985,9 +1002,9 @@ function loadQuestionReviewList(type, opt, AD_ID){
     $.post(URL+'app/question_review.php',{type:type, opt:opt, ad_id:ad_id, user_id:user_id},function(data){ 
         
         var arr = JSON.parse(data);        
+        
         /* Default Value */
-        $('#'+type+'_'+opt+' #'+type).html('');
-            
+        $('#'+type+'_'+opt+' #'+type).html('');        
         if (arr.length == 0){
             
             
@@ -1044,31 +1061,51 @@ function loadQuestionReviewList(type, opt, AD_ID){
                     str += '<div class="c">';
                         str += '<img src="'+URL+'users/'+q['posted_by']+'/profile.jpg">';
                     str += '</div>';
-                    str += '<div class="d">';
-                        str += '<div class="g">';
-                            str += '<span class="e">';
-                            str += '<span class="ee">'+q['full_name']+'</span>';
-                            if (type == 'review'){
-                                if (lang == 'en') str += ' rated '; else str += ' បានវាយតម្លៃ ';
-                                var rate = parseInt(q['rate'], 10);
-                                for (var j = 1; j <= rate; j++){
-                                    str += '<span class="fa fa-star rated"></span>';
+                    
+                    str += '<div class="dd">';
+                        str += '<div class="d">';
+                            str += '<div class="g">';
+                                str += '<span class="e">';
+                                str += '<span class="ee">'+q['full_name']+'</span>';
+                                if (type == 'review'){
+                                    if (lang == 'en') str += ' rated '; else str += ' បានវាយតម្លៃ ';
+                                    var rate = parseInt(q['rate'], 10);
+                                    for (var j = 1; j <= rate; j++){
+                                        str += '<span class="fa fa-star rated"></span>';
+                                    }
+                                    for (var j = (rate+1); j <= 5; j++){
+                                        str += '<span class="fa fa-star unrated"></span>';
+                                    }                                
                                 }
-                                for (var j = (rate+1); j <= 5; j++){
-                                    str += '<span class="fa fa-star unrated"></span>';
-                                }                                
-                            }
-                            str += '</span>';
-                            str += '<span class="f">'+q['posted_date']+'</span>';
+                                str += '</span>';
+                                str += '<span class="f">'+q['posted_date']+'</span>';
+                            str += '</div>';
+                            str += '<div class="h">'+q['data']+'</div>';
                         str += '</div>';
-                        str += '<div class="h">'+q['data']+'</div>';
-                        
-                        if (type == 'question' && q['answer'] != ''){
-                            str += '<div class="i">';
-                            if (lang == 'en') str += 'Store: '; else str += 'ហាង: ';
-                            str += '<span>'+q['answer']+'</span></div>';
-                        }                    
-                    str += '</div>';
+                            
+                        if (type == 'question' && q['replies'] != null){                               
+                            var r = q['replies'];
+                            var str2 = '';
+                            for (var k = 0; k < r.length; k++){
+                                var s = r[k];
+                                str2 += '<div class="b">';
+                                    str2 += '<div class="c">';
+                                        str2 += '<img src="'+URL+'stores/'+s['posted_by']+'/profile.jpg">';
+                                    str2 += '</div>';
+                                    str2 += '<div class="d">';
+                                        str2 += '<div class="g">';
+                                            str2 += '<span class="e">';
+                                            str2 += '<span class="ee">'+s['full_name']+'</span>';                                                
+                                            str2 += '</span>';
+                                            str2 += '<span class="f">'+s['posted_date']+'</span>';
+                                        str2 += '</div>';
+                                        str2 += '<div class="h">'+s['reply']+'</div>';
+                                    str2 += '</div>';
+                                str2 += '</div>';
+                            }                                
+                            str += str2;
+                        }   
+                    str += '</div>'; // .dd
                 str += '</div>';                
                   
                 if (opt == 'account') {

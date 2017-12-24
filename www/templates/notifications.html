@@ -1,0 +1,49 @@
+<div class"app-header">
+    <div class="header-title" k="ការជូនដំណឹង">Notifications</div>
+    <div class="back" ng-click="myGoBack()">
+        <span class="ion-ios-arrow-left"></span>
+    </div>
+</div>
+<ion-view hide-nav-bar="true" class="header-view">
+    <ion-content>
+        <ion-refresher on-refresh="refresh('notification')"></ion-refresher>
+        <div class="nt">
+            
+        </div>
+    </ion-content>
+</ion-view>
+<script>    
+    loadNotification();
+    
+    function loadNotification(){
+        $.post(URL+'app/notification.php', {user_id:user_id}, function(data){                    
+            var a = JSON.parse(data);
+            var str = '';
+            for (var i = 0; i < a.length; i++){
+                var b = a[i];
+                str += '<div class="item item-complex read-'+b['is_read']+'" id="noti_'+b['id']+'" onclick="markAsRead(\''+b['id']+'\'); '+b['action']+'">';
+                    str += '<a class="item-content">';
+                        str += '<div class="a">';
+                            str += '<div class="b">';
+                                str += b['text_'+lang];
+                            str += '</div>';
+                            str += '<div class="c">';
+                                str += b['posted_date'];
+                            str += '</div>';
+                        str += '</div>';                    
+                    str += '</a>';
+                str += '</div>';    
+            }
+            
+            $('.nt').html(str);            
+        });        
+    }
+    
+    function markAsRead(id){            
+        $('.nt #noti_'+id).removeClass('read-0');
+        $.post(URL+'app/mark_as_read.php', {id:id});        
+    }
+    
+    
+    
+</script>

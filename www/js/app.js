@@ -66,6 +66,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  .state('tab.notifications', {
+    url: '/notifications',
+    views: {
+      'account': {
+        templateUrl: 'templates/notifications.html',
+        controller: 'NavCtrl'
+      }
+    }
+  })
 
   .state('tab.cart', {
       url: '/cart',

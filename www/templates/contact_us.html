@@ -6,15 +6,29 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content>
-     <ion-refresher on-refresh="refresh('contact_us')"></ion-refresher>
-        <div class="wrap2" id="contact_us">
-            <div class="spin">
-                <ion-spinner icon="ios"></ion-spinner>
-            </div>
-        </div>
+    <div class="hr"></div>
+        <ul class="mr">
+            <ion-item class="item item-complex">
+                <a class="item-content" onclick="openUrl('http://m.me/khmerqq')">
+                <span class="b ion-ios-chatboxes-outline"></span>
+                    <span>facebook.com/nekoten</span>
+                </a>
+            </ion-item>
+            <ion-item class="item item-complex">
+                <a class="item-content" onclick="call('011123456')">
+                <span class="b ion-ios-telephone-outline"></span>
+                    <span>011123445</span>
+                </a>
+            </ion-item>
+            <ion-item class="item item-complex">
+                <a class="item-content" onclick="openUrl('mailto:vongvirak9@gmail.com')">
+                <span class="b ion-ios-email-outline"></span>
+                    <span>vongvirak9@gmail.com</span>
+                </a>
+            </ion-item>
+        </ul>
     </ion-content>
 </ion-view>
 <script>
     la();
-    getInfo('contact_us');
 </script>

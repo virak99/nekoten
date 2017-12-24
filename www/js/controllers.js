@@ -65,10 +65,10 @@ angular.module('starter.controllers', [])
             } else if (page == 'order_detail'){
                 var order_id = $('#order_detail #order_id').text();                
                 loadOrderDetail(order_id);                
-            } else if (page == 'about_us'){
-                getInfo('about_us');
             } else if (page == 'contact_us'){
                 getInfo('contact_us');
+            } else if (page == 'notification'){
+                loadNotification();
             }
             $scope.$broadcast('scroll.refreshComplete');
         }

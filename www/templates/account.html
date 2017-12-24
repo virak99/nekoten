@@ -10,8 +10,7 @@
             </div>
             <div class="b">
                 <div class="e">
-                    <span class="ion-ios-email-outline"></span>
-                    <span class="ion-ios-bell-outline"></span>
+                    <span onclick="window.location.href='#tab/notifications'" class="ion-ios-bell-outline"></span>
                     <span onclick="window.location.href='#tab/account_settings'" class="ion-ios-gear-outline"></span>
                 </div>
                 <img id="profile_pic">
@@ -20,10 +19,23 @@
         <div class="hr"></div>
         <ul class="mr">
             <ion-item href="#tab/my_order">
-            <span class="b ion-ios-list-outline"></span>
+                <span class="b ion-ios-list-outline"></span>
                 <span k="ការកម្មង់របស់ខ្ញុំ">My Orders</span>
+                <span class="bb">View All</span>
+            </ion-item>
+            <ion-item href="#tab/my_order">
+                <span k="ការកម្មង់រង់ចាំការបង់ប្រាក់">Orders Awaiting Payment</span>
+                <span class="bc">3</span>
                 <span class="fa fa-angle-right"></span>
             </ion-item>
+            <ion-item href="#tab/my_order">
+                <span k="ផលិតផលរង់ចាំការវាយតម្លៃ">Products Awaiting Review</span>
+                <span class="bc">1</span>
+                <span class="fa fa-angle-right"></span>
+            </ion-item>
+        </ul>
+        <div class="hr"></div>
+        <ul class="mr">
             <ion-item href="#tab/wishlist">
                 <span class="b ion-ios-heart-outline"></span>
                 <span k="ទំនិញចង់បាន">My Wishlist</span>

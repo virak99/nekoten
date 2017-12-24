@@ -15,6 +15,31 @@
     </ion-content>
 </div>
 
+<div class="sm-modal" id="change_password_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ប្តូរលេខសំងាត់">Change Password</div>
+    <div class="back" onclick="closeModal('change_password_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body" style="padding:20px 10px">
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"  k="លេខសំងាត់ចាស់">Old Password</span>
+                <input type="password" id="old_pwd">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"  k="លេខសំងាត់ថ្មី">New Password</span>
+                <input type="password" id="new_pwd">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"  k="បញ្ជាក់លេខសំងាត់ថ្មី">Confirm New Password</span>
+                <input type="password" id="confirm_new_pwd">
+            </label>
+        </div>
+        <button class="btn" k="ប្តូរលេខសំងាត់" onclick="changePassword()">Change Password</button>       
+    </ion-content>
+</div>
+
 <div class="app-header">
     <div class="header-title" k="ការកំណត់របស់គណនី">Account Settings</div>
     <div class="back" ng-click="myGoBack()">
@@ -38,6 +63,16 @@
             </li>
         </ul>
         <div class="hr"></div>
+        <ul class="mr" id="account_settings">
+            <li class="item item-complex" style="padding:0">
+                <a class="item-content" onclick="openSmallModal('change_password_modal')">
+                    <span k="ប្តូរលេខសំងាត់">Change Password</span>
+                    <span class="fa fa-angle-right"></span>
+                    
+                </a>
+            </li>
+        </ul>
+        <div class="hr"></div>
         <div class="so">
             <button id="sign_out" onclick="signOut()">Sign Out</button>
         </div>
@@ -52,14 +87,46 @@
     
     function changeName(){
         var full_name = $('#change_name_modal #full_name').val();
-        $.post(URL+'app/update_data.php', {item:'full_name', data:full_name, user_id:user_id}, function(data){
-            if (data.includes('success')){
-                localStorage.setItem('full_name', full_name);
-                $('#account_settings #full_name').text(full_name);
-                closeModal('change_name_modal');
-            }
-        });
+        if (full_name == ''){
+            myAlert('Please enter new Full Name', 'សូមបញ្ចូលឈ្មោះថ្មី');
+        } else {
+            $.post(URL+'app/update_data.php', {item:'full_name', full_name:full_name, user_id:user_id}, function(data){
+                if (data.includes('success')){
+                    localStorage.setItem('full_name', full_name);
+                    $('#account_settings #full_name').text(full_name);
+                    closeModal('change_name_modal');
+                }
+            });            
+        }
         
+    }
+    function changePassword(){
+        var old_pwd = $('#change_password_modal #old_pwd').val();
+        var new_pwd = $('#change_password_modal #new_pwd').val();
+        var confirm_new_pwd = $('#change_password_modal #confirm_new_pwd').val();
+        
+        if (old_pwd == ''){
+            myAlert('Pleae enter old password', 'សូមបញ្ចូលលេខសំងាត់ចាស់');
+        } else if (new_pwd == ''){
+            myAlert('Pleae enter new password', 'សូមបញ្ចូលលេខសំងាត់ថ្មី');
+        } else if (confirm_new_pwd == ''){
+            myAlert('Pleae confirm new password', 'សូមបញ្ជាក់លេខសំងាត់ថ្មី');
+        } else if (new_pwd != confirm_new_pwd) {
+            myAlert('Confirm new password is not matched', 'បញ្ជាក់លេខសំងាត់ថ្មីមិនត្រឹមត្រូវ');
+        } else {
+            $.post(URL+'app/update_data.php', {item:'password', old_pwd:old_pwd, new_pwd:new_pwd, user_id:user_id}, function(data){                        
+                if (data.includes('not_match')){
+                    myAlert('Old password is incorrect', 'លេខសំងាត់ចាស់មិនត្រឹមត្រូវ');                    
+                } else if (data.includes('success')){
+                    myAlert('Password has been changed', 'លេខសំងាត់ថ្មីបានផ្លាស់ប្តូររួចរាល់');                    
+                    $('#change_password_modal #old_pwd').val('');
+                    $('#change_password_modal #new_pwd').val('');
+                    $('#change_password_modal #confirm_new_pwd').val('');
+                    closeModal('change_password_modal');
+                }
+                
+            });    
+        }
     }
     function signOut(){
         alertConfirm('Sign out from this account?', 'ចាកចេញពីគណនីនេះ?');

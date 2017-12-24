@@ -267,7 +267,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .uj .b{
     color: #aaa;
 }
-#my-order-panel .cart{
+#my-order-panel .cart a{
     padding: 0 15px;
 }
 .cart .c{
@@ -291,7 +291,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .uk{
     width: 100%;
-    padding: 0 15px 15px 15px;
+    padding: 5px 15px 15px 15px;
 }
 .uk .aa{
     padding: 10px 0;
@@ -644,16 +644,23 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 
 .qs .c {
-    width: 30px;
+    width: 40px;
     display: inline-flex;
-    margin-right: 10px;
+    margin-right: 10px;    
+    margin-top: 5px;
 }
 .qs .c img {
-    width: 30px;
+    width: 40px;
     height: 100%;
 }
-.qs .d{
-    width: calc(100% - 30px);
+.qs .dd{
+    width: calc(100% - 40px);
+}
+.qs .d{    
+    width: 100%;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 10px;
 }
 .qs .e .ee{
     font-weight: bold;
@@ -916,6 +923,18 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .mr .b {
     font-size: 1.4em;
     margin-right: 10px;
+}
+.mr .bb{
+    position: absolute;
+    right: 20px;
+    font-size: 14px;
+    color: #1b95e0;
+}
+.mr .bc{
+    position: absolute;
+    right: 50px;
+    font-size: 14px;
+    color: #aaa;
 }
 .mr li{
     padding: 15px 20px;
@@ -1839,4 +1858,27 @@ ion-nav-view{
 }
 .sl .g{
     font-size: 16px;
+}
+.nt {
+    width: 100%;
+}
+.nt .item{
+    width: 100%;
+}
+.nt .a{
+    padding: 15px;
+    display: inline-flex;
+    width: 100%;
+    border-bottom: 1px solid #eed;
+}
+.nt .b{
+    width: 80%;
+}
+.nt .c{
+    position: absolute;
+    right: 10px;
+    color: #aaa;
+}
+.nt .read-0{
+    background: #eee;
 }

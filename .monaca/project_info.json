@@ -11,6 +11,7 @@
         "cordova-custom-config@2.0.3",
         "cordova-plugin-geolocation@2.4.3",
         "cordova-plugin-statusbar@2.2.3",
-        "cordova-plugin-file-transfer@1.6.3"
+        "cordova-plugin-file-transfer@1.6.3",
+        "cordova-plugin-inappbrowser@1.7.1"
     ]
 }

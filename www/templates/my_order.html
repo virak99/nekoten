@@ -66,7 +66,7 @@
             var a = JSON.parse(data);                 
             for (var i = 0; i < a.length; i++){
                 var b = a[i];  
-                var str = '<div class="item-complex item"><a href="#tab/order_detail" onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
+                var str = '<div>';
                     str += '<div class="uj">';
                         str += '<div class="a">';
                             str += '<span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>';
@@ -77,7 +77,7 @@
                             str += '<span>'+b['id']+'</span>';
                         str += '</div>';
                     str += '</div>';
-                    str += '<ul class="cart">';
+                    str += '<ul class="cart item-complex item"><a onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
                     
                     var c = b['ads'];
                     for (j = 0; j < c.length; j++){
@@ -101,7 +101,7 @@
                         str += str2;
                     }
                     
-                    str += '</ul>';
+                    str += '</a></ul>';
                     str += '<div class="uk">';
                         str += '<div class="a">';                        
                             str += '<span class="b">';
@@ -120,7 +120,7 @@
                             str += '<span class="d">$ '+b['total']+'</span>';                                                        
                         str += '</div>';                                                                    
                     str += '</div>';
-                str += '</a></div>';
+                str += '</div>';
                 str += '<div class="hr"></div>';
             
                 $('#my-order-panel').append(str);
