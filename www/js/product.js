@@ -256,21 +256,6 @@ $('.wt .c .fa').on('tap', function(){
     }
 });
 
-function submitReview(){
-    var ad_id = $('#product_body #ad_id').val();
-    var review = $('.wt #review_text').val();
-    var rate = $('.wt #review_rate').val();
-    
-    $.post(URL+'/app/submit_review.php', {user_id:user_id, ad_id:ad_id, review:review, rate:rate}, function(data){
-        if (data.includes('success')){
-            loadQuestionReviewList('review', 'panel', ad_id);
-            myAlert('Thank you for your review.', 'សូមអរគុណសំរាប់ការវាយតម្លៃរបស់លោកអ្នក ។');
-            $('#alert .confirm').on('click', function(){                        
-                closeModal('submit_review_modal');                        
-            });
-        }
-    });
-}
     
 
 

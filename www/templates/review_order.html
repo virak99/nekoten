@@ -237,26 +237,29 @@
         if (shipping_addr_id == '') {
             addNewAddress(1);
         } else {
-            $('.cart-footer #place_order span').hide();
-            $('.cart-footer #place_order ion-spinner').show();
-            $.post(URL+'app/place_order.php', 
-            {cart:cart, subtotal:subtotal, delivery_fee:delivery_fee, total:total, ordered_by:ordered_by,
-            location:location, message:message, shipping_addr_id:shipping_addr_id,
-            payment_method:payment_method, delivery_time:delivery_time},
-            function(data){                        
-                var a = JSON.parse(data);
-                if (a['result'] == 'success'){
-                    orderPlaced(a['order_id']);                
-                    localStorage.removeItem('shopping_cart');                
-                    loadCart();
-                    window.location.href='#tab/cart';
-                    $('.cart-footer #place_order span').show();
-                    $('.cart-footer #place_order ion-spinner').hide();
-                } else {
-                    alert(data);
-                }
-                
-            });    
+            alertConfirm('Place this order?', 'បញ្ជាកម្ម់ងទំនិញ?');
+            $('#alert_confirm .confirm').on('click', function(){
+                $('.cart-footer #place_order span').hide();
+                $('.cart-footer #place_order ion-spinner').show();
+                $.post(URL+'app/place_order.php', 
+                {cart:cart, subtotal:subtotal, delivery_fee:delivery_fee, total:total, ordered_by:ordered_by,
+                location:location, message:message, shipping_addr_id:shipping_addr_id,
+                payment_method:payment_method, delivery_time:delivery_time},
+                function(data){                        
+                    var a = JSON.parse(data);
+                    if (a['result'] == 'success'){
+                        orderPlaced(a['order_id']);                
+                        localStorage.removeItem('shopping_cart');                
+                        loadCart();
+                        window.location.href='#tab/cart';
+                        $('.cart-footer #place_order span').show();
+                        $('.cart-footer #place_order ion-spinner').hide();
+                    } else {
+                        alert(data);
+                    }
+                    
+                }); 
+            });
         }        
     }
     

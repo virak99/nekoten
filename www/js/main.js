@@ -15,7 +15,7 @@ var size_l = '120';
 var size_g = ($(window).width()-30)/2;
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
-
+var upload_img_id = 'smallImage';
 
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
@@ -1081,6 +1081,14 @@ function loadQuestionReviewList(type, opt, AD_ID){
                                 str += '<span class="f">'+q['posted_date']+'</span>';
                             str += '</div>';
                             str += '<div class="h">'+q['data']+'</div>';
+                            if (type == "review" && q['has_image'] == 1){
+                                str += '<div class="i">';
+                                for (var l = 0; l < q['images'].length; l++){
+                                    str += '<img class="hh" src="'+URL+'/reviews/'+q['id']+'/'+q['images'][l]+'">';
+                                }
+                                str += '</div>';
+                                
+                            }
                         str += '</div>';
                             
                         if (type == 'question' && q['replies'] != null){                               
@@ -1237,6 +1245,40 @@ function searchKeyword(tab){
     }
 }
 
+
+function submitReview(){
+    var ad_id = $('#product_body #ad_id').val();
+    var review = $('.wt #review_text').val();
+    var rate = $('.wt #review_rate').val();
+    var has_image = 0;
+    /* Has Image? */
+    for (var i = 1; i <= 4; i++){
+        if ($('#rv_'+i+' img').attr('src') != null){
+            has_image = 1;
+        }
+    }
+    $.post(URL+'/app/submit_review.php', {user_id:user_id, has_image:has_image, ad_id:ad_id, review:review, rate:rate}, function(data){
+        var a = JSON.parse(data);
+        if (a['result'] == 'success'){
+            
+            /* Upload Photos */
+            for (var i = 1; i <= 4; i++){
+                if ($('#rv_'+i+' img').attr('src') != null){
+                    uploadPhoto($('#rv_'+i+' img').attr('src'), a['id']);
+                }
+            }
+            
+            loadQuestionReviewList('review', 'panel', ad_id);
+            myAlert('Thank you for your review.', 'សូមអរគុណសំរាប់ការវាយតម្លៃរបស់លោកអ្នក ។');
+            $('#alert .confirm').on('click', function(){                        
+                closeModal('submit_review_modal');                        
+            });
+        }
+        
+        
+    });
+}
+
 function submitSearchForm(tab){
     var keyword = $('#'+tab).val();        
     if (keyword != ''){
@@ -1341,4 +1383,17 @@ function la(){
     }
 }
 
+
+function openActionMenu(id){    
+    $('#'+id).css('display', 'flex');   
+    setTimeout(function(){
+        $('#'+id+' .ms-alert-body').css('transform', 'translateY(0)');    
+    }, 100);
+    
+}
+function closeActionMenu(){    
+    $('.action-menu .ms-alert-body').css('transform', 'translateY(150%)');
+    setTimeout(function(){ $('.action-menu').css('display', 'none');}, 200);
+    
+}
 

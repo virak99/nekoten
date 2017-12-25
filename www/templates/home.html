@@ -15,24 +15,9 @@
         <span id="all" style="display:none">0</span>
         
         <div class="home"> 
+            
         
-            
-            
-            <script>
-            /*
-            <ion-slide-box on-slide-changed="slideHasChanged($index)" auto-play="true" does-continue="true" class="home-slider">
-                <ion-slide onclick="window.location.href='#tab/iframe'">
-                    <img ng-src="img/slide-1.jpg">
-                </ion-slide>
-                <ion-slide>
-                    <img ng-src="img/slide-2.jpg">
-                </ion-slide>
-                <ion-slide>
-                    <img ng-src="img/slide-3.jpg">
-                </ion-slide>
-            </ion-slide-box>
-            */</script>
-            
+        
             
             
             <div class="home-slider owl-carousel owl-theme">
@@ -162,12 +147,12 @@
             var a_wh = (size-30)/2;        
             var data = $('#data').text();                
             var arr = JSON.parse(data);   
-            
+            var str = '';
             for (var i = start; i < end; i++){            
                 var ad = arr[i];            
                 var ad_id = ad['ad_id'];  
                 
-                var str = '<li onclick="loadProduct(\''+ad_id+'\')" class="ad-item">';
+                str += '<li onclick="loadProduct(\''+ad_id+'\')" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
@@ -176,9 +161,8 @@
                         str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
                     str += '</div>';
                 str += '</li>';
-                
-                $('#new_arrival').append(str);
             }  
+            $('#new_arrival').html(str);
             la();                           
             $('#start').text(end);
         }

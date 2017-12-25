@@ -200,16 +200,36 @@
                     <span id="r5" class="fa fa-star"></span>
                     <span id="rate_text"></span>
                 </div>
+                
+                
             </div>
             <div class="d">
                 <textarea id="review_text" rows="6" placeholder="Write your review about product (Delivery, Packaging etc)" k="សូមសរសេរវាយតំលៃអំពីផលិតផល (ការដឹកជញ្ជូន ការវេចខ្ចប់ ល។)"></textarea>
             </div>
+            <div class="e">
+                <div class="g"  id="rv_1" onclick="choosePhoto('rv_1')">                
+                    <span class="f ion-ios-camera-outline"></span>
+                    <img style="display:none" />
+                </div>
+                <div class="g"  id="rv_2" onclick="choosePhoto('rv_2')">                
+                    <span class="f ion-ios-camera-outline"></span>
+                    <img style="display:none" />
+                </div>                
+                <div class="g"  id="rv_3" onclick="choosePhoto('rv_3')">                
+                    <span class="f ion-ios-camera-outline"></span>
+                    <img style="display:none" />
+                </div>                
+                <div class="g"  id="rv_4" onclick="choosePhoto('rv_4')">                
+                    <span class="f ion-ios-camera-outline"></span>
+                    <img style="display:none" />
+                </div>                
+            </div>
             <button class="btn" onclick="submitReview()" k="បញ្ចូនរង្វាយតម្លៃ">Submit Review</button>        
         </div>
+       
     </ion-content>    
 </div>
 <!-- /Submit Review Modal -->
-
 
 
 <!-- Question Modal -->
@@ -799,6 +819,33 @@ $('.input-form .input-close').on('click', function(){
 <!-- /ms-alert -->
 
 
+
+<!-- Action Menu -->
+<div class="ms-alert action-menu" id="choose_photo_action" onclick="closeActionMenu()">
+    <div class="ms-alert-body">
+        <div class="hh">
+            
+            <li class="item item-complex">
+                <a class="item-content" onclick="takePhoto()">
+                    <span class="a ion-ios-camera-outline" style="font-size:26px"></span>
+                    <span class="b" k="ថតរូប">Take Photo</span>
+                </a>
+            </li>
+            <li class="item item-complex">
+                <a class="item-content" onclick="getPhotoFromGallery()">
+                    <span class="a ion-ios-photos-outline"></span>
+                    <span class="b" k="ជ្រើសរើសរូបថត">Choose From Library</span>
+                </a>
+            </li>
+            <div class="aa"></div>
+            <li class="item item-complex" onclick="closeActionMenu()">
+                <a class="item-content">                
+                    <strong class="b" k="ចាកចេញ">Cancel</strong>
+                </a>
+            </li>
+        </div>
+    </div>    
+</div>
 
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
     <ion-tab title="{{home}}" icon-off="ion-ios-home-outline" icon-on="ion-ios-home" href="#/tab/home">

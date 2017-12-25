@@ -8,40 +8,10 @@
     <ion-content>        
         <ion-refresher on-refresh="refresh('my_order')"></ion-refresher>
         <div id="my-order-panel">                
-        <script>
-            /*
-            <div class="uj">
-                <div class="a">
-                    <span class="b" k="កាលបរិច្ឆេទ">Order Date: </span>
-                    <span id="order_date">2913</span>
-                </div>
-                <div class="a">
-                    <span class="b">Order ID: </span>
-                    <span id="order_id">02139</span>
-                </div>
-            </div>
-            <ul class="cart">
-                <li class="p-list" >                    
-                    <div class="a">
-                        <img src="img/1.jpg" style="width:100%;height:100%">
-                    </div>
-                    <div class="b">
-                        <div class="c">
-                            Vong Virak My name is Vong Virak My name isVong Virak My name is                            
-                        </div>    
-                        <div class="ee">
-                            <div class="dd">
-                                <span>$ 3</span>
-                                <span>x 5</span>
-                            </div>                                                    
-                        </div>
-                    </div>
-                </li>                                                     
-            </ul>
-            <div class="hr"></div>
-            */
-        </script>
-            
+            <center class="em" id="no_order">
+                <span class="a ion-bag"></span>                
+                <div class="b" k="លោកអ្នកមិនទាន់បានកម្មង់ទំនិញនៅឡើយទេ">You don't have any orders Yet</div>        
+            </center>
         </div>
     </ion-content>
 </ion-view>
@@ -62,70 +32,73 @@
     function loadMyOrder(){
         var user_id = localStorage.getItem('user_id');
         $.post(URL+'app/my_order.php', {user_id:user_id, size_l:size_l}, function (data){        
-            $('#my-order-panel').html('');
-            var a = JSON.parse(data);                 
-            for (var i = 0; i < a.length; i++){
-                var b = a[i];  
-                var str = '<div>';
-                    str += '<div class="uj">';
-                        str += '<div class="a">';
-                            str += '<span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>';
-                            str += '<span>'+b['ordered_date']+'</span>';
+            
+            var a = JSON.parse(data);   
+            var str = '';
+            if (a.length > 0){
+                for (var i = 0; i < a.length; i++){
+                    var b = a[i];  
+                    str += '<div>';
+                        str += '<div class="uj">';
+                            str += '<div class="a">';
+                                str += '<span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>';
+                                str += '<span>'+b['ordered_date']+'</span>';
+                            str += '</div>';
+                            str += '<div class="a">';
+                                str += '<span class="b">Order ID: </span>';
+                                str += '<span>'+b['id']+'</span>';
+                            str += '</div>';
                         str += '</div>';
-                        str += '<div class="a">';
-                            str += '<span class="b">Order ID: </span>';
-                            str += '<span>'+b['id']+'</span>';
-                        str += '</div>';
-                    str += '</div>';
-                    str += '<ul class="cart item-complex item"><a onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
-                    
-                    var c = b['ads'];
-                    for (j = 0; j < c.length; j++){
-                        var d = c[j];
-                        var str2 = '<li class="p-list">';                    
-                            str2 += '<div class="a">';
-                                str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
-                            str2 += '</div>';
-                            str2 += '<div class="b">';
-                                str2 += '<div class="c">';
-                                    str2 += d['title'];
-                                str2 += '</div>';    
-                                str2 += '<div class="ee">';
-                                    str2 += '<div class="dd">';
-                                        str2 += '<span>$ '+d['unit_price']+'</span> ';
-                                        str2 += '<span style="color:black">x '+d['quantity']+'</span>';
+                        str += '<ul class="cart item-complex item"><a onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
+                        
+                        var c = b['ads'];
+                        for (j = 0; j < c.length; j++){
+                            var d = c[j];
+                            var str2 = '<li class="p-list">';                    
+                                str2 += '<div class="a">';
+                                    str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
+                                str2 += '</div>';
+                                str2 += '<div class="b">';
+                                    str2 += '<div class="c">';
+                                        str2 += d['title'];
+                                    str2 += '</div>';    
+                                    str2 += '<div class="ee">';
+                                        str2 += '<div class="dd">';
+                                            str2 += '<span>$ '+d['unit_price']+'</span> ';
+                                            str2 += '<span style="color:black">x '+d['quantity']+'</span>';
+                                        str2 += '</div>';
                                     str2 += '</div>';
                                 str2 += '</div>';
-                            str2 += '</div>';
-                        str2 += '</li>';
-                        str += str2;
-                    }
-                    
-                    str += '</a></ul>';
-                    str += '<div class="uk">';
-                        str += '<div class="a">';                        
-                            str += '<span class="b">';
-                                str += '<span k="សរុបទំនិញ">Subtotal</span> (';
-                                str += b['item_count'];                 
-                                str += '<span k=" មុខ"> item</span>';
-                            str += ')</span>';
-                            str += '<span class="c">$ '+b['subtotal']+'</span>';                                                        
+                            str2 += '</li>';
+                            str += str2;
+                        }
+                        
+                        str += '</a></ul>';
+                        str += '<div class="uk">';
+                            str += '<div class="a">';                        
+                                str += '<span class="b">';
+                                    str += '<span k="សរុបទំនិញ">Subtotal</span> (';
+                                    str += b['item_count'];                 
+                                    str += '<span k=" មុខ"> item</span>';
+                                str += ')</span>';
+                                str += '<span class="c">$ '+b['subtotal']+'</span>';                                                        
+                            str += '</div>';
+                            str += '<div class="a">';                        
+                                str += '<span class="b" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>';                                                        
+                                str += '<span class="c">$ '+b['delivery_fee']+'</span>';                                                        
+                            str += '</div>';                                                                    
+                            str += '<div class="a">';                        
+                                str += '<span class="b" k="សរុប">Total</span>';                                                        
+                                str += '<span class="d">$ '+b['total']+'</span>';                                                        
+                            str += '</div>';                                                                    
                         str += '</div>';
-                        str += '<div class="a">';                        
-                            str += '<span class="b" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>';                                                        
-                            str += '<span class="c">$ '+b['delivery_fee']+'</span>';                                                        
-                        str += '</div>';                                                                    
-                        str += '<div class="a">';                        
-                            str += '<span class="b" k="សរុប">Total</span>';                                                        
-                            str += '<span class="d">$ '+b['total']+'</span>';                                                        
-                        str += '</div>';                                                                    
                     str += '</div>';
-                str += '</div>';
-                str += '<div class="hr"></div>';
-            
-                $('#my-order-panel').append(str);
+                    str += '<div class="hr"></div>';
+                }
+                $('#my-order-panel').html(str);
+                la();
             }
-            la();
+            
         }); 
     }
     
