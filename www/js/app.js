@@ -140,11 +140,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
         }
     })
-    .state('tab.my_order', {
-        url: '/my_order',
+    .state('tab.order_all', {
+        url: '/order_all',
         views: {
             'account': {
-                templateUrl: 'templates/my_order.html',
+                templateUrl: 'templates/order_all.html',
+                controller: 'NavCtrl'
+            }
+        }
+    })
+    .state('tab.order_reviewed', {
+        url: '/order_reviewed',
+        views: {
+            'account': {
+                templateUrl: 'templates/order_reviewed.html',
+                controller: 'NavCtrl'
+            }
+        }
+    })
+    .state('tab.order_paid', {
+        url: '/order_paid',
+        views: {
+            'account': {
+                templateUrl: 'templates/order_paid.html',
                 controller: 'NavCtrl'
             }
         }

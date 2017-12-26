@@ -50,8 +50,6 @@ angular.module('starter.controllers', [])
         $scope.refresh = function (page) {
             if (page == 'shipping_addr'){
                 loadShippingAddr();
-            } else if (page == 'my_order'){
-                loadMyOrder();
             } else if (page == 'cart'){
                 loadCart();
             } else if (page == 'wishlist'){
@@ -67,6 +65,12 @@ angular.module('starter.controllers', [])
                 loadOrderDetail(order_id);                
             } else if (page == 'contact_us'){
                 getInfo('contact_us');
+            } else if (page == 'order_all'){
+                loadOrder('all');
+            } else if (page == 'order_reviewed'){
+                loadOrder('reviewed');
+            } else if (page == 'order_paid'){
+                loadOrder('paid');
             } else if (page == 'notification'){
                 loadNotification();
             }

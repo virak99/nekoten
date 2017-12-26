@@ -15,6 +15,24 @@
     </ion-content>
 </div>
 
+<div class="sm-modal" id="change_profile_pic_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="ប្តូររូបភាពគណនី">Change Profile Picture</div>
+    <div class="back" onclick="closeModal('change_profile_pic_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="sm-modal-body" style="padding:20px 10px">
+        <div class="cp">
+            <div class="a" id="cpp" onclick="choosePhoto('cpp')">                
+                <span class="b ion-ios-camera-outline"></span>
+                <img style="display:none" />
+            </div>
+            <button class="btn c" k="រក្សាទុក" onclick="changeProfiePicture()">Save</button>       
+    
+        </div>
+        </ion-content>
+</div>
+
 <div class="sm-modal" id="change_password_modal">
     <div class="shadow"></div>
     <div class="header-title" k="ប្តូរលេខសំងាត់">Change Password</div>
@@ -47,9 +65,18 @@
     </div>
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
-    <ion-content>
-    
-        <ul class="mr" id="account_settings">
+    <ion-content id="account_settings">
+        <ul class="mr">
+            <li class="item item-complex" style="padding:0">
+                <a class="item-content" onclick="openSmallModal('change_profile_pic_modal'); choosePhoto('cpp')">
+                    <img id="profile_pic" style="width:60px">
+                    <span class="fa fa-angle-right" style="margin-top:25px"></span>
+                    <span class="a" style="margin-top:25px" k="ប្តូររូបភាព">Change Profile Picture</span>
+                </a>
+            </li>
+        </ul>
+        <div class="hr"></div>
+        <ul class="mr">
             <li class="item item-complex" style="padding:0">
                 <a class="item-content" onclick="openSmallModal('change_name_modal')">
                     <span k="ឈ្មោះ">Full Name</span>
@@ -63,7 +90,7 @@
             </li>
         </ul>
         <div class="hr"></div>
-        <ul class="mr" id="account_settings">
+        <ul class="mr">
             <li class="item item-complex" style="padding:0">
                 <a class="item-content" onclick="openSmallModal('change_password_modal')">
                     <span k="ប្តូរលេខសំងាត់">Change Password</span>
@@ -84,6 +111,7 @@
     $('#account_settings #full_name').text(localStorage.getItem('full_name'));
     $('#account_settings #phone_number').text(localStorage.getItem('phone_number'));
     $('#change_name_modal #full_name').val(localStorage.getItem('full_name'));
+    $('#account_settings #profile_pic').attr('src', URL+'users/'+user_id+'/profile.jpg');
     
     function changeName(){
         var full_name = $('#change_name_modal #full_name').val();

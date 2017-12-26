@@ -697,6 +697,93 @@ function updateDeliveryTo(name_en){
     });   
 }
 
+function removeWishlist(ad_id){
+    var user_id = localStorage.getItem('user_id');
+    alertConfirm('Remove from Wishlist?', 'លុបចេញពីទំនិញចង់បាន?');            
+    $('#alert_confirm .confirm').on('click', function(){                                      
+        $.post(URL+'module/remove_wishlist.php',{ad_id:ad_id,user_id:user_id},function(data){
+            if (data == 'success'){
+                loadWishlist();
+            }
+        });       
+    });        
+}
+
+function loadOrder(opt){
+    
+    window.location.href = "#tab/order_"+opt;
+    
+    $.post(URL+'app/my_order.php', {user_id:user_id, size_l:size_l, opt:opt}, function (data){        
+        
+        var a = JSON.parse(data);   
+        var str = '';
+        if (a.length > 0){
+            for (var i = 0; i < a.length; i++){
+                var b = a[i];  
+                str += '<div>';
+                    str += '<div class="uj">';
+                        str += '<div class="a">';
+                            str += '<span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>';
+                            str += '<span>'+b['ordered_date']+'</span>';
+                        str += '</div>';
+                        str += '<div class="a">';
+                            str += '<span class="b">Order ID: </span>';
+                            str += '<span>'+b['id']+'</span>';
+                        str += '</div>';
+                    str += '</div>';
+                    str += '<ul class="cart item-complex item"><a onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
+                    
+                    var c = b['ads'];
+                    for (j = 0; j < c.length; j++){
+                        var d = c[j];
+                        var str2 = '<li class="p-list">';                    
+                            str2 += '<div class="a">';
+                                str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
+                            str2 += '</div>';
+                            str2 += '<div class="b">';
+                                str2 += '<div class="c">';
+                                    str2 += d['title'];
+                                str2 += '</div>';    
+                                str2 += '<div class="ee">';
+                                    str2 += '<div class="dd">';
+                                        str2 += '<span>$ '+d['unit_price']+'</span> ';
+                                        str2 += '<span style="color:black">x '+d['quantity']+'</span>';
+                                    str2 += '</div>';
+                                str2 += '</div>';
+                            str2 += '</div>';
+                        str2 += '</li>';
+                        str += str2;
+                    }
+                    
+                    str += '</a></ul>';
+                    str += '<div class="uk">';
+                        str += '<div class="a">';                        
+                            str += '<span class="b">';
+                                str += '<span k="សរុបទំនិញ">Subtotal</span> (';
+                                str += b['item_count'];                 
+                                str += '<span k=" មុខ"> item</span>';
+                            str += ')</span>';
+                            str += '<span class="c">$ '+b['subtotal']+'</span>';                                                        
+                        str += '</div>';
+                        str += '<div class="a">';                        
+                            str += '<span class="b" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>';                                                        
+                            str += '<span class="c">$ '+b['delivery_fee']+'</span>';                                                        
+                        str += '</div>';                                                                    
+                        str += '<div class="a">';                        
+                            str += '<span class="b" k="សរុប">Total</span>';                                                        
+                            str += '<span class="d">$ '+b['total']+'</span>';                                                        
+                        str += '</div>';                                                                    
+                    str += '</div>';
+                str += '</div>';
+                str += '<div class="hr"></div>';
+            }
+            $('#order_'+opt+'_form #order_result').html(str);
+            la();
+        }
+        
+    }); 
+}
+
 
 function loadProduct(ad_id){  
     openModal('product_modal');    
@@ -1264,7 +1351,7 @@ function submitReview(){
             /* Upload Photos */
             for (var i = 1; i <= 4; i++){
                 if ($('#rv_'+i+' img').attr('src') != null){
-                    uploadPhoto($('#rv_'+i+' img').attr('src'), a['id']);
+                    uploadPhoto($('#rv_'+i+' img').attr('src'), a['id'], 'review');
                 }
             }
             

@@ -230,7 +230,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .p-list {
     display: inline-flex;
     border-bottom: 1px solid #eee;
-    padding: 5px 0;
+    padding: 10px 0;
     width: 100%;
 }
 
@@ -264,7 +264,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .uj{
     width: 100%;
-    padding: 15px;
+    padding: 10px 15px 5px 15px;
 }
 .uj .a{
     width: 100%;
@@ -276,7 +276,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .uj .b{
     color: #aaa;
 }
-#my-order-panel .cart a{
+.my-order-panel .cart a{
     padding: 0 15px;
 }
 .cart .c{
@@ -1945,4 +1945,23 @@ ion-nav-view{
 }
 .hh .item-content{
     padding: 16px 49px 16px 16px;
+}
+.cp{
+    width: 100%;
+}
+.cp .a{
+    margin: 40px 20%;
+    width: 60%;
+    height: 260px;
+    text-align: center;
+    border: 1px dashed #aaa;
+}
+.cp .c{
+    margin-top: 60px;
+}
+.cp .a img{
+    width: 100%;
+}
+.cp .a .b{
+    font-size: 60px;
 }

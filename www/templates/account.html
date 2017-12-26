@@ -1,5 +1,5 @@
 <div class="app-header">
-    <div class="header-title" k="គណនីរបស់ខ្ញុំ">My Account</div>    
+    <div class="header-title" k="គណនីរបស់ខ្ញុំ">My Account</div>        
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content style="display:none" id="account_logined">  
@@ -18,20 +18,27 @@
         </div>
         <div class="hr"></div>
         <ul class="mr">
-            <ion-item href="#tab/my_order">
-                <span class="b ion-ios-list-outline"></span>
-                <span k="ការកម្មង់របស់ខ្ញុំ">My Orders</span>
-                <span class="bb">View All</span>
+            <ion-item class="item item-complex">
+                <a class="item-content" onclick="loadOrder('all')">
+                    <span class="b ion-ios-list-outline"></span>
+                    <span k="ការកម្មង់របស់ខ្ញុំ">My Orders</span>
+                    <span class="bb">View All</span>
+                </a>
             </ion-item>
-            <ion-item href="#tab/my_order">
-                <span k="ការកម្មង់រង់ចាំការបង់ប្រាក់">Orders Awaiting Payment</span>
-                <span class="bc">3</span>
-                <span class="fa fa-angle-right"></span>
+            <ion-item class="item item-complex">
+                <a class="item-content" onclick="loadOrder('paid')">
+                    <span k="ការកម្មង់រង់ចាំការបង់ប្រាក់">Orders Awaiting Payment</span>
+                    <span class="bc">3</span>
+                    <span class="fa fa-angle-right"></span>
+                </a>
             </ion-item>
-            <ion-item href="#tab/my_order">
-                <span k="ផលិតផលរង់ចាំការវាយតម្លៃ">Products Awaiting Review</span>
-                <span class="bc">1</span>
-                <span class="fa fa-angle-right"></span>
+            <ion-item class="item item-complex">
+                <a class="item-content" onclick="loadOrder('reviewed')">
+                    <span k="ផលិតផលរង់ចាំការវាយតម្លៃ">
+                    Products Awaiting Review</span>
+                    <span class="bc">1</span>
+                    <span class="fa fa-angle-right"></span>
+                </a>
             </ion-item>
         </ul>
         <div class="hr"></div>

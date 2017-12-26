@@ -7,30 +7,25 @@ function onDeviceReady() {
     pictureSource = navigator.camera.PictureSourceType;
     destinationType = navigator.camera.DestinationType;
 }
-
 function choosePhoto(id){
     upload_img_id = id;
     openActionMenu('choose_photo_action');
 }
-
-
 function onPhotoURISuccess(imageURI) {
     $('#'+upload_img_id+' img').attr('src', imageURI);
     $('#'+upload_img_id+' span').hide();
     $('#'+upload_img_id+' img').show();        
 }
-
 function takePhoto(){
-    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 20,
     destinationType: destinationType.FILE_URI});
 }
 function getPhotoFromGallery(){
-    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 20,
     destinationType: destinationType.FILE_URI,
     sourceType: pictureSource.PHOTOLIBRARY});
 }
-
-function uploadPhoto(imageURI, id) {
+function uploadPhoto(imageURI, id, opt) {
     //var imageURI = $('#'+id+' img').attr('src');
  
     var options = new FileUploadOptions();
@@ -39,7 +34,8 @@ function uploadPhoto(imageURI, id) {
     options.mimeType = "image/jpeg";
 
     options.params = {
-        id: id
+        id: id,
+        opt: opt
     }
 
     var ft = new FileTransfer();
