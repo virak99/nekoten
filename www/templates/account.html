@@ -3,17 +3,20 @@
 </div>
 <ion-view hide-nav-bar="true" class="header-view">
     <ion-content style="display:none" id="account_logined">  
+        <ion-refresher on-refresh="refresh('account')"></ion-refresher>
         <div class="gh">
             <div class="a">
-                <div class="c" id="full_name"></div>
-                <div class="d" id="phone_number"></div>
+                <span onclick="window.location.href='#tab/notification'" class="ion-ios-bell-outline"></span>
+                <span onclick="window.location.href='#tab/account_settings'" class="ion-ios-gear-outline"></span>
             </div>
             <div class="b">
-                <div class="e">
-                    <span onclick="window.location.href='#tab/notifications'" class="ion-ios-bell-outline"></span>
-                    <span onclick="window.location.href='#tab/account_settings'" class="ion-ios-gear-outline"></span>
+                <div class="c">
+                    <img id="profile_pic">
                 </div>
-                <img id="profile_pic">
+                <div class="d">
+                    <div class="e" id="full_name"></div>
+                    <div class="f" id="phone_number"></div>
+                </div>
             </div>
         </div>
         <div class="hr"></div>
@@ -89,6 +92,7 @@
             $('.gh #full_name').text(localStorage.getItem('full_name'));
             $('.gh #phone_number').text(localStorage.getItem('phone_number'));
             $('.gh #profile_pic').attr('src', URL+'users/'+localStorage.getItem('user_id')+'/profile.jpg');            
+        
         } else {
             $('#account_logined').hide();
             $('#account_not_logined').show();

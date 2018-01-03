@@ -4,6 +4,7 @@ var ad_id = $('#product_body #ad_id').val();
 /* Auto Hide Header */
 var is_header_showed = false;
 var is_add_to_cart_showed = false;
+var is_related_product_showed = false;
 
 $('#product_page_content').scroll(function(){                
     
@@ -32,29 +33,51 @@ $('#product_page_content').scroll(function(){
             $('#add_to_cart_pop_up').hide();
         }
     }
-    /*
-    if(($('#add_to_cart_panel').height() - $('#product_page_content').scrollTop()) < 0) {
-        alert(1);
-    } 
     
-    if (!is_add_to_cart_showed){
-        if(($('#add_to_cart_panel').height() - $('#product_page_content').scrollTop()) < 0) {
-            is_add_to_cart_showed = true;
-        }    
-    } else {
-        if(($('#add_to_cart_panel').height() - $('#product_page_content').scrollTop()) > 0) {
-            is_add_to_cart_showed = false;
-        }    
+    if (!is_related_product_showed){
+        if ($('#related_product_panel').offset().top < 600){
+            is_related_product_showed = true;
+            loadRelatedProducts();
+        }
     }
-    */
+   
 });
     
+function loadRelatedProducts(){       
+    /* Related Products */    
+    $.post(URL+'app/related_products.php',{size_g:size_g, ad_id:ad_id},function(data){                                
+                         
+        var arr = JSON.parse(data);   
+        var str = '';
+        for (var i = 0; i < arr.length; i++){            
+            var ad = arr[i];            
+            var ad_id = ad['ad_id'];  
+            
+            str += '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
+                str += '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
+                    str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
+                str += '</div>';
+                str += '<div class="c">';
+                    str += ad['title'];
+                str += '</div>';
+                str += '<div class="a">';
+                    str += '<span class="aa">'+ad['price']+'</span>';
+                    str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
+                str += '</div>';
+            str += '</ion-item>';
+            
+        }  
+        $('#related_products').html(str);
+                                                
+    });
+}
+
 function askQuestion(){
     var body = $('#question_body').val();
     var ad_id = $('#product_body #ad_id').val();
     
     
-    $.post(URL+'/app/ask_question.php',{body:body,ad_id:ad_id,user_id:user_id}, function(data){
+    $.post(URL+'app/ask_question.php',{body:body,ad_id:ad_id,user_id:user_id}, function(data){
         if (data.includes('success')){
             loadQuestionReviewList('question', 'panel', '');
             loadQuestionReviewList('question', 'modal', '');

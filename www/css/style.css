@@ -72,48 +72,49 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .tabs .tab-item .badge{
     background-color: #ff3366;
 }
-.gh {
-    display: inline-flex;
+.gh{
     width: 100%;
     padding: 0 20px;
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
 }
+.gh .a{
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: right;
+}
+.gh .a span{
+    text-align: center;
+    font-size: 28px;
+    margin-left: 30px;
+}
+.gh .b{
+    display: inline-flex;
+    width: 100%;
+}
+.gh .d .e{
+    font-size: 22px;
+    font-weight: bolder;
+}
+.gh .d .f{
+    color: #aaa;
+    margin-top: 10px;
+    font-size: 15px;
+}
+.gh .c img{
+    width: 60px;
+    float: left;
+}
+.gh .c{
+    margin-right: 20px;
+    margin-top: -10px;
+}
+
 #no_res{
     margin: 50px 0;
 }
 .other-products{
     margin: 10px 0;
-}
-.gh .a {
-    width: 50%;
-    margin-top: 30px;
-}
-.gh .a .c{
-    font-size: 22px;
-    font-weight: bolder;
-}
-.gh .a .d{
-    color: #aaa;
-    margin-top: 10px;
-    font-size: 13px;
-}
-.gh .e {
-    width: 100%;
-    text-align: right;
-    margin-bottom: 10px;
-}
-.gh .e span{
-    text-align: center;
-    font-size: 28px;
-    margin-left: 30px;
-}
-.gh .b {
-    width: 50%;
-}
-.gh .b img{
-    width: 50px;
-    float: right;
 }
 .header-view{
      margin-top:65px;     
@@ -158,7 +159,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     width: 165px;    
     display: inline-block;
     padding: 0;
-    margin: 5px;
+    margin: 7px;
     border-radius: 2px;
 }
 .ad-item .a{
@@ -168,6 +169,11 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     color: #ff3366;
     font-size: 16px;
     font-weight: bold;
+}
+.ad-item .c{
+    height: 22px;
+    overflow: hidden;
+    width: 100%;
 }
 .search-form{
     padding: 0 10px;
@@ -184,8 +190,16 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .item{
     background-color: transparent;
 }
-.fv{    
-    margin-bottom: 10px;
+.mz{
+    width: 100%;
+    text-align: right;
+    padding: 15px;
+}
+.mz .a{
+    padding: 8px 12px;
+    font-weight: bold;
+    border: 1px solid #ff3366;
+    color: #ff3366;
 }
 .fa-angle-right{
     float: right;
@@ -216,6 +230,10 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 15px; 
     font-size: 14px;
 }
+.sh .d{
+    font-size: 22px;
+    float: right;
+}
 .ad-item .a .ab{
     float: right;
     color: #aaa;
@@ -232,6 +250,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     border-bottom: 1px solid #eee;
     padding: 10px 0;
     width: 100%;
+}
+.pl{
+    padding:10px 15px 0 15px;
 }
 
 .p-list .a{
@@ -268,6 +289,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .uj .a{
     width: 100%;
+    position: relative;
 }
 .uj #status{
     font-weight: bold;
@@ -275,6 +297,14 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .uj .b{
     color: #aaa;
+}
+.uj .c{
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    color: #aaa;
+    padding: 20px;
+    font-size: 20px;
 }
 .my-order-panel .cart a{
     padding: 0 15px;
@@ -481,6 +511,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .wrap{
     padding: 10px 10px;
 }
+.nr{
+    padding: 10px 10px 0 10px;
+}
 .hr{
     width: 100%;
     height: 10px;
@@ -504,8 +537,6 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding: 20px 5px 0px 5px;
     text-align: center;
     width: 25%;
-    border-bottom: 1px solid #eee;
-    border-right: 1px solid #eee;
     color: #aaa;
 }
 .cate .fa{
@@ -739,7 +770,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     font-weight: bold;    
 }
 .ra {
-    padding: 10px;
+    padding: 10px 5px;
 }
 .ra .aa{
     font-weight: bold;
@@ -888,6 +919,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .home-slider img{
     width: 100%;
     height: 100%;
+}
+.home-slider{
+    padding: 0 10px;
 }
 .back .close{
     position: absolute;
@@ -1052,10 +1086,12 @@ ion-content.modal-body{
     padding: 10px;
     text-align: center;
     font-size: 16px;
-    color: #ff3366;
     background-color: white;
-    border: 1px solid #ff3366;
     margin-bottom: 20px;
+}
+.sd .b{
+    color: black;
+    border: 1px solid black;
 }
 .btn{
     width: 100%;
@@ -1611,6 +1647,9 @@ ion-nav-view{
 .qw .item-content{
     padding: 15px;
 }
+#new_arrival{
+    padding: 0 5px;
+}
 .wrap2{
     padding: 20px;
 }
@@ -1906,6 +1945,7 @@ ion-nav-view{
     width: 100%;
 }
 .nt .a{
+    font-size: 16px;
     padding: 15px;
     display: inline-flex;
     width: 100%;
@@ -1964,4 +2004,91 @@ ion-nav-view{
 }
 .cp .a .b{
     font-size: 60px;
+    position: absolute;
+    top: 90px;
+    left: 45%;
+}
+.coupon{
+    width: 100%;
+    display: inline-flex;
+    height: 120px;
+    width: 240px;
+}
+.coupon .a{
+    padding: 15px;
+    width: 80%;
+    border: 1px dashed#aaa;
+    border-radius: 10px 5px 5px 10px;
+    text-align: left;
+}
+
+.coupon .c{
+    font-size: 45px;
+    color: #ff3366;
+}
+.coupon .d{
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.coupon .e{
+    color: #aaa;
+}
+.coupon .b{
+    width: 20%;
+    background: #ff3366;
+    text-align: center;
+    border-radius: 5px 10px 10px 5px;
+}
+.coupon .f{
+    padding: 7px 0;
+    border: 1px solid #eee;
+    background: indianred;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 80%;
+    margin: 10px 10%;
+}
+.coupon .g{
+    transform: rotate(-90deg);
+    font-size: 12px;
+    color: #eee;
+    width: 53px;
+    margin-top: 25px;
+}
+.coupon .h{
+    color: #aaa;
+    font-size: 12px;
+}
+.lk{
+    padding: 15px;
+    width: 100%;
+}
+.lk .payment img{
+    margin-bottom: -9px;
+}
+.lk .payment{
+    position: relative;
+}
+.lk .b{
+    text-align: center;
+    font-size: 26px;
+    color: #ff3366;
+    padding: 10px 0;
+    background: #eee;
+    margin: 10px 0;
+}
+.lk .g{
+    padding: 10px;
+    color: #ff3366;
+    border: 1px solid #ff3366;
+    background: white;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 16px;
+}
+.lk .h{
+    font-size: 18px;
 }

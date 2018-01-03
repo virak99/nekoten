@@ -16,6 +16,7 @@ var size_g = ($(window).width()-30)/2;
 var APP_VERSION = '1.0';
 var REMIND_UPDATE_FOR_N_TIMES = '15';
 var upload_img_id = 'smallImage';
+var MAX_SEARCH_ITEM = 5;
 
 /* Check Update Available */
 $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data){
@@ -36,22 +37,25 @@ $.post(URL+'app/get_info.php', {name:'latest_version,change_log'}, function(data
     }
 });
 
-
-
-/* Load Shopping Cart Label */
-loadCart();
-
-/* Load Delivery Time */
-loadDeliveryTime(); 
+setTimeout(function(){
+    /* Load Shopping Cart Label */
+    loadCart();
+        
+    /* Load Delivery Time */
+    loadDeliveryTime(); 
+}, 1000);
    
    
 /* On Click Home Button Scroll to Top */
 setTimeout(function() {        
     $('.ion-ios-home').on('click', function(){
-        $('.ion-content').animate({
-            scrollTop: $(".ion-content").offset().top
-        }, 300);
-    })    
+        var a = window.location.href.split('/');
+        if (a[a.length-1] == 'home') {
+            $('.ion-content').animate({
+                scrollTop: $(".ion-content").offset().top
+            }, 300);
+        }
+    });    
 }, 500);
 
 
@@ -183,22 +187,28 @@ function loadStore(store_id){
     
 }
 
-function loadOrderDetail(order_id){    
+function loadOrderDetail(type, order_id){    
+    if (type == 'order_detail') {
+        window.location.href = "#tab/order_detail";
+    } else if (type == 'order_complete') {
+        openModal('order_placed_modal');
+    }
     
-    window.location.href = "#tab/order_detail";
     $.post(URL+'app/order.php', {order_id:order_id, lang:lang}, function(data){
         var a = JSON.parse(data)[0];
         
-        $('#order_detail #order_date').text(a['ordered_date']);
-        $('#order_detail #order_id').text(a['id']);
-        $('#order_id_title').text('#'+a['id']);
-        $('#order_detail #delivery_time').text(a['delivery_time']);
-        $('#order_detail #'+a['payment_method']).show();
-        $('#order_detail #subtotal').text('$ '+a['subtotal']);
-        $('#order_detail #delivery_fee').text('$ '+a['delivery_fee']);
-        $('#order_detail #total').text('$ '+a['total']);
-        $('#order_detail #item_count').text(a['item_count']);        
+        $('#'+ type + ' #order_date').text(a['ordered_date']);
+        $('#'+ type + ' #order_id').text(a['id']);
+        $('#'+ type + ' #delivery_time').text(a['delivery_time']);
+        $('#'+ type + ' #'+a['payment_method']).show();
+        $('#'+ type + ' #subtotal').text('$ '+a['subtotal']);
+        $('#'+ type + ' #delivery_fee').text('$ '+a['delivery_fee']);
+        $('#'+ type + ' #total').text('$ '+a['total']);
+        $('#'+ type + ' #item_count').text(a['item_count']);        
         
+        if (type == 'order_detail'){
+            $('#order_id_title').text('#'+a['id']);
+        }
         
         var str = '';
         for (var i = 0; i < 3; i++) {
@@ -217,15 +227,16 @@ function loadOrderDetail(order_id){
                 str += '</div>';
             str += '</div>';
         }
-        $('#status_bar').html(str);
+        $('#'+type+' #status_bar').html(str);
 
         
         var c = a['ads'];
         var str = '';
         for (j = 0; j < c.length; j++){
             var d = c[j];
-
-            var str2 = '<li class="p-list" onclick="loadProduct(\''+d['ad_id']+'\')">';                    
+            
+            
+            var str2 = '<li class="p-list" onclick="loadProduct(\''+d['ad_id']+'\')">';
                 str2 += '<div class="a">';
                     str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
                 str2 += '</div>';
@@ -243,17 +254,15 @@ function loadOrderDetail(order_id){
             str2 += '</li>';
             str += str2;
         }
-        $('#order_detail #order_items').html(str);
-        
+        $('#'+type+' #order_items').html(str);
     });
     $.post(URL+'app/shipping_info.php',{order_id:order_id}, function(data){
         var a = JSON.parse(data)[0]; 
         var str = shippingInfoItem(a);
-        $('.xv #shipping_addr').html(str);
+        $('#'+type+' .xv #shipping_addr').html(str);
         la();
     });
 }
-
 
 function getLocation(){
     
@@ -730,32 +739,34 @@ function loadOrder(opt){
                             str += '<span class="b">Order ID: </span>';
                             str += '<span>'+b['id']+'</span>';
                         str += '</div>';
+                        str += '<span class="c ion-ios-trash-outline"></span>';
                     str += '</div>';
-                    str += '<ul class="cart item-complex item"><a onclick="loadOrderDetail(\''+b['id']+'\')" class="item-content">';
-                    
-                    var c = b['ads'];
-                    for (j = 0; j < c.length; j++){
-                        var d = c[j];
-                        var str2 = '<li class="p-list">';                    
-                            str2 += '<div class="a">';
-                                str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
-                            str2 += '</div>';
-                            str2 += '<div class="b">';
-                                str2 += '<div class="c">';
-                                    str2 += d['title'];
-                                str2 += '</div>';    
-                                str2 += '<div class="ee">';
-                                    str2 += '<div class="dd">';
-                                        str2 += '<span>$ '+d['unit_price']+'</span> ';
-                                        str2 += '<span style="color:black">x '+d['quantity']+'</span>';
+                    str += '<ul class="cart item-complex item">';
+                        str += '<a onclick="loadOrderDetail(\'order_detail\', \''+b['id']+'\')" class="item-content">';
+                        
+                        var c = b['ads'];
+                        for (j = 0; j < c.length; j++){
+                            var d = c[j];
+                            var str2 = '<li class="p-list">';                    
+                                str2 += '<div class="a">';
+                                    str2 += '<img src="'+URL+'ads/'+d['ad_id']+'/1_m.jpg" style="width:100%;height:100%">';
+                                str2 += '</div>';
+                                str2 += '<div class="b">';
+                                    str2 += '<div class="c">';
+                                        str2 += d['title'];
+                                    str2 += '</div>';    
+                                    str2 += '<div class="ee">';
+                                        str2 += '<div class="dd">';
+                                            str2 += '<span>$ '+d['unit_price']+'</span> ';
+                                            str2 += '<span style="color:black">x '+d['quantity']+'</span>';
+                                        str2 += '</div>';
                                     str2 += '</div>';
                                 str2 += '</div>';
-                            str2 += '</div>';
-                        str2 += '</li>';
-                        str += str2;
-                    }
-                    
-                    str += '</a></ul>';
+                            str2 += '</li>';
+                            str += str2;
+                        }
+                        str += '</a>';
+                    str += '</ul>';
                     str += '<div class="uk">';
                         str += '<div class="a">';                        
                             str += '<span class="b">';
@@ -775,6 +786,9 @@ function loadOrder(opt){
                         str += '</div>';                                                                    
                     str += '</div>';
                 str += '</div>';
+                str += '<div class="mz">';
+                    str += '<span onclick="openModal(\'submit_review_modal\'); prepareReviewModal(\'\')" class="a" k="វាយតម្លៃផលិតផល">Write a Review</span>';
+                str += '</div>';
                 str += '<div class="hr"></div>';
             }
             $('#order_'+opt+'_form #order_result').html(str);
@@ -785,6 +799,12 @@ function loadOrder(opt){
 }
 
 
+function prepareReviewModal(ad_id, ad_title){
+    $('.wr #rv_title').html(ad_title); // Submit Review
+    $('.wr #rv_img').attr('src', URL+'ads/'+ad_id+'/1_m.jpg');
+    $('.wr #rv_ad_id').val(ad_id);
+}
+
 function loadProduct(ad_id){  
     openModal('product_modal');    
     //$('.product_page').html('');    
@@ -792,9 +812,39 @@ function loadProduct(ad_id){
     $.post(URL+'app/product.php',{ad_id:ad_id, lang:lang},function(data){
         var ad = JSON.parse(data)[0];
         $('#title').html(ad['title']);
-        $('.wr #rv_title').html(ad['title']); // Submit Review
-        $('.wr #rv_img').attr('src', URL+'ads/'+ad_id+'/1_m.jpg');
+        
+        /* Review Modal */
+        prepareReviewModal(ad_id, ad['title']);
+        
         var img = ad['image'].split(',');
+        
+        
+        /* Ad Image */
+        //$('.ad_image').trigger('destroy.owl.carousel');
+        $('#ad_photos').val('');
+        
+        
+        var str = '';
+        var str2 = '';
+        for (var i = 0; i < img.length; i++){            
+            var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
+            str += '<img class="owl-lazy" style="width:100%; height:100%" id="ad-img-'+(i+1)+'" data-src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';            
+            str2 += '<img src="'+img_URL+'">';
+        }
+        $('#ad_photos').val(str2); // For Description Details
+        
+        $('.ad_image').html(str);  
+        $('#no_ad_image').hide();
+        $('.ad_image').owlCarousel({
+            responsive:{
+                0:{
+                    items:1
+                }
+            },
+            lazyLoad: true
+        });
+        
+        
         
         /* Check Wishlist */
         var wishlist = localStorage.getItem('wishlist');
@@ -824,6 +874,8 @@ function loadProduct(ad_id){
         $('.ii #n_order').html(ad['n_order']);
         $('.pd #desc').html(ad['description']);
         
+        /* Show Product Body */
+        $('#product_body').show();
         
         var src = URL+'stores/'+ad['store_id']+'/profile.jpg';
         $('#store_info #store_img').attr('src', src);
@@ -838,61 +890,14 @@ function loadProduct(ad_id){
             loadStore(ad['store_id']);
         })
         
+        
         /* Update product view */
         if (user_id != 'not_login')
             $.post(URL+'app/update_view.php',{ad_id:ad_id, user_id:user_id});
         
         
         
-        /* Ad Image */
-        $('.ad_image').trigger('destroy.owl.carousel');
-        $('#ad_photos').text('');
-        
-        var str = '';
-        var str2 = '';
-        for (var i = 0; i < img.length; i++){            
-            var img_URL = URL+'ads/'+ad['ad_id']+'/'+img[i];
-            str += '<img class="owl-lazy" style="width:100%; height:100%" id="ad-img-'+(i+1)+'" data-src="'+img_URL+'" onclick="viewFullScreen('+img.length+')">';            
-            str2 += '<img src="'+img_URL+'">';
-        }
-        $('#ad_photos').text(str2); // For Description Details
-        
-        $('.ad_image').html(str);      
-        $('.ad_image').owlCarousel({
-            responsive:{
-                0:{
-                    items:1
-                }
-            },
-            lazyLoad: true
-        });
-                             
-        /* Related Products */    
-        $.post(URL+'app/related_products.php',{size_g:size_g, ad_id:ad_id},function(data){                                
-                             
-            var arr = JSON.parse(data);   
-            var str = '';
-            for (var i = 0; i < arr.length; i++){            
-                var ad = arr[i];            
-                var ad_id = ad['ad_id'];  
-                
-                str += '<ion-item onclick="loadProduct(\''+ad_id+'\');" class="ad-item">';
-                    str += '<div class="b" style="width:'+size_g+'px;height:'+size_g+'px">';
-                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
-                    str += '</div>';
-                    str += '<div class="a">';
-                        str += '<span class="aa">'+ad['price']+'</span>';
-                        str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
-                    str += '</div>';
-                str += '</ion-item>';
-                
-            }  
-            $('#related_products').html(str);
-                                                    
-        });
-
-        //$('#product_body').show();
-        $('.ad_images').show();
+            
     }).error(function(){
         connectionError();
     });
@@ -919,15 +924,8 @@ function scrollToTop(delay){
 }
 
 function gotoCart(){
-    $('#loaded_ad_id').val(''); 
-    closeModal('product_modal'); 
-    
+    goBackProduct('cart');
     window.location.href='#tab/cart';
-    /* Fix Pop Up Keyboard */
-    setTimeout(function() {        
-        $('.search-bar .search').prop('disabled', false);       
-    }, 500);
-    
 }
 
 function closeStore(){
@@ -938,19 +936,32 @@ function closeStore(){
     }, 500);
 }
 
-function goBackProduct(){    
+function goBackProduct(destination){    
+    var no_product_modal_opened = true;
     var a = $('#loaded_ad_id').val();    
     var b = a.split(',');
     var ad_id = $('#ad_id').val();
     
-    if (b.length == 2){                    
+    if (destination != 'cart' && b.length > 2) no_product_modal_opened = false;
+    
+    
+    if (no_product_modal_opened){                    
         $('#loaded_ad_id').val('');
         closeModal('product_modal'); 
         
+        /* Remove has-header class */
+        is_header_showed = false;
+        $('#product_page_header').removeClass('has-header');  
+        
         /* Fix Pop Up Keyboard */
         setTimeout(function() {        
-            $('.search-bar .search').prop('disabled', false);       
-        }, 500);
+            $('.search-bar .search').prop('disabled', false);    
+            
+            $('#product_body').hide();
+            
+            $('.ad_image').trigger('destroy.owl.carousel');
+            $('#no_ad_image').show();
+            }, 500);
     } else {        
         var c = '';
         for (var i = 1; i < (b.length-2); i++){
@@ -1218,7 +1229,7 @@ function loadQuestionReviewList(type, opt, AD_ID){
 function loadDescription(){
     $('#description #title').html($('#product_body #title').html());
     $('#description #desc').html($('.pd #desc').html());
-    $('#description #photo').html($('#ad_photos').text());
+    $('#description #photo').html($('#ad_photos').val());
     openModal('description_modal');
     /* Scroll to Top */
     $('#description').animate({
@@ -1288,7 +1299,7 @@ function addSearchHistory(keyword){
         c = ','+keyword;
         b = a.split(',');        
         var d = b.length;
-        if (d > 9) d = 9;
+        if (d > MAX_SEARCH_ITEM) d = MAX_SEARCH_ITEM;
         for (var i = 1; i < d; i++){
             if (b[i] != keyword) c += ',' + b[i];
         }
@@ -1304,8 +1315,6 @@ function search(keyword){
     cancelClick();
     searchProduct(keyword, 'best_match');
     addSearchHistory(keyword);
-    window.location.href = '#tab/search';
-    window.location.href = '#tab/search_res';
 }
 
 
@@ -1334,7 +1343,7 @@ function searchKeyword(tab){
 
 
 function submitReview(){
-    var ad_id = $('#product_body #ad_id').val();
+    var ad_id = $('.wr #rv_ad_id').val();
     var review = $('.wt #review_text').val();
     var rate = $('.wt #review_rate').val();
     var has_image = 0;
@@ -1351,7 +1360,7 @@ function submitReview(){
             /* Upload Photos */
             for (var i = 1; i <= 4; i++){
                 if ($('#rv_'+i+' img').attr('src') != null){
-                    uploadPhoto($('#rv_'+i+' img').attr('src'), a['id'], 'review');
+                    uploadReviewPhoto($('#rv_'+i+' img').attr('src'), a['id']);
                 }
             }
             
@@ -1373,15 +1382,14 @@ function submitSearchForm(tab){
         searchProduct(keyword, 'best_match');            
         addSearchHistory(keyword);    
         cancelClick();
-        window.location.href = '#tab/search';  
-        window.location.href = '#tab/search_res'; 
         
     }
 }
 
 function searchProduct(keyword, opt) {
     
-    
+    window.location.href = '#tab/search';  
+    window.location.href = '#tab/search_res'; 
     $('#search_res_item').html('');
     
     

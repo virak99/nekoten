@@ -17,7 +17,7 @@
                 <span class="fa fa-angle-right"></span>
             </a>
         </div>
-        <div class="sh">
+        <div class="sh" id="search_history" style="display:none">
             <div class="a">
                 <span k="ដានស្វែងរក">SEARCH HISTORY</span>
                 <span class="c" k="លុប" ontap="clearSearchHistory()">CLEAR</span>
@@ -25,7 +25,15 @@
             <ul class="b">
                 
             </ul>
-            
+        </div>
+        
+        <div class="sh" id="popular_search">
+            <div class="a">
+                <span k="ពាក្យស្វែងរកពេញនិយម">POPULAR SEARCH</span>
+            </div>
+            <ul class="b">
+                
+            </ul>
         </div>
     </ion-content>
 </ion-view>
@@ -33,20 +41,41 @@
     
     //localStorage.setItem('search_history', ',Phone,Watch,a,b,c,d');
     loadSearchHistory();
+    
+    /* Popular Search */
+    $.post(URL+'app/popular_search.php', {}, function(data){
+        var a = JSON.parse(data).split(',');
+        var str = '';
+        for (var i = 0; i < a.length; i++){       
+            str += '<ion-item class="item item-complex" onclick="addSearchHistory(\''+a[i]+'\'); searchProduct(\''+a[i]+'\', \'best_match\');">';
+            str += '<a class="item-content" href="#tab/search_res">';
+            str += a[i];
+            str += '<span class="d ion-ios-undo-outline"></span>';
+            str += '</a></ion_item>';
+        }
+            $('#popular_search .b').html(str);
+    });
+    
+    
     function loadSearchHistory(){        
-        $('.sh .b').html('');
         search_history = localStorage.getItem('search_history');
         if (search_history != null){
             var a = search_history.split(',');
-            if (a.length > 0) $('.sh .c').show();
+            if (a.length > 0) {
+                $('.sh .c').show();
+            } else {
+                $('.sh .c').hide();
+            }
+            var str = '';
             for (var i = 1; i < a.length; i++){       
-                var str = '<ion-item class="item item-complex" onclick="addSearchHistory(\''+a[i]+'\'); searchProduct(\''+a[i]+'\', \'best_match\');">';
+                str += '<ion-item class="item item-complex" onclick="addSearchHistory(\''+a[i]+'\'); searchProduct(\''+a[i]+'\', \'best_match\');">';
                 str += '<a class="item-content" href="#tab/search_res">';
                 str += a[i];
+                str += '<span class="d ion-ios-undo-outline"></span>';
                 str += '</a></ion_item>';
                 
-                $('.sh .b').append(str);
             }
+            $('#search_history .b').html(str);
         }
     }
     
@@ -55,8 +84,8 @@
         alertConfirm('Clear Search History?', 'លុបដានស្វែងរក?');            
         $('#alert_confirm .confirm').on('click', function(){                      
             localStorage.removeItem('search_history');   
-            $('.sh .b').html('');
-            $('.sh .c').hide();
+            $('#search_history .b').html('');
+            $('#search_history .c').hide();
         });     
     }
     la();

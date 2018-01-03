@@ -1,22 +1,5 @@
 angular.module('starter.controllers', [])
 
-
-.controller('ScrollCtrl', function($scope, $ionicScrollDelegate, Chats) {
-    /*
-  $scope.data = {
-    title : ""
-  };
-  $scope.chats = Chats.all();
-  $scope.onComplete = function() {    
-    var scrollTop = $ionicScrollDelegate.getScrollPosition().top;        
-    if (($(window).height() - scrollTop) < 300){
-        loadMore();
-    }        
-    
-  };
-  */
-})
-
 .controller('TabCtrl', function($scope){
     if (localStorage.getItem('language') == 'kh'){
         $scope.home = 'ទំព័រដើម';
@@ -33,16 +16,11 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('NavCtrl', function($scope, $location, $ionicHistory, $state, Chats){
-        $scope.chats = Chats.all();
-
+.controller('NavCtrl', function($scope, $location, $ionicHistory){
+       
         $scope.myGoBack = function() {
-           $backView = $ionicHistory.backView();
-           if ($backView != null){
-               $backView.go();
-           } else {
-               $location.path('tab.home');
-           }
+            $backView = $ionicHistory.backView();
+            $backView.go();
         };
         $scope.go = function ( path ) {
 	       $location.path( path );
@@ -71,6 +49,8 @@ angular.module('starter.controllers', [])
                 loadOrder('reviewed');
             } else if (page == 'order_paid'){
                 loadOrder('paid');
+            } else if (page == 'account'){
+                loadMyAccount();
             } else if (page == 'notification'){
                 loadNotification();
             }

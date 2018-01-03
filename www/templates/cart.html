@@ -1,11 +1,12 @@
 
+
 <div id="order_placed_modal" class="modal">
     <div class="header-title">
         <span class="ion-checkmark-circled"></span>
         <span k="បញ្ជាកម្មង់ទិញរួចរាល់">Order Complete </span>        
     </div>
-    <div class="modal-body">
-        <div class="sk" id="order_complete">
+    <div class="modal-body ion-content" id="order_complete">
+        <div class="sk">
             <div class="a">
                 <img src="img/nekoten.png">
             </div>
@@ -20,12 +21,92 @@
             </div>
         </div>   
         <div class="hr"></div>
+        
+        <div class="uj">
+            <div class="a">
+                <span class="b" k="ស្ថានភាព: ">Status: </span>
+                <span id="status">Product Delivered</span>
+            </div>
+            <div class="a">
+                <span class="b" k="កាលបរិច្ឆេទ: ">Order Date: </span>
+                <span id="order_date"></span>
+            </div>
+            <div class="a">
+                <span class="b">Order ID: </span>
+                <span id="order_id"></span>
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="yl" id="status_bar">
+            
+        </div>
+    
+        <div class="hr"></div>
+        <div class="xv">
+            <div class="a" k="អាស័យដ្ឋានដឹកជញ្ជូន">
+                Shipping Address
+            </div>
+            <div id="shipping_addr">
+            
+            </div>
+        </div>
+        <div class="hr"></div>
+        <div class="uy">
+            <div class="a">
+                <div class="b" k="ម៉ោងដឹកជញ្ជូន">Delivery Time</div>
+                <div class="c">
+                    <span k="ទទួលទំនិញ">Receive Product</span>                        
+                    <strong id="delivery_time"></strong>    
+                </div>
+            </div>
+            <div class="a">
+                <div class="b" k="របៀបបង់ប្រាក់">Payment Method</div>
+                <div class="c" id="payment_method">
+                    <span style="display:none" id="cash_on_delivery" k="បង់ប្រាក់ពេលទទួលទំនិញ">Cash on Delivery</span>
+                    <div style="display:none" class="payment" id="transfer_money">
+                        <span k="ផ្ញើរប្រាក់តាម">Transfer money via</span>
+                        <img class="d" src="img/wing.jpg"/>
+                        <img class="e" src="img/true_money.jpg">
+                        <img class="f" src="img/emoney.jpg">
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="hr"></div>
+        <ul class="cart pl" id="order_items">
+            
+        </ul>
+        <div class="hr"></div>
+        <div class="uk">
+            <div class="aa" k="តម្លៃសរុប">
+                Order Summary  
+            </div>
+            <div class="a">                        
+                <span class="b">
+                    <span k="សរុបទំនិញ">Subtotal</span> (<span id="item_count">0 </span> <span k="មុខ">item</span>)
+                </span>
+                <span class="c" id="subtotal"></span>                                                        
+            </div>
+            <div class="a">                        
+                <span class="b" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee</span>                                                        
+                <span class="c" id="delivery_fee"></span>                                                        
+            </div>                                                                    
+            <div class="a">                        
+                <span class="b" k="សរុប">Total</span>
+                <span style="font-size:large; color: #ff3366" class="d" id="total"></span>
+            </div>
+        </div>   
         <div class="sd">
-            <button id="go_to_my_order" k="ការកម្មង់របស់ខ្ញុំ">My Order</button>
+            <button class="a" id="go_to_my_order">
+                <span k="ការកម្មង់របស់ខ្ញុំ">My Order</span>
+            </button>
+            <button class="b" onclick="closeModal('order_placed_modal'); window.location.href='#tab/home'">
+                <span k="ទំព័រដើម">Nekoten Home</span>
+            </button>
         </div>
     </div>
 </div>
-
 
 
 
@@ -102,14 +183,17 @@
     
     /* Order has been placed */
     function orderPlaced(order_id){
-        openModal('order_placed_modal');    
+        
+        loadOrderDetail('order_complete', order_id);
         
         $('#go_to_my_order').on('click', function(){
             closeModal('order_placed_modal'); 
             window.location.href='#tab/account'; 
             window.location.href='#tab/my_order';
+            /*
             window.location.href='#tab/order_detail'; 
             loadOrderDetail(order_id);
+            */
         });
         
     }

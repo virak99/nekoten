@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'home': {
         templateUrl: 'templates/home.html',
-        controller: 'ScrollCtrl'
+        controller: 'NavCtrl'
       }
     }
   })
@@ -66,11 +66,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
-  .state('tab.notifications', {
-    url: '/notifications',
+  .state('tab.notification', {
+    url: '/notification',
     views: {
       'account': {
-        templateUrl: 'templates/notifications.html',
+        templateUrl: 'templates/notification.html',
         controller: 'NavCtrl'
       }
     }

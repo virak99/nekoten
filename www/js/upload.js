@@ -25,9 +25,27 @@ function getPhotoFromGallery(){
     destinationType: destinationType.FILE_URI,
     sourceType: pictureSource.PHOTOLIBRARY});
 }
-function uploadPhoto(imageURI, id, opt) {
-    //var imageURI = $('#'+id+' img').attr('src');
- 
+
+function changeProfilePic(){
+    if ($('#cpp img').attr('src') != null){
+        var imageURI = $('#cpp img').attr('src');
+        var options = new FileUploadOptions();
+        options.fileKey = "file";
+        options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
+        options.mimeType = "image/jpeg";
+    
+        options.params = {
+            id: user_id,
+            opt: 'profile'
+        }
+    
+        var ft = new FileTransfer();
+        ft.upload(imageURI, encodeURI("http://nekoten.sangskrit.com/app/upload.php"), win, fail, options);
+
+    }
+}
+
+function uploadReviewPhoto(imageURI, id) {
     var options = new FileUploadOptions();
     options.fileKey = "file";
     options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
@@ -35,7 +53,7 @@ function uploadPhoto(imageURI, id, opt) {
 
     options.params = {
         id: id,
-        opt: opt
+        opt: 'review'
     }
 
     var ft = new FileTransfer();

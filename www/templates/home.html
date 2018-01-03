@@ -8,18 +8,31 @@
         
     </ul>
 </div>
+
 <ion-view hide-nav-bar="true" class="header-view">
     <div class="ion-content" id="home" on-scroll-complete="onComplete()">
         <span id="data" style="display:none"></span>
         <span id="start" style="display:none">0</span>
         <span id="all" style="display:none">0</span>
-        
+    
         <div class="home"> 
-            
-        
         
             
             
+            <center>
+                <div class="coupon">
+                    <div class="a">
+                        <div class="c">30%</div>
+                        <div class="d">Discount</div>
+                        <div class="e">ON PURCHASE $50 +</div>
+                        <div class="h">Valid till 18/01</div>
+                    </div>
+                    <div class="b">
+                        <div class="f">N</div>
+                        <div class="g">COUPON</div>
+                    </div>
+                </div>
+            </center>
             <div class="home-slider owl-carousel owl-theme">
                 
             </div>
@@ -89,15 +102,16 @@
                 </div>
             </div>
             <div class="hr"></div>
-            <div class="wrap">
+            <div class="nr">
                 <div class="new-arrival">
                     <h3 k="ទំនិញមកដល់ថ្មី">New Arrival</h3>
                 </div>                
-                <ul id="new_arrival">
-                    
-                <ul>
                 
             </div>
+            <ul id="new_arrival">
+                
+            <ul>
+            
         </div>
         <div id="loading_more">
             <ion-spinner icon="ios"></ion-spinner>
@@ -110,9 +124,7 @@
 
 
 <script> 
-    //loadProduct('np5t');
-    //openModal('sign_in_modal');
-    
+ 
     $('#home').scroll(function() {
         var start = parseInt($('#start').html(), 10);
         var all = parseInt($('#all').html(), 10);
@@ -122,7 +134,6 @@
     });
     
 
-    
     var size = $(window).width();        
     $.post(URL+'app/new_arrival.php',{size:size},function(data){
         $('#data').text(data);  
@@ -156,13 +167,16 @@
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
                         str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
+                    str += '<div class="c">';
+                        str += ad['title'];
+                    str += '</div>';
                     str += '<div class="a">';
                         str += '<span class="aa">'+ad['price']+'</span>';
                         str += '<span class="ab"><span>'+ad['n_order']+'</span> <span k="កម្មង់">order</span></span>';
                     str += '</div>';
                 str += '</li>';
             }  
-            $('#new_arrival').html(str);
+            $('#new_arrival').append(str);
             la();                           
             $('#start').text(end);
         }
@@ -178,7 +192,7 @@
         var str = '';
         for (var i = 0; i < 4; i++){
             var c = cate[i];            
-            str += '<li onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\'); window.location.href = \'#tab/search_res\';">';
+            str += '<li onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\');">';
                 str += '<div>';
                     str += '<span class="fa '+c['fa']+'"></span>';
                 str += '</div>';
@@ -194,7 +208,7 @@
             if (c['main_id'] == 0) {
                 str += '<li onclick="window.location.href=\'#tab/all_categories\'">';
             } else {
-                str += '<li onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\'); window.location.href = \'#tab/search_res\';">';
+                str += '<li onclick="searchProduct(\'category:'+c['main_id']+'\', \'best_match\');">';
             }
                 str += '<div>';
                     str += '<span class="fa '+c['fa']+'"></span>';
