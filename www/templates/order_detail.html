@@ -20,8 +20,22 @@
                 <span id="order_date"></span>
             </div>
             <div class="a">
-                <span class="b">Order ID: </span>
+                <span class="b" k="លេខកូដ: ">Order ID: </span>
                 <span id="order_id"></span>
+            </div>        
+            <div class="a">
+                <span class="b" k="តម្លៃសរុប: ">Total: </span>
+                <span style="color:#ff3366" id="order_total_price"></span>
+            </div>      
+        </div>
+        <div class="hr"></div>        
+        <div class="fg">
+            <div class="a">
+                <span class="aa" k="ស្ថានភាព: ">Status: </span>    
+                <span class="ab" k="មិនទាន់បង់ប្រាក់នៅឡើយ">Not paid yet</span>
+            </div>
+            <div class="b">            
+                <button class="btn" onclick="window.location.href='#tab/transfer_money'">Trasnfer Money</button>
             </div>
         </div>
         <div class="hr"></div>
@@ -29,26 +43,7 @@
             
         </div>
         <div class="hr"></div>
-        <div class="lk">
-            <div class="a" k="សូមផ្ញើរប្រាក់មកកាន់">
-                Please transfer money to
-            </div>
-            <div class="b">
-                011 23 34 49
-            </div>
-            <div class="c payment">
-                <span>via</span>
-                <img class="d" src="img/wing.jpg"/>
-                <img class="e" src="img/true_money.jpg">
-                <img class="f" src="img/emoney.jpg">
-           
-            </div>
-            <button class="g">
-                <span class="h ion-ios-camera-outline"></span>
-                <span k="ផ្ញើររូបភាពវិក័យប័ត្រផ្ញើរប្រាក់">Send photo of receipt</span>
-            </button>
-        </div>
-        <div class="hr"></div>
+        
         <div class="xv">
             <div class="a" k="អាស័យដ្ឋានដឹកជញ្ជូន">
                 Shipping Address
@@ -91,7 +86,7 @@
             </div>
             <div class="a">                        
                 <span class="b">
-                    <span k="សរុបទំនិញ">Subtotal</span> (<span id="item_count">0 </span> <span k="មុខ">item</span>)
+                    <span k="សរុបទំនិញ">Subtotal</span> (<span if="item_count">0 </span> <span k="មុខ">item</span>)
                 </span>
                 <span class="c" id="subtotal"></span>                                                        
             </div>

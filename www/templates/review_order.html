@@ -1,3 +1,15 @@
+<div class="sm-modal" id="message_to_seller_modal">
+    <div class="shadow"></div>
+    <div class="header-title" k="សារទៅកាន់អ្នកលក់">Message to Seller</div>
+    <div class="back" onclick="closeModal('message_to_seller_modal')">
+        <span class="close ion-ios-close-empty"></span>
+    </div>                        
+    <ion-content class="ev sm-modal-body" style="padding:20px 10px">        
+        <textarea id="msg_seller_text" class="a" k="សរសេរសារនៅទីនេះ ..." placeholder="Write your message here ..." rows="8"></textarea>        
+        <button class="btn" k="រក្សាទុក" onclick="saveMessage()">Save</button>       
+    </ion-content>
+</div>
+
 <div class="app-header">
     <div class="header-title" k="បញ្ជាក់ការកម្មង់">Review Order</div>
     <div class="back" ng-click="myGoBack();">
@@ -107,9 +119,9 @@
             </ul>
         </div>  
         <div class="hr"></div>
-        <div class="tp input-form">
-            <input id="msg_seller" placeholder="Message to the seller (Optional)" k="សារសំរាប់អ្នកលក់ (បើមាន)">
-            <span class="input-close ion-ios-close-outline"></span>
+        <div class="ts" onclick="openSmallModal('message_to_seller_modal')">               
+            <span class="a" k="សារសំរាប់អ្នកលក់ (បើមាន)">Message to the seller (Optional)</span>
+            <div id="msg_seller"></div>            
         </div>
         <div class="hr"></div>             
         <div class="tp">
@@ -167,8 +179,7 @@
 </ion-view>
 <script>
 
-    loadDefaultShippingInfo();
-    loadCart();
+    loadDefaultShippingInfo();    
     updateAvailablePaymentMethod();
     loadDeliveryTime();
     la();         
@@ -229,7 +240,7 @@
         var total = $('#order .total').text().substring(2);
         var ordered_by = localStorage.getItem('user_id');
         var location = localStorage.getItem('delivery_to').split(',')[0];
-        var message = $('#order #msg_seller').val();
+        var message = $('#order #msg_seller').text();
         var shipping_addr_id = $('.eq #shipping_addr_id').val();  
         var payment_method = $('#order #payment_method').attr('value');
         var delivery_time = $('#order #delivery_time').attr('value');
@@ -237,7 +248,7 @@
         if (shipping_addr_id == '') {
             addNewAddress(1);
         } else {
-            alertConfirm('Place this order?', 'បញ្ជាកម្ម់ងទំនិញ?');
+            alertConfirm('Place this order?', 'បញ្ជាកម្មង់ទំនិញ?');
             $('#alert_confirm .confirm').on('click', function(){
                 $('.cart-footer #place_order span').hide();
                 $('.cart-footer #place_order ion-spinner').show();
@@ -327,8 +338,15 @@
         $('#order #delivery_type').attr('value', $('#delivery_time_modal #schedule_delivery_type').attr('value'));
         $('.et #delivery_time').attr('value', $('.yo #choose_day_ul [class="selected"]').attr('value')+','+$('.yo #choose_time_ul [class="selected"]').attr('value'));
     }
-    
-    
+
+    function saveMessage(){
+        var msg = $('#msg_seller_text').val();        
+        if (msg != '') {            
+            $('#msg_seller').html(msg);
+            $('.ts .a').hide();
+            closeModal('message_to_seller_modal');    
+        }        
+    }
 
    
 </script>

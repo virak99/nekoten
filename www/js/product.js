@@ -73,9 +73,9 @@ function loadRelatedProducts(){
 }
 
 function askQuestion(){
+
     var body = $('#question_body').val();
     var ad_id = $('#product_body #ad_id').val();
-    
     
     $.post(URL+'app/ask_question.php',{body:body,ad_id:ad_id,user_id:user_id}, function(data){
         if (data.includes('success')){
@@ -86,20 +86,30 @@ function askQuestion(){
                 closeModal('question_modal');
             });                
         }
-    });
+    }); 
+}
     
+function replyQuestion(){
     
+    var reply = $('#question_item_body').val();
+    var question_id = $('#question_item_id').val();
+    
+    $.post(URL+'app/reply_question.php',{reply:reply,question_id:question_id,user_id:user_id}, function(data){
+        if (data.includes('success')){
+            $('#question_item_body').val('');
+            loadQuestionReviewList('question', 'question_item', question_id);        
+        }
+    }); 
 }
     
     
-    
-function wishlist(){
+function addToWishlist(){
     if (user_id == 'not_login'){
         openModal('sign_in_modal');
     } else {
         var ad_id = $('#product_body #ad_id').val();
         
-        $.post(URL+'ajax/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
+        $.post(URL+'module/add_to_wishlist.php', {ad_id:ad_id, user_id:user_id},function(data){
             
             if (data.includes('existed')){
                 $('.wishlist-btn').removeClass('added');                

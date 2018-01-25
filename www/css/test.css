@@ -1,0 +1,17 @@
+<?php
+include '../connect.php';
+
+$user_id = $_POST['user_id'];
+
+$sql = "SELECT id, price FROM orders WHERE ordered_by = '$user_id' ORDER BY id DESC LIMIT 1";
+
+$a = mysqli_fetch_assoc(mysqli_query($conn, $sql));
+
+$b = array();
+$b['order_id'] = $a['id'];
+$b['status'] = 'Complete';
+$b['total_price'] = explode(':', $a['price'])[2];
+
+echo json_encode($b);
+
+?>

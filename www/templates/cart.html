@@ -1,5 +1,3 @@
-
-
 <div id="order_placed_modal" class="modal">
     <div class="header-title">
         <span class="ion-checkmark-circled"></span>
@@ -99,7 +97,7 @@
         </div>   
         <div class="sd">
             <button class="a" id="go_to_my_order">
-                <span k="ការកម្មង់របស់ខ្ញុំ">My Order</span>
+                <span k="ការកម្មង់របស់ខ្ញុំ">My Orders</span>
             </button>
             <button class="b" onclick="closeModal('order_placed_modal'); window.location.href='#tab/home'">
                 <span k="ទំព័រដើម">Nekoten Home</span>
@@ -119,8 +117,8 @@
         <ion-refresher on-refresh="refresh('cart')"></ion-refresher>
         <div class="wrap">
             <center class="em" id="no_item_in_cart">
-                <span class="a ion-bag"></span>                
-                <div class="b" k="គ្មានទំនិញក្នុងកន្ត្រក">Your Shopping Cart is Empty</div>        
+                <span class="za ion-android-cart"></span>                
+                <div class="zb" k="គ្មានទំនិញក្នុងកន្ត្រក">Your Shopping Cart is Empty</div>        
             </center>
             <ul class="cart" id="cart-cart">
                 
@@ -162,15 +160,7 @@
 </ion-view>
 
 <script>
-    
-    
-    //$('.cart-footer .d').click();
-    //localStorage.removeItem('shopping_cart');
-    //localStorage.setItem('shopping_cart', ',v6l8:0:3');
-    //alert(localStorage.getItem('shopping_cart'));
-
-        
-    la();
+            
     loadCart();
     
     function buy(){

@@ -20,6 +20,19 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     text-align: center;
     padding: 20px 0 40px 0;
 }
+.fg{
+    padding: 15px;
+}
+.fg .a .aa{
+    color: #aaa;
+}
+.fg .a .ab{
+    color: red;
+    font-size: large;
+}
+.fg .b{
+    margin-top: 10px;
+}
 .pw .a{
     text-align: center;
     margin-bottom: 40px;
@@ -49,10 +62,10 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     padding-top: 30%; 
     color: #bbb;
 }
-.em .a{
+.em .za{
     font-size: 100px;
 }
-.em .b{
+.em .zb{
     margin-top: 10px;
 }
 .iframe{
@@ -277,7 +290,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .p-list .g {
     width: 40%;
     text-align: right;
-    color: #333;
+    color: #aaa;
 }
 .p-list .c {
     height: 64px;
@@ -286,6 +299,7 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .uj{
     width: 100%;
     padding: 10px 15px 5px 15px;
+    position: relative;
 }
 .uj .a{
     width: 100%;
@@ -300,8 +314,8 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 }
 .uj .c{
     position: absolute;
-    right: -10px;
-    top: -10px;
+    right: -5px;
+    top: -5px;
     color: #aaa;
     padding: 20px;
     font-size: 20px;
@@ -635,6 +649,9 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
 .qs {    
     width: 100%;
 }
+.hi .ta{
+    border-bottom: none !important;
+}
 .qs .ta{
     width: 100%;
     display: inline-flex;
@@ -642,7 +659,8 @@ ion-tabs.tabs-color-active-positive .tab-item.tab-item-active{
     border-bottom: 1px solid #eee;
 }
 .qs .tb{
-    width: 80px;
+    width: 100px;
+    height: 100%;
 }
 .qs .tb img{
     width: 100%;
@@ -1090,8 +1108,8 @@ ion-content.modal-body{
     margin-bottom: 20px;
 }
 .sd .b{
-    color: black;
-    border: 1px solid black;
+    color: #ff3366;    
+    border: 1px solid #ff3366;
 }
 .btn{
     width: 100%;
@@ -1474,14 +1492,25 @@ ion-nav-view{
     font-size: 16px;
     color: #ff3366;
 }
-
-.tp input{
+.ev .a{
+    outline: 1px solid #eee;
+    padding: 10px;
+    width: 100%;
+}
+.ev .btn{
+    margin-top: 10px;
+}
+.ts{
     width: 100%;
     padding: 10px 15px;
     border: none;
     height: 40px;
+    display: inline-table;
     border-bottom: 1px solid #eee;
     border-radius: initial;
+}
+.ts .a{
+    color: #aaa;
 }
 .uy .a{
     padding: 10px 15px;
@@ -1510,6 +1539,7 @@ ion-nav-view{
 }
 .et .a .c{
     font-size: 14px;
+    color: #aaa;
     color: limegreen;
 }
 .et .a .cc{
@@ -1687,7 +1717,7 @@ ion-nav-view{
 }
 
 .ad_images{
-    position: relative;    
+    position: relative;
 }
 .ad_images .close{
     display: none;
@@ -1992,7 +2022,7 @@ ion-nav-view{
 .cp .a{
     margin: 40px 20%;
     width: 60%;
-    height: 260px;
+    height: 200px;
     text-align: center;
     border: 1px dashed #aaa;
 }
@@ -2005,14 +2035,34 @@ ion-nav-view{
 .cp .a .b{
     font-size: 60px;
     position: absolute;
-    top: 90px;
-    left: 45%;
+    top: 60px;
+    left: 42%;
 }
+.of{    
+    padding: 10px;    
+}
+.of .c{
+    border: 1px solid #ff3366;        
+    padding: 10px;
+    display: inline-flex;
+    width: 100%;
+}
+.of .a{
+    font-size: 4.5em;
+    width: 15%;
+    color: #aaa;
+}
+.of .b{
+    width: 85%;    
+    padding-left: 10px;
+}
+
+
 .coupon{
     width: 100%;
     display: inline-flex;
     height: 120px;
-    width: 240px;
+    width: 240px;    
 }
 .coupon .a{
     padding: 15px;

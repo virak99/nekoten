@@ -1,0 +1,25 @@
+<div class="app-header">
+    <div class="header-title">
+        <span k="សំនួរ">Question</span> 
+    </div>
+    <div class="back" ng-click="myGoBack()">
+        <span class="ion-ios-arrow-left"></span>
+    </div>
+</div>
+<ion-view hide-nav-bar="true" class="header-view">
+    <div class="ion-content" id="question_question_item">
+        <ion-refresher on-refresh="refresh('question_item')"></ion-refresher>
+        <input id="question_item_id" type="hidden">
+        <input id="ad_id" type="hidden">
+        <div class="hi">
+            <ul id="question" class="qs">
+                
+            </ul>
+        </div>
+        <div class="question-footer" id="question_item_footer" style="bottom:114px">
+            <input id="question_item_body" placeholder="Ask about the product" k="សួរអំពីផលិតផល">
+            <button onclick="replyQuestion()" k="ឆ្លើយតប">Reply</button>
+        </div>
+    </div> 
+    
+</ion-view>

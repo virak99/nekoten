@@ -19,23 +19,30 @@
         $.post(URL+'app/notification.php', {user_id:user_id}, function(data){                    
             var a = JSON.parse(data);
             var str = '';
-            for (var i = 0; i < a.length; i++){
-                var b = a[i];
-                str += '<div class="item item-complex read-'+b['is_read']+'" id="noti_'+b['id']+'" onclick="markAsRead(\''+b['id']+'\'); '+b['action']+'">';
-                    str += '<a class="item-content">';
-                        str += '<div class="a">';
-                            str += '<div class="b">';
-                                str += b['text_'+lang];
-                            str += '</div>';
-                            str += '<div class="c">';
-                                str += b['posted_date'];
-                            str += '</div>';
-                        str += '</div>';                    
-                    str += '</a>';
-                str += '</div>';    
+            if (a.length == 0) {
+                str += '<center class="em" id="no_notification">';
+                    str += '<span class="za ion-android-notifications-off"></span>';           
+                    str += '<div class="zb" k="គ្មានការរំលឹក">No Notification</div>'; 
+                str += '</center>';
+            } else {
+                for (var i = 0; i < a.length; i++){
+                    var b = a[i];
+                    str += '<div class="item item-complex read-'+b['is_read']+'" id="noti_'+b['id']+'" onclick="markAsRead(\''+b['id']+'\'); '+b['action']+'">';
+                        str += '<a class="item-content">';
+                            str += '<div class="a">';
+                                str += '<div class="b">';
+                                    str += b['text_'+lang];
+                                str += '</div>';
+                                str += '<div class="c">';
+                                    str += b['posted_date'];
+                                str += '</div>';
+                            str += '</div>';                    
+                        str += '</a>';
+                    str += '</div>';    
+                }
             }
-            
-            $('.nt').html(str);            
+            $('.nt').html(str);  
+            la();
         });        
     }
     

@@ -31,7 +31,7 @@
             </div>
             <input id="ad_photos" type="hidden">
             
-            <div class="wishlist-btn" onclick="wishlist()">
+            <div class="wishlist-btn" onclick="addToWishlist()">
                 <span class="fa fa-heart"></span>    
             </div>        
         </div>
@@ -68,11 +68,11 @@
                     <a class="item-content">
                         <div class="b" id="delivery_type"><span k="ដឹកទៅកាន់">Deliver to</span> <strong id="delivery_to"></strong></div>
                         <div class="c">
-                            <span k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
+                            <span style="color:#aaa" k="ថ្លៃដឹកជញ្ជូន">Delivery Fee: </span>                        
                             <strong id="delivery_fee">Free</strong>    
                         </div>
                         <div class="c">
-                            <span k="ទទួលទំនិញ">Receive Product</span>
+                            <span style="color:#aaa" k="ទទួលទំនិញ">Receive Product</span>
                             <strong id="delivery_time"></strong>    
                         </div>
                         <div class="fa fa-angle-right"></div>                    
@@ -244,8 +244,7 @@
     <ion-content class="sm-modal-body qs">
         <div id="question">
             
-        </div>    
-        
+        </div>
     </ion-content>    
     <div class="question-footer">
         <input id="question_body" placeholder="Ask about the product" k="សួរអំពីផលិតផល">

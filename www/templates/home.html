@@ -15,24 +15,70 @@
         <span id="start" style="display:none">0</span>
         <span id="all" style="display:none">0</span>
     
-        <div class="home"> 
-        
-            
-            
-            <center>
-                <div class="coupon">
-                    <div class="a">
-                        <div class="c">30%</div>
-                        <div class="d">Discount</div>
-                        <div class="e">ON PURCHASE $50 +</div>
-                        <div class="h">Valid till 18/01</div>
-                    </div>
-                    <div class="b">
-                        <div class="f">N</div>
-                        <div class="g">COUPON</div>
-                    </div>
+        <div class="of">
+            <div class="c">
+                <div class="a">
+                    <span class="ion-ios-list-outline"></span>
                 </div>
-            </center>
+                <div class="b">
+                    <div class="d">
+                        <span k="កម្មង់">Order ID: </span>
+                        <strong id="order_id">123</strong>
+                    </div>
+                    <div class="d">
+                        <span k="តម្លៃ">Total Price: </span>
+                        <strong style="color:#ff3366" id="total_price"></strong>
+                    </div>
+                    <div class="d">
+                        <span k="ស្ថានភាព">Status: </span>
+                        <strong style="color:limegreen" id="status"></strong>
+                    </div>
+                </div>    
+            </div>
+        </div>
+        <script>
+            if (user_id != 'not_login'){
+                updateOrderPopup();
+                setInterval(function(){
+                    updateOrderPopup();
+                }, 300000); // 5 min = 300 s = 300000 ms
+            }
+            
+            function updateOrderPopup(){
+                $.post(URL+'app/order_pop_up.php', {user_id:user_id}, function(data){
+                    if (data != null){                        
+                        var a = JSON.parse(data);
+                        $('.of #order_id').text(a['order_id']);
+                        $('.of #total_price').text('$'+a['total_price']);
+                        $('.of #status').text(a['status']);    
+                        
+                        $('.of').on('click', function(){
+                            window.location.href = "#tab/account";                            
+                            loadOrderDetail('order_detail', a['order_id']);
+                        });
+                    }
+                });   
+            }                    
+        </script>        
+        
+        
+        <center>
+            <div class="coupon">
+                <div class="a">
+                    <div class="c">30%</div>
+                    <div class="d">Discount</div>
+                    <div class="e">ON PURCHASE $50 +</div>
+                    <div class="h">Valid till 18/01</div>
+                </div>
+                <div class="b">
+                    <div class="f">N</div>
+                    <div class="g">COUPON</div>
+                </div>
+            </div>
+        </center>
+        
+        
+        <div class="home"> 
             <div class="home-slider owl-carousel owl-theme">
                 
             </div>
@@ -69,39 +115,8 @@
             </ul>
             <ul class="cate owl-carousel owl-theme" id="cate-2">
                 
-            </ul>
-          
-            <div class="hr"></div>
-            <div class="yl">
-                <div class="a">
-                    <div class="b">
-                        <div class="ba"></div>
-                        <div class="bb"></div>
-                    </div>
-                    <div class="c">
-                        <div class="ca">
-                            09-21-2017 09:45
-                        </div>
-                        <div class="cb">
-                            Order Received
-                        </div>
-                    </div>
-                </div>
-                <div class="a">
-                    <div class="b">
-                        <span class="ion-ios-checkmark"></span>
-                    </div>
-                    <div class="c">
-                        <div class="ca">
-                            09-21-2017 09:45
-                        </div>
-                        <div class="cb">
-                            Order Received
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hr"></div>
+            </ul>          
+            <div class="hr"></div>            
             <div class="nr">
                 <div class="new-arrival">
                     <h3 k="ទំនិញមកដល់ថ្មី">New Arrival</h3>
@@ -110,7 +125,7 @@
             </div>
             <ul id="new_arrival">
                 
-            <ul>
+            </ul>
             
         </div>
         <div id="loading_more">
@@ -165,7 +180,7 @@
                 
                 str += '<li onclick="loadProduct(\''+ad_id+'\')" class="ad-item">';
                     str += '<div class="b" style="width:'+a_wh+'px;height:'+a_wh+'px">';
-                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'px" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
+                        str += '<img style="width:'+ad['width']+'; height:'+ad['height']+'; margin-'+ad['margin']+':'+ad['margin-px']+'" src="'+URL+'ads/'+ad['ad_id']+'/1_m.jpg">';
                     str += '</div>';
                     str += '<div class="c">';
                         str += ad['title'];

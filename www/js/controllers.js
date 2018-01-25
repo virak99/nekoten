@@ -53,6 +53,8 @@ angular.module('starter.controllers', [])
                 loadMyAccount();
             } else if (page == 'notification'){
                 loadNotification();
+            } else if (page == 'question_item'){
+                loadQuestionItem('');
             }
             $scope.$broadcast('scroll.refreshComplete');
         }

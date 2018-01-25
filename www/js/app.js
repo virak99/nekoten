@@ -66,6 +66,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
+  .state('tab.transfer_money', {
+    url: '/transfer_money',
+    views: {
+      'account': {
+        templateUrl: 'templates/transfer_money.html',
+        controller: 'NavCtrl'
+      }
+    }
+  })
+  .state('tab.question_item', {
+    url: '/question_item',
+    views: {
+      'account': {
+        templateUrl: 'templates/question_item.html',
+        controller: 'NavCtrl'
+      }
+    }
+  })
   .state('tab.notification', {
     url: '/notification',
     views: {
